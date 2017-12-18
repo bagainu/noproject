@@ -1,4 +1,4 @@
 *.vs
 *.db
-db.*
+db.sqlite3
 *.vscode
