@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Contents(models.Model):
+class Post(models.Model):
     blog_title = models.CharField(max_length=200)
     date_time = models.DateTimeField('data published')
     blog_content = models.TextField()
