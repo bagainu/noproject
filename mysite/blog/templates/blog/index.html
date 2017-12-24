@@ -9,7 +9,7 @@
 	{% if post_list %}
 	<ul>
 		{% for post in post_list %}
-		<li><a href="/blog/{{ post.blog_title }}/">{{ post.blog_title }}</a></li>
+		<li><a href="{% url 'blog:blog_detail' post.id %}">{{ post.blog_title }}</a></li>
 		{% endfor %}
 	</ul>
 	{% else %}
