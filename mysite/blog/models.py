@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -14,9 +15,10 @@ class Post(models.Model):
 
 class Author(models.Model):
     email = models.EmailField(max_length=200, unique=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    reg_time = models.DateTimeField('registered')
+    first_name = models.CharField(max_length=100, default='')
+    last_name = models.CharField(max_length=100, default='')
+    reg_time = models.DateTimeField('registered', default=timezone.now())
+    user_pwd = models.CharField(max_length=100, default='')
 
     def __str__(self):
         return '{0} {1} ({2})'.format(self.first_name, self.last_name, self.email)
