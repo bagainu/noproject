@@ -1,0 +1,11 @@
+h1 {
+    color: red;
+}
+
+li a {
+    color: blue;
+}
+
+body {
+    background: white url("images/bgi.jpg") no-repeat left top;
+}

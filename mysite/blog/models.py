@@ -17,7 +17,7 @@ class Author(models.Model):
     email = models.EmailField(max_length=200, unique=True)
     first_name = models.CharField(max_length=100, default='')
     last_name = models.CharField(max_length=100, default='')
-    reg_time = models.DateTimeField('registered', default=timezone.now())
+    reg_time = models.DateTimeField('registered', default=timezone.now)
     user_pwd = models.CharField(max_length=100, default='')
 
     def __str__(self):
