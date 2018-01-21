@@ -3,6 +3,7 @@ from django.utils import timezone
 
 # Create your models here.
 
+
 class Post(models.Model):
     blog_title = models.CharField(max_length=200)
     date_time = models.DateTimeField('data published')
