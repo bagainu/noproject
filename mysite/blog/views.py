@@ -3,7 +3,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 
+from django.forms import modelformset_factory, inlineformset_factory, forms
 from .models import Post, Author
+from .forms import PostForm
 # Create your views here.
 
 
@@ -18,9 +20,22 @@ def index(request):
     }
     return render(request, 'blog/index.html', context)
 
+
 # Create
 def create(request):
-    return HttpResponse('<h1>create</h1>')
+    if request.method == 'POST':
+        # print(request.POST)
+        post_form = PostForm(request.POST)
+        if post_form.is_valid():
+            instance = post_form.save(commit=False) 
+            instance.save()
+            return HttpResponseRedirect(instance.get_absolute_url())
+    else:
+        post_form = PostForm()
+        context = {
+            'post_form': post_form,
+        }
+        return render(request, 'blog/create.html', context)
 
 
 # Read
@@ -33,13 +48,34 @@ def detail(request, blog_id):
 
 
 # Update
-def update(request):
-    return HttpResponse('<h1>update</h1>')
+def update(request, blog_id):
+    post = get_object_or_404(Post, pk=blog_id)
+    if request.method == 'POST':
+        post_form = PostForm(request.POST, instance=post)
+        if post_form.is_valid():
+            instance = post_form.save(commit=False) 
+            instance.save()
+            return HttpResponseRedirect(instance.get_absolute_url())
+    else:
+        post_form = PostForm(instance=post)
+        context = {
+            'post_form': post_form,
+        }
+        return render(request, 'blog/create.html', context)
 
 
 # Delete
-def delete(request):
-    return HttpResponse('<h1>delete</h1>')
+def delete(request, blog_id):
+    post = get_object_or_404(Post, pk=blog_id)
+    # DeleteNewFormSet = forms(Post, fields=[])
+    # if request.method == 'POST':
+    #     print(request.POST)
+    #     post_form = DeleteNewFormSet(request.POST, instance=post)
+    #     if post_form.is_valid():
+    #         print(post)
+    #         post.delete()
+    post.delete()
+    return HttpResponseRedirect(reverse('blog:blog_index'))
 
 
 

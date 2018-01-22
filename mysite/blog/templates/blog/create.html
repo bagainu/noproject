@@ -1,0 +1,24 @@
+{% extends "blog/base.html" %}
+
+<head>
+	<title>
+	{% block head_title %}Create{% endblock %}
+	</title>
+</head>
+
+<body>
+{% block body_content %}
+    <form method="POST" action="">
+    {% csrf_token %}
+    <!-- {{ post_form.management_form }}
+    {% for item in post_form %}
+        {{ item.id }}
+        <ul>
+            <li>{{ item.name }} <br /> {{ item }}</li>
+        </ul>
+    {% endfor %} -->
+    {{ post_form.as_p }} <!-- currently it includes error messages -->
+    <input type="submit" value="Save" />
+    </form>
+{% endblock %}
+</body>
