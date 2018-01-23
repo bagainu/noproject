@@ -21,6 +21,8 @@ def index(request):
         page_post_list = paginator.page(1)
     except EmptyPage:
         page_post_list = paginator.page(paginator.num_pages)
+    except:
+        page_post_list = None
 
     title_msg = "Not Authenticated"
     if request.user.is_authenticated:

@@ -4,8 +4,8 @@ from . import views
 app_name = 'blog'
 urlpatterns = [
     path('', views.index, name='blog_index'),
-    path('b<int:blog_id>/', views.detail, name='blog_detail'),
     path('create/', views.create, name='blog_create'),
+    path('b<int:blog_id>/', views.detail, name='blog_detail'),
     path('update/b<int:blog_id>/', views.update, name='blog_update'),
     path('delete/b<int:blog_id>/', views.delete, name='blog_delete'),
     # re_path('login/(?P<author_id>[0-9]*)', views.login, name='blog_login'),

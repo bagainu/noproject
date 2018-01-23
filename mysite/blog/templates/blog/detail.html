@@ -13,6 +13,10 @@
 	<br />
 	<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
 	<br />
+	<wb:share-button addition="simple" type="button">{{ request.build_absolute_uri }}</wb:share-button>
+	<wb:like type="simple"></wb:like>
+	
+	<br />
 	{% if post.blog_image %}
 	<img class="card-img-right flex-auto d-none d-md-block" 
 		data-src="holder.js/250x250?theme=thumb" 
