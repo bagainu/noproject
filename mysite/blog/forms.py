@@ -10,7 +10,7 @@ class PostForm(ModelForm):
         model = Post
         fields = [
             'blog_title',
-            'date_time',
             'blog_content',
+            'blog_image',
             'blog_author',
         ]

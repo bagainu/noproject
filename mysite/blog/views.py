@@ -11,7 +11,7 @@ from .forms import PostForm
 
 
 def index(request):
-    post_list = Post.objects.order_by('-date_time') # use '-' to order items in reversed order
+    post_list = Post.objects.order_by('-update_date_time') # use '-' to order items in reversed order
 
     paginator = Paginator(post_list, 10)
     page = request.GET.get('page')
@@ -37,7 +37,7 @@ def index(request):
 def create(request):
     if request.method == 'POST':
         # print(request.POST)
-        post_form = PostForm(request.POST)
+        post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             instance = post_form.save(commit=False) 
             instance.save()
@@ -63,7 +63,7 @@ def detail(request, blog_id):
 def update(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
     if request.method == 'POST':
-        post_form = PostForm(request.POST, instance=post)
+        post_form = PostForm(request.POST, request.FILES, instance=post)
         if post_form.is_valid():
             instance = post_form.save(commit=False) 
             instance.save()

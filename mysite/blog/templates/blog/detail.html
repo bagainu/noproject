@@ -11,8 +11,15 @@
 	<h1>{{ post.blog_title }}</h1>
 	<i>By {{ post.blog_author }}</i>
 	<br />
-	<b>{{ post.date_time}}</b>
+	<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
 	<br />
+	{% if post.blog_image %}
+	<img class="card-img-right flex-auto d-none d-md-block" 
+		data-src="holder.js/250x250?theme=thumb" 
+		style="width: 250px; height: 250px;" 
+		src="{{ post.blog_image.url }}" 
+		data-holder-rendered="true">
+	{% endif %}
 	<p>{{ post.blog_content | linebreaks }}</p>
 	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a><br />
 	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn">Delete</a>

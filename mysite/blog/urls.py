@@ -11,3 +11,4 @@ urlpatterns = [
     # re_path('login/(?P<author_id>[0-9]*)', views.login, name='blog_login'),
     # path('response_page/', views.response_page, name='blog_response_page')
 ]
+
