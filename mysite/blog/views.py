@@ -2,21 +2,33 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-
 from django.forms import modelformset_factory, inlineformset_factory, forms
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from .models import Post, Author
 from .forms import PostForm
 # Create your views here.
 
 
 def index(request):
-    post_list = Post.objects.order_by('date_time')
+    post_list = Post.objects.order_by('-date_time') # use '-' to order items in reversed order
+
+    paginator = Paginator(post_list, 10)
+    page = request.GET.get('page')
+    try:
+        page_post_list = paginator.page(page)
+    except PageNotAnInteger:
+        page_post_list = paginator.page(1)
+    except EmptyPage:
+        page_post_list = paginator.page(paginator.num_pages)
+
     title_msg = "Not Authenticated"
     if request.user.is_authenticated:
         title_msg = 'Authenticated'
+
     context = {
         'title': title_msg,
-        'post_list': post_list,
+        'post_list': page_post_list, #post_list
     }
     return render(request, 'blog/index.html', context)
 
