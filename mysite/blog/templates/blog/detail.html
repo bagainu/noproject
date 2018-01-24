@@ -1,4 +1,5 @@
 ﻿{% extends "blog/base.html" %}
+{% load markdown_deux_tags %}
 
 <head>
 	<title>
@@ -14,9 +15,8 @@
 	<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
 	<br />
 	<wb:share-button addition="simple">{{ request.build_absolute_uri }}</wb:share-button>
-	<wb:like type="simple"></wb:like>
+	<!-- <wb:like type="simple"></wb:like> -->
 	
-	<br />
 	{% if post.blog_image %}
 	<img class="card-img-right flex-auto d-none d-md-block" 
 		data-src="holder.js/250x250?theme=thumb" 
@@ -24,11 +24,16 @@
 		src="{{ post.blog_image.url }}" 
 		data-holder-rendered="true">
 	{% endif %}
-	<div>
-		<p>{{ post.blog_content | linebreaks }}</p>
-	</div>
+
+	<hr />
+	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
+	<p>{{ post.blog_content | markdown }}</p>
+	<hr />
+
 	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a>
 	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn">Delete</a>
+	<br />
+	<br />
 
 	<wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments>
 	<!-- <form method="POST" action="{% url 'blog:blog_delete' blog_id=post.id %}">

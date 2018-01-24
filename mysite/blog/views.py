@@ -24,7 +24,7 @@ def index(request):
             Q(blog_author__email__icontains=search_string)
         ).distinct()
 
-    paginator = Paginator(post_list, 2)
+    paginator = Paginator(post_list, 5)
     page = request.GET.get('page')
     try:
         page_post_list = paginator.page(page)

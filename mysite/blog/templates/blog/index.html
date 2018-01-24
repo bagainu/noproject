@@ -1,4 +1,5 @@
 ﻿{% extends "blog/base.html" %}
+{% load markdown_deux_tags %}
 
 <title>
 {% block head_title %}Blogs{% endblock %}
@@ -24,9 +25,11 @@
 			<h3 class="mb-0">
 				<a class="text-dark" href="{% url 'blog:blog_detail' blog_id=post.id %}">{{ post.blog_title | truncatechars:50 }}</a>
 			</h3>
-			<strong class="d-inline-block mb-2 text-primary">By {{ post.blog_author }}</strong>
+			<p class="d-inline-block mb-2 text-primary">By {{ post.blog_author }}</p>
 			<div class="mb-1 text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
-			<p class="card-text mb-auto">{{ post.blog_content | linebreaks | truncatechars:50 }}</p>
+			<span class="card-text mb-auto">
+				<p>{{ post.blog_content | markdown | truncatechars_html:100 }}</p>
+			</span>
 			<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
 			</div>
 			{% if post.blog_image %}

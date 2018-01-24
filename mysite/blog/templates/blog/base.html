@@ -1,5 +1,6 @@
 {% load static %}
 {% load staticfiles %}
+
 <!-- Django templates filters: https://docs.djangoproject.com/en/2.0/ref/templates/builtins/#time -->
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -10,7 +11,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}" />
 	<title>{% block head_title %}{% endblock %}</title>
+
+	<!-- block to insert extensions in head -->
+	{% block head_extension %}
+	{% endblock %}
 </head>
+
 <body>
 <div class="container">
 {% include "blog/header.html" %}
@@ -33,12 +39,30 @@
 {% include "blog/footer.html" %}
 </div>
 
+<!-- jQuery min -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<!-- Marked min for markdown -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js" integrity="sha256-i/tXAK6uqBpeOGsDc/sLNo5aCxJTE3pfnXlNPK+FV30=" crossorigin="anonymous"></script>
 <!-- dependencies of weibo -->
 <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
 <!-- dependencies of bootstrap -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+// markdown each content in content-markdown class
+// replaced by markdown_deux_tags
+$(document).ready(function(){
+	$(".content-markdown").each(function(){
+		var content = $(this).text();
+		console.log(content)
+		var markdownContent = marked(content);
+		console.log(markdownContent)
+		$(this).html(markdownContent);
+	});
+});
+</script>
 
 </body>
 </html>

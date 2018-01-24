@@ -33,7 +33,12 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # local apps
     'blog.apps.BlogConfig',
+    # thirdparty apps
+    'pagedown', # https://github.com/timmyomahony/django-pagedown
+    'markdown_deux', # https://github.com/trentm/django-markdown-deux
+    # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
