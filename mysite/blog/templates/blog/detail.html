@@ -27,7 +27,7 @@
 
 	<hr />
 	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
-	<p>{{ post.blog_content | markdown }}</p>
+	<p class="content-markdown">{{ post.blog_content | markdown }}</p>
 	<hr />
 
 	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a>

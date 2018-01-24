@@ -53,6 +53,7 @@
 <script type="text/javascript">
 // markdown each content in content-markdown class
 // replaced by markdown_deux_tags
+/*
 $(document).ready(function(){
 	$(".content-markdown").each(function(){
 		var content = $(this).text();
@@ -60,6 +61,14 @@ $(document).ready(function(){
 		var markdownContent = marked(content);
 		console.log(markdownContent)
 		$(this).html(markdownContent);
+	});
+});
+*/
+
+// to make images inside of a markdowned content responsive
+$(document).ready(function(){
+	$(".content-markdown img").each(function(){
+		$(this).addClass("img-responsive");
 	});
 });
 </script>
