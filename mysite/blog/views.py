@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
@@ -12,8 +13,18 @@ from .forms import PostForm
 
 def index(request):
     post_list = Post.objects.order_by('-update_date_time') # use '-' to order items in reversed order
+    print(request.GET)
 
-    paginator = Paginator(post_list, 10)
+    search_string = request.GET.get('search_string')
+    if search_string:
+        post_list = post_list.filter(
+            Q(blog_title__icontains=search_string) |
+            Q(blog_content__icontains=search_string) |
+            Q(blog_author__username__icontains=search_string) |
+            Q(blog_author__email__icontains=search_string)
+        ).distinct()
+
+    paginator = Paginator(post_list, 2)
     page = request.GET.get('page')
     try:
         page_post_list = paginator.page(page)
@@ -24,12 +35,11 @@ def index(request):
     except:
         page_post_list = None
 
-    title_msg = "Not Authenticated"
+    title_msg = 'Not Authenticated'
     if request.user.is_authenticated:
         title_msg = 'Authenticated'
 
     context = {
-        'title': title_msg,
         'post_list': page_post_list, #post_list
     }
     return render(request, 'blog/index.html', context)

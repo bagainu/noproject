@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
 from django.urls import reverse
@@ -21,6 +22,7 @@ class Post(models.Model):
     blog_image = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
     blog_content = models.TextField()
     blog_author = models.ForeignKey('Author', on_delete=models.CASCADE)
+    # blog_author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 
     def __str__(self):
         return '"{0}" by {1}'.format(self.blog_title, self.blog_author)
@@ -34,16 +36,15 @@ class Post(models.Model):
 
 class Author(models.Model):
     email = models.EmailField(max_length=200, unique=True)
-    first_name = models.CharField(max_length=100, default='')
-    last_name = models.CharField(max_length=100, default='')
+    username = models.CharField(max_length=100, default='')
+    password = models.CharField(max_length=100, default='')
     reg_time = models.DateTimeField(auto_now=False, auto_now_add=True, help_text='registered')
-    user_pwd = models.CharField(max_length=100, default='')
 
     def __str__(self):
-        return '{0} {1} ({2})'.format(self.first_name, self.last_name, self.email)
+        return '{0} ({1})'.format(self.username, self.email)
 
     def __unicode__(self):
-        return '{0} {1} ({2})'.format(self.first_name, self.last_name, self.email)
+        return '{0} ({1})'.format(self.username, self.email)
 
     def get_absolute_url(self):
         pass

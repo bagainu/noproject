@@ -16,7 +16,7 @@ class PostAdmin(admin.ModelAdmin):
 #admin.site.register(Author)
 @admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['email', 'first_name', 'last_name', 'reg_time']
+    list_display = ['email', 'username', 'reg_time']
     list_filter = ['reg_time']
-    search_fields = ['email', 'first_name', 'last_name']
+    search_fields = ['email', 'username']
 
