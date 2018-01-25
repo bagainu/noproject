@@ -1,9 +1,17 @@
 h1 {
-    color: red;
+
 }
 
 li a {
     color: blue;
+}
+
+.wmd-panel
+{
+	margin-left: 0px !important;
+    margin-right: 0px !important;
+    width: inherit !important;
+	min-width: 0px !important;
 }
 
 /* body {

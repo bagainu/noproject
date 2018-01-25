@@ -2,3 +2,4 @@ Django
 Pillow
 django-pagedown
 django-markdown-deux
+django-crispy-forms

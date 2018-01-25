@@ -8,31 +8,24 @@
 <head>
     <meta charset="utf-8" />
     <!-- dependencies of bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- dependencies of font awsome -->
+	<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<!-- local css file -->
 	<link rel="stylesheet" type="text/css" href="{% static 'blog/style.css' %}" />
-	<title>{% block head_title %}{% endblock %}</title>
 
 	<!-- block to insert extensions in head -->
 	{% block head_extension %}
 	{% endblock %}
+
+	<title>{% block head_title %}{% endblock %}</title>
 </head>
 
 <body>
 {% include "blog/header.html" %}
 
 {% block body_content %}
-	<h1>Blogs</h1>
-	<br />
-	{% if post_list %}
-	<ul>
-		{% for post in post_list %}
-		<!-- <li><a href="{{ post.get_absolute_url }}">{{ post.blog_title }}</a></li> -->
-		<li><a href="{% url 'blog:blog_detail' blog_id=post.id %}">{{ post.blog_title }}</a></li>
-		{% endfor %}
-	</ul>
-	{% else %}
-	<p>No blogs.</p>
-	{% endif %}
 {% endblock %}
 
 {% include "blog/footer.html" %}

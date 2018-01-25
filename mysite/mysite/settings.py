@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # thirdparty apps
     'pagedown', # https://github.com/timmyomahony/django-pagedown
     'markdown_deux', # https://github.com/trentm/django-markdown-deux
+    'crispy_forms', # http://django-crispy-forms.readthedocs.io/en/latest/
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
