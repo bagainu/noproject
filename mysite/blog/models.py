@@ -2,9 +2,13 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.template.defaultfilters import linebreaks
 from django.utils import timezone
 from django.utils.text import slugify
+from django.utils.html import format_html
 from django.urls import reverse
+
+from markdown_deux import markdown
 
 # Create your models here.
 
@@ -32,6 +36,9 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:blog_detail', kwargs={ 'blog_id': self.id, })
+
+    def get_blog_content_markdown(self):
+        return format_html(linebreaks(markdown(self.blog_content)))
 
 
 class Author(models.Model):

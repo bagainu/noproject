@@ -1,5 +1,4 @@
 ﻿{% extends "blog/base.html" %}
-{% load markdown_deux_tags %}
 
 <title>
 {% block head_title %}Blogs{% endblock %}
@@ -7,19 +6,26 @@
 
 <body>
 {% block body_content %}
-<h1>Blogs</h1>
+<div class="container">
+<div class="row flex-nowrap justify-content-between align-items-center">
+	<div class="col-4 pt-2 ml-2 text-left">
+		<h1>Blogs</h1>
+	</div>
+	<div class="col-4 d-flex justify-content-end">
+		<form method="GET" action="">
+			<input type="text" name="search_string" placeholder="Search blogs" value="{{ request.GET.search_string }}"/>
+			<input type="submit" value="Search" />
+		</form>
+	</div>
+</div>
 <br />
-<form method="GET" action="">
-	<input type="text" name="search_string" placeholder="Search blogs" value="{{ request.GET.search_string }}"/>
-	<input type="submit" value="Search" />
-</form>
 <br />
 
-{% if post_list %}
 <!-- <li><a href="{{ post.get_absolute_url }}">{{ post.blog_title }}</a></li> -->
-<div class="row mb-2">
+<div class="row justify-content-center">
+	{% if post_list %}
 	{% for post in post_list %}
-	<div class="col-md-8">
+	<div class="col-md-8 ">
 		<div class="card flex-md-row mb-4 box-shadow h-md-250">
 			<div class="card-body d-flex flex-column align-items-start">
 			<h3 class="mb-0">
@@ -28,27 +34,28 @@
 			<p class="d-inline-block mb-2 text-primary">By {{ post.blog_author }}</p>
 			<div class="mb-1 text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 			<span class="card-text mb-auto">
-				<p>{{ post.blog_content | markdown | truncatechars_html:100 }}</p>
+				<p>{{ post.get_blog_content_markdown | truncatechars_html:100 }}</p>
 			</span>
 			<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
 			</div>
 			{% if post.blog_image %}
 			<img class="card-img-right flex-auto d-none d-md-block"
-			 data-src="holder.js/200x250?theme=thumb" 
-			 alt="Thumbnail [200x250]" 
-			 style="width: 250px; height: 250px;" 
-			 src="{{ post.blog_image.url }}" 
-			 data-holder-rendered="true">
+			data-src="holder.js/200x250?theme=thumb" 
+			alt="Thumbnail [200x250]" 
+			style="width: 250px; height: 250px;" 
+			src="{{ post.blog_image.url }}" 
+			data-holder-rendered="true">
 			{% endif %}
 		</div>
 	</div>
 	{% endfor %}
+	{% else %}
+	<p>No blogs.</p>
+	{% endif %}
 </div>
-{% else %}
-<p>No blogs.</p>
-{% endif %}
 
-<div class="pagination">
+<div class="row justify-content-center">
+<div class="pagination col-auto">
 	<span class="step-links">
 	{% if post_list.has_previous %}
 		<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
@@ -63,7 +70,9 @@
 	{% endif %}
 	</span>
 </div>
+</div>
 
+</div>
 {% endblock %}
 
 </body>

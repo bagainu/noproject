@@ -18,7 +18,6 @@
 </head>
 
 <body>
-<div class="container">
 {% include "blog/header.html" %}
 
 {% block body_content %}
@@ -37,7 +36,6 @@
 {% endblock %}
 
 {% include "blog/footer.html" %}
-</div>
 
 <!-- jQuery min -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -69,6 +67,22 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$(".content-markdown img").each(function(){
 		$(this).addClass("img-responsive");
+	});
+	
+	$("#preview-title").html(marked($("#id_blog_title").val()));
+	$("#id_blog_title").keyup(function(){
+		$("#preview-title").html(marked($(this).val()));
+	});
+	
+	$("#preview-content").html(marked($("#id_blog_content").val()));
+	$("#preview-content img").each(function(){
+		$(this).addClass("img-responsive")
+	});
+	$("#id_blog_content").keyup(function(){
+		$("#preview-content").html(marked($(this).val()));
+		$("#preview-content img").each(function(){
+			$(this).addClass("img-responsive")
+		});
 	});
 });
 </script>

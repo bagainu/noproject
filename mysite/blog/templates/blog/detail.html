@@ -1,5 +1,4 @@
 ﻿{% extends "blog/base.html" %}
-{% load markdown_deux_tags %}
 
 <head>
 	<title>
@@ -9,6 +8,7 @@
 
 <body>
 {% block body_content %}
+<div class="container">
 	<h1>{{ post.blog_title }}</h1>
 	<i>By {{ post.blog_author }}</i>
 	<br />
@@ -27,7 +27,7 @@
 
 	<hr />
 	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
-	<p class="content-markdown">{{ post.blog_content | markdown }}</p>
+	<p class="content-markdown">{{ post.get_blog_content_markdown }}</p>
 	<hr />
 
 	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a>
@@ -40,5 +40,6 @@
 		{% csrf_token %}
 		<input type="submit" value="Delete" />
 	</form> -->
+</div>
 {% endblock %}
 </body>

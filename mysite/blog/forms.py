@@ -10,7 +10,7 @@ from .models import Post, Author
 
 class PostForm(ModelForm):
 
-    blog_content = forms.CharField(widget=PagedownWidget())
+    blog_content = forms.CharField(widget=PagedownWidget(show_preview=False))
 
     class Meta:
         model = Post
