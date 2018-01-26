@@ -40,21 +40,49 @@
 	<br />
 	<div class="row">
 		{% for comment in post_comments %}
-		<div class="card card-block bg-light col-10 offset-1">
+		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
 			<p class="text-justify">{{ comment.get_comment_content_markdown }}<br />
 			<small>{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
 			</p>
+
+			{% if comment.get_children %}
+			<div class="row">
+			{% for child_comment in comment.get_children %}
+				<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
+				<p class="text-justify">{{ child_comment.get_comment_content_markdown }}<br />
+				<small>By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
+				</p>
+				</div>
+			{% endfor %}
+			</div>
+			{% endif %}
+
+			{% if request.user.is_authenticated %}
+			<div class="row">
+				<div class="col-10 offset-1">
+				<form method="POST" action="{{ comment.id }}" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ comment_form | crispy }}
+				<input type="hidden" name="parent_id" value="{{ comment.id }}">
+				<button class="btn btn-outline-secondary" type="submit">Reply</button>
+				</div>
+			</div>
+			{% endif %}
 		</div>
+		<!-- <blockquote class="blockquote col-10 offset-1">
+			<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>
+			<footer class="blockquote-footer">{{ comment.comment_user }} at <cite title="Source Title">{{ comment.comment_date_time }}</cite></footer>
+		</blockquote> -->
 		{% endfor %}
 	</div>
 	<br />
-	{% if comment_form %}
+	{% if request.user.is_authenticated %}
 	<div class="row">
 		<div class="col-10 offset-1">
-			<form method="POST" action="" enctype="multipart/form-data">
+			<form method="POST" action="." enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ comment_form | crispy }}
-			<input type="submit" value="Save" />
+			<button class="btn btn-outline-secondary" type="submit">Submit</button>
 		</div>
 	</div>
 	{% endif %}

@@ -18,6 +18,7 @@ class Comment(models.Model):
     content_object = GenericForeignKey('content_type', 'object_id')
     comment_content = models.TextField()
     comment_date_time = models.DateTimeField(auto_now_add=True)
+    parent_comment = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{0}'s comment at {1}".format(self.comment_user, self.comment_date_time)
@@ -27,3 +28,6 @@ class Comment(models.Model):
 
     def get_comment_content_markdown(self):
         return format_html(linebreaks(markdown(self.comment_content)))
+
+    def get_children(self):
+        return Comment.objects.filter(parent_comment=self).order_by('comment_date_time')

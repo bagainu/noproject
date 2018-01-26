@@ -10,6 +10,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .models import Post, Author
 from .forms import PostForm
 from comments.forms import CommentForm
+from comments.models import Comment
 # Create your views here.
 
 
@@ -67,14 +68,7 @@ def create(request):
 # Read
 def detail(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
-    if not request.user.is_authenticated:
-        context = {
-            'post': post,
-            'post_comments': post.blog_comment.order_by('-comment_date_time'),
-        }
-        return render(request, 'blog/detail.html', context)
-
-    if request.method == 'POST':
+    if request.method == 'POST' and request.user.is_authenticated:
         comment_form = CommentForm(request.POST, request.FILES)
         if comment_form.is_valid():
             comment_instance = comment_form.save(commit=False)
@@ -85,13 +79,12 @@ def detail(request, blog_id):
             comment_instance.save()
             comment_form.save_m2m()
             return HttpResponseRedirect(post.get_absolute_url())
-    else:
-        context = {
-            'post': post,
-            'post_comments': post.blog_comment.order_by('-comment_date_time'),
-            'comment_form': CommentForm(),
-        }
-        return render(request, 'blog/detail.html', context)
+    context = {
+        'post': post,
+        'post_comments': post.blog_comment.order_by('-comment_date_time'),
+        'comment_form': CommentForm(),
+    }
+    return render(request, 'blog/detail.html', context)
 
 
 # Update

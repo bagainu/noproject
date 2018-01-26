@@ -8,10 +8,15 @@ from pagedown.widgets import PagedownWidget
 
 from .models import Comment
 
+# class CommentForm(forms.Form):
+    # content_type = forms.CharField(widget=forms.HiddenInput)
+    # object_id = forms.IntegerField(widget=forms.HiddenInput)
+    # #parent_id = forms.IntegerField(widget=forms.HiddenInput, required=False)
+    # comment_content = forms.CharField(label='', widget=forms.Textarea)
 
-class CommentForm(ModelForm):
+class CommentForm(forms.Form):
 
-    comment_content = forms.CharField(widget=PagedownWidget(show_preview=False))
+    comment_content = forms.CharField(widget=PagedownWidget(show_preview=False), label='')
 
     class Meta:
         model = Comment
