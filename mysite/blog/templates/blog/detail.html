@@ -1,8 +1,10 @@
 ﻿{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
 
 <head>
 	<title>
 	{% block head_title %}{{ post.blog_title }}{% endblock %}
+	{% block head_extension %}{{ comment_form.media }}{% endblock %}
 	</title>
 </head>
 
@@ -32,14 +34,34 @@
 
 	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a>
 	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn">Delete</a>
-	<br />
-	<br />
 
-	<wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments>
-	<!-- <form method="POST" action="{% url 'blog:blog_delete' blog_id=post.id %}">
-		{% csrf_token %}
-		<input type="submit" value="Delete" />
-	</form> -->
+	<hr />
+	<h4>Comments</h4>
+	<br />
+	<div class="row">
+		{% for comment in post_comments %}
+		<div class="card card-block bg-light col-10 offset-1">
+			<p class="text-justify">{{ comment.get_comment_content_markdown }}<br />
+			<small>{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
+			</p>
+		</div>
+		{% endfor %}
+	</div>
+	<br />
+	{% if comment_form %}
+	<div class="row">
+		<div class="col-10 offset-1">
+			<form method="POST" action="" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ comment_form | crispy }}
+			<input type="submit" value="Save" />
+		</div>
+	</div>
+	{% endif %}
+
+	<br />
+	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+
 </div>
 {% endblock %}
 </body>

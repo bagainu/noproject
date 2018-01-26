@@ -2,6 +2,10 @@ h1 {
 
 }
 
+p {
+    word-wrap: break-word;
+}
+
 li a {
     color: blue;
 }

@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.contrib.contenttypes.fields import GenericRelation
 from django.template.defaultfilters import linebreaks
 from django.utils import timezone
 from django.utils.text import slugify
@@ -10,6 +11,7 @@ from django.urls import reverse
 
 from markdown_deux import markdown
 
+from comments.models import Comment
 # Create your models here.
 
 # Helping functions
@@ -25,6 +27,7 @@ class Post(models.Model):
     update_date_time = models.DateTimeField(auto_now=True, auto_now_add=False, help_text='data updated')
     blog_image = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
     blog_content = models.TextField()
+    blog_comment = GenericRelation(Comment, related_query_name='post')
     blog_author = models.ForeignKey('Author', on_delete=models.CASCADE)
     # blog_author = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 

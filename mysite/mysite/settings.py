@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     # local apps
+    'comments.apps.CommentsConfig',
     'blog.apps.BlogConfig',
     # thirdparty apps
     'pagedown', # https://github.com/timmyomahony/django-pagedown
