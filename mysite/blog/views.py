@@ -76,12 +76,15 @@ def detail(request, blog_id):
             comment_instance.content_type = ContentType.objects.get_for_model(Post)
             comment_instance.content_object = post
             comment_instance.object_id = post.id
-            comment_instance.save()
+            parent_id = request.POST.get('parent_id')
+            if parent_id is not None:
+                comment_instance.parent_comment = Comment.objects.get(pk=int(parent_id))
+            comment_form.save()
             comment_form.save_m2m()
             return HttpResponseRedirect(post.get_absolute_url())
     context = {
         'post': post,
-        'post_comments': post.blog_comment.order_by('-comment_date_time'),
+        'post_comments': post.blog_comment.filter(parent_comment=None).order_by('-comment_date_time'),
         'comment_form': CommentForm(),
     }
     return render(request, 'blog/detail.html', context)

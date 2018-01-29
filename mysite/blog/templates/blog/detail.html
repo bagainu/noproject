@@ -37,6 +37,17 @@
 
 	<hr />
 	<h4>Comments</h4>
+	{% if request.user.is_authenticated %}
+	<div class="row">
+		<div class="col-10 offset-1">
+			<form method="POST" action="" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ comment_form | crispy }}
+			<button class="btn btn-outline-secondary" type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+	{% endif %}
 	<br />
 	<div class="row">
 		{% for comment in post_comments %}
@@ -60,11 +71,12 @@
 			{% if request.user.is_authenticated %}
 			<div class="row">
 				<div class="col-10 offset-1">
-				<form method="POST" action="{{ comment.id }}" enctype="multipart/form-data">
+				<form method="POST" action="" enctype="multipart/form-data">
 				{% csrf_token %}
 				{{ comment_form | crispy }}
 				<input type="hidden" name="parent_id" value="{{ comment.id }}">
 				<button class="btn btn-outline-secondary" type="submit">Reply</button>
+				</form>
 				</div>
 			</div>
 			{% endif %}
@@ -76,17 +88,6 @@
 		{% endfor %}
 	</div>
 	<br />
-	{% if request.user.is_authenticated %}
-	<div class="row">
-		<div class="col-10 offset-1">
-			<form method="POST" action="." enctype="multipart/form-data">
-			{% csrf_token %}
-			{{ comment_form | crispy }}
-			<button class="btn btn-outline-secondary" type="submit">Submit</button>
-		</div>
-	</div>
-	{% endif %}
-
 	<br />
 	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 
