@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.template.defaultfilters import linebreaks
+from django.urls import reverse
 from django.utils.html import format_html
 
 from markdown_deux import markdown
@@ -25,6 +26,9 @@ class Comment(models.Model):
 
     def __unicode__(self):
         return "{0}'s comment at {1}".format(self.comment_user, self.comment_date_time)
+
+    def get_absolute_url(self):
+        return reverse('comments:comment_detail', kwargs={ 'comment_id': self.id, })
 
     def get_comment_content_markdown(self):
         return format_html(linebreaks(markdown(self.comment_content)))

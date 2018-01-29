@@ -30,8 +30,6 @@
 
 {% include "blog/footer.html" %}
 
-<!-- jQuery min -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Marked min for markdown -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.12/marked.min.js" integrity="sha256-i/tXAK6uqBpeOGsDc/sLNo5aCxJTE3pfnXlNPK+FV30=" crossorigin="anonymous"></script>
 <!-- dependencies of weibo -->
@@ -40,6 +38,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- jQuery min -->
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<!-- <script src="http://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script> -->
 
 <script type="text/javascript">
 // markdown each content in content-markdown class
@@ -62,6 +63,13 @@ $(document).ready(function(){
 		$(this).addClass("img-responsive");
 	});
 	
+	$(".comment-reply-btn").click(function(event){
+		event.preventDefault();
+		$(this).parent().parent().next(".comment-reply").fadeToggle();
+	});
+
+	/*
+	var marked = require('marked');
 	$("#preview-title").html(marked($("#id_blog_title").val()));
 	$("#id_blog_title").keyup(function(){
 		$("#preview-title").html(marked($(this).val()));
@@ -77,6 +85,7 @@ $(document).ready(function(){
 			$(this).addClass("img-responsive")
 		});
 	});
+	*/
 });
 </script>
 

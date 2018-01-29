@@ -52,34 +52,42 @@
 	<div class="row">
 		{% for comment in post_comments %}
 		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
-			<p class="text-justify">{{ comment.get_comment_content_markdown }}<br />
-			<small>{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
-			</p>
+			{{ comment.get_comment_content_markdown }}<br />
+			<div class="row flex-nowrap justify-content-between align-items-center" style="margin-bottom:2%;">
+				<small class="col-auto">{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
+				<br />
+				<div class="col-8 d-flex justify-content-end align-items-center">
+					{% if comment.get_children %}
+						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
+						<a class="btn btn-outline-secondary" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+					{% endif %}
+					<button class="btn btn-outline-secondary comment-reply-btn">Reply</button>
+				</div>
+			</div>
 
 			{% if comment.get_children %}
-			<div class="row">
-			{% for child_comment in comment.get_children %}
-				<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
-				<p class="text-justify">{{ child_comment.get_comment_content_markdown }}<br />
-				<small>By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
-				</p>
-				</div>
-			{% endfor %}
+			<div class="row comment-reply" style="display:none;">
+				{% for child_comment in comment.get_children %}
+					<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
+					<p class="text-justify">{{ child_comment.get_comment_content_markdown }}<br />
+					<small>By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
+					</p>
+					</div>
+				{% endfor %}
+
+				{% if request.user.is_authenticated %}
+					<div class="col-10 offset-1">
+					<form method="POST" action="" enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ comment_form | crispy }}
+					<input type="hidden" name="parent_id" value="{{ comment.id }}">
+					<button class="btn btn-outline-secondary" type="submit">Submit</button>
+					</form>
+					</div>
+				{% endif %}
 			</div>
 			{% endif %}
 
-			{% if request.user.is_authenticated %}
-			<div class="row">
-				<div class="col-10 offset-1">
-				<form method="POST" action="" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ comment_form | crispy }}
-				<input type="hidden" name="parent_id" value="{{ comment.id }}">
-				<button class="btn btn-outline-secondary" type="submit">Reply</button>
-				</form>
-				</div>
-			</div>
-			{% endif %}
 		</div>
 		<!-- <blockquote class="blockquote col-10 offset-1">
 			<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>

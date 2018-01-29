@@ -2,6 +2,10 @@ h1 {
 
 }
 
+p {
+    word-wrap: break-word;
+}
+
 li a {
     color: blue;
 }
@@ -11,7 +15,9 @@ li a {
 	margin-left: 0px !important;
     margin-right: 0px !important;
     width: inherit !important;
+    height: inherit !important;
 	min-width: 0px !important;
+	min-height: 0px !important;
 }
 
 /* body {
