@@ -110,15 +110,13 @@ def update(request, blog_id):
 # Delete
 def delete(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
-    # DeleteNewFormSet = forms(Post, fields=[])
-    # if request.method == 'POST':
-    #     print(request.POST)
-    #     post_form = DeleteNewFormSet(request.POST, instance=post)
-    #     if post_form.is_valid():
-    #         print(post)
-    #         post.delete()
-    post.delete()
-    return HttpResponseRedirect(reverse('blog:blog_index'))
+    if request.method == "POST":
+        post.delete()
+        return HttpResponseRedirect(reverse("blog:blog_index"))
+    context = {
+        'post': post,
+    }
+    return render(request, 'blog/delete.html', context)
 
 
 

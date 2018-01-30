@@ -30,6 +30,14 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('comments:comment_detail', kwargs={ 'comment_id': self.id, })
 
+    def get_delete_url(self):
+        return reverse('comments:comment_delete', kwargs={ 'comment_id': self.id, })
+
+    def get_parent_url(self):
+        if self.parent_comment:
+            return self.parent_comment.get_absolute_url()
+        return reverse('comments:comment_detail', kwargs={ 'comment_id': self.id, })
+
     def get_comment_content_markdown(self):
         return format_html(linebreaks(markdown(self.comment_content)))
 

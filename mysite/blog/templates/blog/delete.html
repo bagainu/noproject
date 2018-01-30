@@ -1,0 +1,35 @@
+{% extends "blog/base.html" %}
+
+<head>
+	<title>
+	{% block head_title %}Confirm{% endblock %}
+	{% block head_extension %}{% endblock %}
+	</title>
+</head>
+
+<body>
+{% block body_content %}
+<div class="container">
+    <div class="row flex-nowrap justify-content-center align-items-center">
+        <div class="col-4 text-center">
+            <h3>Delete Confirm</h3>
+        </div>
+    </div>
+    <br />
+    <div class="row flex-nowrap justify-content-center align-items-center">
+        <div class="col-auto text-center">
+            <p>Do you really want to delete this blog?</p>
+        </div>
+    </div>
+    <div class="row flex-nowrap justify-content-center align-items-center">
+        <div class="col-4 d-flex justify-content-center align-items-center">
+            <form method="POST" action="">
+            {% csrf_token %}
+            <button class="btn btn-sm btn-outline-danger" type="submit">Confirm</button>
+            <a class="btn btn-sm btn-outline-secondary" href="{{ post.get_absolute_url }}">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>

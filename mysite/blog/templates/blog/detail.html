@@ -30,10 +30,12 @@
 	<hr />
 	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
 	<p class="content-markdown">{{ post.get_blog_content_markdown }}</p>
-	<hr />
 
-	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn">Edit</a>
-	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn">Delete</a>
+	{% if request.user.is_authenticated %}
+	<hr />
+	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
+	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-outline-danger">Delete</a>
+	{% endif %}
 
 	<hr />
 	<h4>Comments</h4>
@@ -43,7 +45,11 @@
 			<form method="POST" action="" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ comment_form | crispy }}
-			<button class="btn btn-outline-secondary" type="submit">Submit</button>
+			<div class="row justify-content-end">
+				<div class="col-auto col-offset-2">
+					<button class="btn btn-outline-secondary" type="submit">Submit</button>
+				</div>
+			</div>
 			</form>
 		</div>
 	</div>
@@ -51,42 +57,49 @@
 	<br />
 	<div class="row">
 		{% for comment in post_comments %}
-		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
+		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom:2%;">
 			{{ comment.get_comment_content_markdown }}<br />
-			<div class="row flex-nowrap justify-content-between align-items-center" style="margin-bottom:2%;">
+			<div class="row flex-nowrap justify-content-between align-items-center" style="margin-bottom:1%;">
 				<small class="col-auto">{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
 				<br />
 				<div class="col-8 d-flex justify-content-end align-items-center">
 					{% if comment.get_children %}
 						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
-						<a class="btn btn-outline-secondary" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+						<a class="btn btn-sm btn-outline-secondary" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
 					{% endif %}
-					<button class="btn btn-outline-secondary comment-reply-btn">Reply</button>
+					{% if comment.get_children or request.user.is_authenticated %}
+					<button class="btn btn-sm btn-outline-secondary comment-reply-btn">Replies</button>
+					{% endif %}
 				</div>
 			</div>
 
-			{% if comment.get_children %}
 			<div class="row comment-reply" style="display:none;">
+				{% if comment.get_children %}
 				{% for child_comment in comment.get_children %}
-					<div class="card card-block bg-light col-10 offset-1" style="margin-bottom: 2%; padding: 2%;">
-					<p class="text-justify">{{ child_comment.get_comment_content_markdown }}<br />
-					<small>By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
-					</p>
+					<div class="card card-block bg-light col-10 offset-1" style="margin-bottom:2%;padding-bottom:2%;">
+						<div class="text-justify">{{ child_comment.get_comment_content_markdown }}</div>
+						<div class="row justify-content-between align-items-center">
+							<small class="col-auto">By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
+						</div>
 					</div>
 				{% endfor %}
+				{% endif %}
 
 				{% if request.user.is_authenticated %}
-					<div class="col-10 offset-1">
+					<div class="col-10 offset-1" style="padding-top:2%; padding-bottom:2%;">
 					<form method="POST" action="" enctype="multipart/form-data">
 					{% csrf_token %}
 					{{ comment_form | crispy }}
 					<input type="hidden" name="parent_id" value="{{ comment.id }}">
-					<button class="btn btn-outline-secondary" type="submit">Submit</button>
+					<div class="row justify-content-end">
+						<div class="col-auto col-offset-2">
+							<button class="btn btn-sm btn-outline-secondary" type="submit">Submit</button>
+						</div>
+					</div>
 					</form>
 					</div>
 				{% endif %}
 			</div>
-			{% endif %}
 
 		</div>
 		<!-- <blockquote class="blockquote col-10 offset-1">
