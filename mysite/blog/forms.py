@@ -5,7 +5,7 @@ from pagedown.widgets import PagedownWidget
 
 # Make form of models to use in the views
 # Related Links: https://docs.djangoproject.com/en/2.0/topics/forms/modelforms/
-from .models import Post, Author
+from .models import Post
 
 
 class PostForm(ModelForm):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Author
+from .models import Post
 # Register your models here.
 # Related link: https://docs.djangoproject.com/en/2.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields
 
@@ -12,11 +12,4 @@ class PostAdmin(admin.ModelAdmin):
     list_filter = ['create_date_time', 'update_date_time', 'blog_author']
     search_fields = ['blog_title', 'blog_content']
 
-
-#admin.site.register(Author)
-@admin.register(Author)
-class AuthorAdmin(admin.ModelAdmin):
-    list_display = ['email', 'username', 'reg_time']
-    list_filter = ['reg_time']
-    search_fields = ['email', 'username']
 

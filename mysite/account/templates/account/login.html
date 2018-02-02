@@ -1,0 +1,28 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+<head>
+	<title>
+	{% block head_title %}Login{% endblock %}
+	{% block head_extension %}{% endblock %}
+	</title>
+</head>
+
+<body>
+{% block body_content %}
+<div class="container">
+    <div class="row">
+        <p class="lead">Login</p>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <form method="POST" action="">
+            {% csrf_token %}
+            {{ user_form | crispy }}
+            <input type="submit" value="Save" />
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>

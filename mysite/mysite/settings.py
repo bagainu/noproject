@@ -34,8 +34,9 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     # local apps
-    'comments.apps.CommentsConfig',
+    'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
+    'comments.apps.CommentsConfig',
     # thirdparty apps
     'pagedown', # https://github.com/timmyomahony/django-pagedown
     'markdown_deux', # https://github.com/trentm/django-markdown-deux
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
+# crispy_forms config value
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
@@ -138,3 +140,4 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+AUTH_USER_MODEL = 'account.CustomUser'

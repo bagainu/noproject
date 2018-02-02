@@ -11,14 +11,18 @@
 <body>
 {% block body_content %}
 <div class="container">
+	<div class="row">
+	<div class="col-sm-6 offset-sm-1">
 	<h1>{{ post.blog_title }}</h1>
 	<i>By {{ post.blog_author }}</i>
 	<br />
 	<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
 	<br />
 	<wb:share-button addition="simple">{{ request.build_absolute_uri }}</wb:share-button>
+	</div>
 	<!-- <wb:like type="simple"></wb:like> -->
 	
+	<div class="col-sm-4 offset-sm-1">
 	{% if post.blog_image %}
 	<img class="card-img-right flex-auto d-none d-md-block" 
 		data-src="holder.js/250x250?theme=thumb" 
@@ -26,15 +30,27 @@
 		src="{{ post.blog_image.url }}" 
 		data-holder-rendered="true">
 	{% endif %}
+	</div>
+	</div>
 
-	<hr />
+	<br />
 	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
-	<p class="content-markdown">{{ post.get_blog_content_markdown }}</p>
+	<div class="row">
+		<div class="col-sm-10 offset-sm-1">
+			<p class="content-markdown">{{ post.get_blog_content_markdown }}</p>
+		</div>
+	</div>
 
 	{% if request.user.is_authenticated %}
-	<hr />
-	<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
-	<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-outline-danger">Delete</a>
+	<br />
+	<div class="row justify-content-end">
+		<div class="col-md-1 col-sm-2">
+			<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
+		</div>
+		<div class="col-md-1 col-sm-2">
+			<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-outline-danger">Delete</a>
+		</div>
+	</div>
 	{% endif %}
 
 	<hr />

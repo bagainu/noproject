@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.forms import modelformset_factory, inlineformset_factory, forms
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Post, Author
+from .models import Post
 from .forms import PostForm
 from comments.forms import CommentForm
 from comments.models import Comment
@@ -16,7 +16,6 @@ from comments.models import Comment
 
 def index(request):
     post_list = Post.objects.order_by('-update_date_time') # use '-' to order items in reversed order
-    print(request.GET)
 
     search_string = request.GET.get('search_string')
     if search_string:
@@ -118,28 +117,5 @@ def delete(request, blog_id):
     }
     return render(request, 'blog/delete.html', context)
 
-
-
-
-# def login(request, author_id):
-#     if request.method == 'POST':
-#         try:
-#             author = Author.objects.get(pk=author_id)
-#         except:
-#             new_author = Author(email=request.POST['user_email'], user_pwd=request.POST['user_password'])
-#             new_author.save()
-#             return HttpResponseRedirect(reverse('blog:blog_login', args=(new_author.id, )))
-#         else:
-#             if author.user_pwd == request.POST['user_password']:
-#                 return render(request, 'blog/login.html', {'title_text': 'Signed in'})
-#             else:
-#                 return render(request, 'blog/login.html', {'title_text': 'Password error'})
-#     else:
-#         author = Author.objects.get()
-#         return render(request, 'blog/login.html', {'title_text': 'Sign in'})
-
-
-# def response_page(request):
-#     return render(request, 'blog/response_page.html', { 'messages': 'Logged in' })
 
 
