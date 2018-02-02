@@ -18,5 +18,4 @@ class PostForm(ModelForm):
             'blog_title',
             'blog_content',
             'blog_image',
-            'blog_author',
         ]

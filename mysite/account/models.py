@@ -14,6 +14,8 @@ class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **kwargs):
         if not email:
             raise ValueError('User must have an email address')
+        if not username:
+            raise ValueError('User must have an username')
         user = self.model(
             email=self.normalize_email(email),
             username=username,
@@ -35,8 +37,8 @@ class CustomUserManager(BaseUserManager):
     
 
 class CustomUser(AbstractBaseUser):
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=100, default='')
+    email = models.EmailField(unique=True)
+    username = models.CharField(unique=True, max_length=200)
     register_time = models.DateTimeField(auto_now=False, auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

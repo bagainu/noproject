@@ -11,8 +11,17 @@
 <body>
 {% block body_content %}
 <div class="container">
+    {% if request.user.is_authenticated %}
     <div class="row">
-        <p class="lead">Register</p>
+        <div class="col-sm-6 offset-sm-3">
+            <p class="lead text-center">You have been registered</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="row">
+        <div class="col-sm-6 offset-sm-3">
+            <p class="lead text-center">Register</p>
+        </div>
     </div>
     <div class="row">
         <div class="col-sm-6 offset-sm-3">
@@ -23,6 +32,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 </body>

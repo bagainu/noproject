@@ -54,6 +54,7 @@ def create(request):
         post_form = PostForm(request.POST, request.FILES)
         if post_form.is_valid():
             instance = post_form.save(commit=False) 
+            instance.blog_author = request.user
             instance.save()
             return HttpResponseRedirect(instance.get_absolute_url())
     else:
