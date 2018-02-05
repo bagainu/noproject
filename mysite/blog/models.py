@@ -42,6 +42,9 @@ class Post(models.Model):
     def get_blog_content_markdown(self):
         return format_html(linebreaks(markdown(self.blog_content)))
 
+    def get_blog_content_html(self):
+        return format_html(self.blog_content)
+
 
 # Signal handlers
 # Related links: https://docs.djangoproject.com/en/2.0/ref/signals/

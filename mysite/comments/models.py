@@ -41,5 +41,8 @@ class Comment(models.Model):
     def get_comment_content_markdown(self):
         return format_html(linebreaks(markdown(self.comment_content)))
 
+    def get_comment_content_html(self):
+        return format_html(self.comment_content)
+
     def get_children(self):
         return Comment.objects.filter(parent_comment=self).order_by('comment_date_time')

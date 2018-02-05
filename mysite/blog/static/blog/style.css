@@ -10,14 +10,24 @@ li a {
     color: blue;
 }
 
-.wmd-panel
-{
+.wmd-panel {
 	margin-left: 0px !important;
     margin-right: 0px !important;
     width: inherit !important;
     height: inherit !important;
 	min-width: 0px !important;
 	min-height: 0px !important;
+}
+
+#id_blog_title {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.django-ckeditor-widget {
+    height: 100% !important;
+    width: 100% !important;
+    display: unset !important;
 }
 
 /* body {

@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'pagedown', # https://github.com/timmyomahony/django-pagedown
     'markdown_deux', # https://github.com/trentm/django-markdown-deux
     'crispy_forms', # http://django-crispy-forms.readthedocs.io/en/latest/
+    'ckeditor', # https://github.com/django-ckeditor/django-ckeditor
+    'ckeditor_uploader', # file uploader of ckeditor
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,9 +53,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
-
-# crispy_forms config value
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,6 +138,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'static'),
 ]
 
+
+# crispy_forms config value
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# ckeditor confg values
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_CONFIGS = {
+    'default': {
+        # 'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+    },
+}

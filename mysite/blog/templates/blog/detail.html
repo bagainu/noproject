@@ -37,7 +37,7 @@
 	<!-- <div class="content-markdown">{{ post.blog_content }}</div> -->
 	<div class="row">
 		<div class="col-sm-10 offset-sm-1">
-			<p class="content-markdown">{{ post.get_blog_content_markdown }}</p>
+			<p class="content-markdown">{{ post.get_blog_content_html }}</p>
 		</div>
 	</div>
 
@@ -60,7 +60,9 @@
 		<div class="col-10 offset-1">
 			<form method="POST" action="" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ comment_form | crispy }}
+			<!-- {{ comment_form | crispy }} -->
+			{{ comment_form }}
+			<br />
 			<div class="row justify-content-end">
 				<div class="col-auto col-offset-2">
 					<button class="btn btn-outline-secondary" type="submit">Submit</button>
@@ -74,7 +76,7 @@
 	<div class="row">
 		{% for comment in post_comments %}
 		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom:2%;">
-			{{ comment.get_comment_content_markdown }}<br />
+			{{ comment.get_comment_content_html }}<br />
 			<div class="row flex-nowrap justify-content-between align-items-center" style="margin-bottom:1%;">
 				<small class="col-auto">{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
 				<br />
@@ -93,7 +95,7 @@
 				{% if comment.get_children %}
 				{% for child_comment in comment.get_children %}
 					<div class="card card-block bg-light col-10 offset-1" style="margin-bottom:2%;padding-bottom:2%;">
-						<div class="text-justify">{{ child_comment.get_comment_content_markdown }}</div>
+						<div class="text-justify">{{ child_comment.get_comment_content_html }}</div>
 						<div class="row justify-content-between align-items-center">
 							<small class="col-auto">By {{ child_comment.comment_user }} | {{ child_comment.comment_date_time }}</small>
 						</div>
@@ -105,8 +107,10 @@
 					<div class="col-10 offset-1" style="padding-top:2%; padding-bottom:2%;">
 					<form method="POST" action="" enctype="multipart/form-data">
 					{% csrf_token %}
-					{{ comment_form | crispy }}
+					<!-- {{ comment_form | crispy }} -->
+					{{ comment_form }}
 					<input type="hidden" name="parent_id" value="{{ comment.id }}">
+					<br />
 					<div class="row justify-content-end">
 						<div class="col-auto col-offset-2">
 							<button class="btn btn-sm btn-outline-secondary" type="submit">Submit</button>

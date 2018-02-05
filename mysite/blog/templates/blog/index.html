@@ -38,7 +38,7 @@
 			<p class="d-inline-block mb-2 text-primary">By {{ post.blog_author }}</p>
 			<div class="mb-1 text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 			<span class="card-text mb-auto">
-				<p>{{ post.get_blog_content_markdown | truncatechars_html:100 }}</p>
+				<p>{{ post.get_blog_content_html | truncatechars_html:100 }}</p>
 			</span>
 			<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
 			</div>
