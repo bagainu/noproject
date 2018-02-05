@@ -44,8 +44,7 @@ def login(request):
     next_url = _get_next_url(request)
     login_form = CustomUserLoginForm(request.POST or None)
     if login_form.is_valid():
-        user = login_form.save()
-        auth_login(request, user)
+        auth_login(request, login_form.get_user())
         if next_url is not None:
             return HttpResponseRedirect(next_url)
         return HttpResponseRedirect(reverse("blog:blog_index"))

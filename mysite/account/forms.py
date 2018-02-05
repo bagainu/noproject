@@ -67,14 +67,22 @@ class CustomUserLoginForm(forms.ModelForm):
         password = self.cleaned_data.get('password')
 
         if username and password:
-            email = CustomUser.objects.get(username=username)
-            user = authenticate(email=email, password=password)
-            if not user:
+            try:
+                query_user = CustomUser.objects.get(username=username)
+            except:
                 raise forms.ValidationError('User not exists')
-            if not user.check_password(password):
+            user = authenticate(email=query_user.email, password=password)
+            if not user:
                 raise forms.ValidationError('Password incurrect')
             if not user.is_active:
                 raise forms.ValidationError('User no longer valid. Please contact admin')
-        return super().clean(*args, **kwargs)
+        # return super().clean(*args, **kwargs)
+
+    def get_user(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = authenticate(email=CustomUser.objects.get(username=username).email, password=password)
+        return user
+
 
 
