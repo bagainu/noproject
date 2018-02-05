@@ -14,14 +14,10 @@ from .forms import CustomUserRegisterForm, CustomUserLoginForm
 
 def _get_next_url(request):
     next_url = None
-    try:
+    if hasattr(request, 'GET'):
         next_url = request.GET.get('next')
-    except:
-        pass
-    try:
+    elif hasattr(request, 'POST'):
         next_url = request.POST.get('next')
-    except:
-        pass
     return next_url
 
 

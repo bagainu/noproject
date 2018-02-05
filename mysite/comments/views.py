@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -30,6 +31,7 @@ def detail(request, comment_id):
     return render(request, 'comments/detail.html', context)
 
 
+@login_required
 def delete(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.method == "POST":

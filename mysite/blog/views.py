@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
@@ -48,6 +49,7 @@ def index(request):
 
 
 # Create
+@login_required
 def create(request):
     if request.method == 'POST':
         # print(request.POST)
@@ -91,6 +93,7 @@ def detail(request, blog_id):
 
 
 # Update
+@login_required
 def update(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
     if request.method == 'POST':
@@ -108,6 +111,7 @@ def update(request, blog_id):
 
 
 # Delete
+@login_required
 def delete(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
     if request.method == "POST":
