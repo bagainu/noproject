@@ -10,6 +10,13 @@ li a {
     color: blue;
 }
 
+.scrollToTop {
+    position: fixed;
+    bottom: 40px;
+    right: 60px;
+    z-index: 99;
+}
+
 .wmd-panel {
 	margin-left: 0px !important;
     margin-right: 0px !important;

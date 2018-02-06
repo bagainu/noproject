@@ -44,6 +44,13 @@
 {% block body_content %}{% endblock %}
 </div>
 
+<!-- bring up widget -->
+<div>
+	<button type="button" class="scrollToTop btn btn-info btn-just-icon btn-lg" title="Bring Top" style="display:none;">
+		<i class="nc-icon nc-minimal-up"></i>
+	</button>
+</div>
+
 <!-- footer -->
 {% include "blog/footer.html" %}
 
@@ -87,7 +94,23 @@ $(document).ready(function(){
 		event.preventDefault();
 		$(this).parent().parent().next(".comment-reply").fadeToggle();
 	});
+
+	//Check to see if the window is top if not then display button
+	$(window).scroll(function(){
+		if ($(this).scrollTop() > 150) {
+			$('.scrollToTop').fadeIn();
+		} else {
+			$('.scrollToTop').fadeOut();
+		}
+	});
+
+	//Click event to scroll to top
+	$('.scrollToTop').click(function(){
+		$('html, body').animate({scrollTop : 0}, 800);
+		return false;
+	});
 });
+
 </script>
 
 </body>

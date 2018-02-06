@@ -25,8 +25,9 @@
         <div class="col-4 d-flex justify-content-center align-items-center">
             <form method="POST" action="">
             {% csrf_token %}
-            <button class="btn btn-sm btn-outline-danger" type="submit">Confirm</button>
-            <a class="btn btn-sm btn-outline-secondary" href="{{ comment.get_parent_url }}">Cancel</a>
+            <br />
+            <button class="btn btn-sm btn-danger" type="submit">Confirm</button>
+            <a class="btn btn-sm btn-default" href="{{ comment.get_parent_url }}">Cancel</a>
             </form>
         </div>
     </div>
