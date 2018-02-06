@@ -30,6 +30,24 @@ li a {
     display: unset !important;
 }
 
-/* body {
-    background: white url("images/bg.jpg") no-repeat left top;
-} */
+body {
+    /* background: white url("images/bg.jpg") no-repeat left top; */
+    background-color: #FFFCF5;
+}
+
+.navbar .navbar-nav .nav-item .nav-link {
+    margin: 5px 0px !important;
+}
+
+.navbar .btn {
+    margin: 5px 0px !important;
+}
+
+.navbar .navbar-brand {
+    padding: 15px 15px !important;
+    margin: 0px 0px !important;
+}
+
+.navbar .navbar-burger {
+    margin: 15px 15px !important;
+}

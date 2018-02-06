@@ -12,25 +12,25 @@
 {% block body_content %}
 <div class="container">
 	<div class="row">
-	<div class="col-sm-6 offset-sm-1">
-	<h1>{{ post.blog_title }}</h1>
-	<i>By {{ post.blog_author }}</i>
-	<br />
-	<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
-	<br />
-	<wb:share-button addition="simple">{{ request.build_absolute_uri }}</wb:share-button>
-	</div>
-	<!-- <wb:like type="simple"></wb:like> -->
+		<div class="col-sm-4 offset-sm-1">
+			<h1>{{ post.blog_title }}</h1>
+			<i>By {{ post.blog_author }}</i>
+			<br />
+			<small>Last modified: {{ post.update_date_time}} <br /> Created: {{ post.update_date_time}} </small>
+			<br />
+			<wb:share-button addition="simple">{{ request.build_absolute_uri }}</wb:share-button>
+			<!-- <wb:like type="simple"></wb:like> -->
+		</div>
 	
-	<div class="col-sm-4 offset-sm-1">
-	{% if post.blog_image %}
-	<img class="card-img-right flex-auto d-none d-md-block" 
-		data-src="holder.js/250x250?theme=thumb" 
-		style="width: 250px; height: 250px;" 
-		src="{{ post.blog_image.url }}" 
-		data-holder-rendered="true">
-	{% endif %}
-	</div>
+		<div class="col-sm-4 offset-sm-1">
+		{% if post.blog_image %}
+		<img class="card-img-right flex-auto d-none d-md-block" 
+			data-src="holder.js/250x250?theme=thumb" 
+			style="width: 250px; height: 250px;" 
+			src="{{ post.blog_image.url }}" 
+			data-holder-rendered="true">
+		{% endif %}
+		</div>
 	</div>
 
 	<br />
@@ -41,20 +41,27 @@
 		</div>
 	</div>
 
-	{% if request.user.is_authenticated %}
+	{% if request.user.is_authenticated and request.user == post.blog_author %}
 	<br />
-	<div class="row justify-content-end">
-		<div class="col-md-1 col-sm-2">
-			<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-outline-secondary">Edit</a>
-		</div>
-		<div class="col-md-1 col-sm-2">
-			<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-outline-danger">Delete</a>
+	<br />
+	<br />
+	<div class="row">
+		<div class="col-sm-10 offset-sm-1">
+			<div class="row justify-content-end">
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
+				</div>
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
 		</div>
 	</div>
 	{% endif %}
 
 	<hr />
 	<h4>Comments</h4>
+	<br />
 	{% if request.user.is_authenticated %}
 	<div class="row">
 		<div class="col-10 offset-1">
@@ -65,7 +72,7 @@
 			<br />
 			<div class="row justify-content-end">
 				<div class="col-auto col-offset-2">
-					<button class="btn btn-outline-secondary" type="submit">Submit</button>
+					<button class="btn btn-default" type="submit">Submit</button>
 				</div>
 			</div>
 			</form>
@@ -76,17 +83,20 @@
 	<div class="row">
 		{% for comment in post_comments %}
 		<div class="card card-block bg-light col-10 offset-1" style="margin-bottom:2%;">
-			{{ comment.get_comment_content_html }}<br />
+			<div class="lead card-title">{{ comment.comment_user }}</div>
+			<div class="card-body" style="padding:2%;">
+				{{ comment.get_comment_content_html }}<br />
+			</div>
 			<div class="row flex-nowrap justify-content-between align-items-center" style="margin-bottom:1%;">
-				<small class="col-auto">{{ comment.comment_user }} | {{ comment.comment_date_time }}</small>
+				<small class="col-auto">{{ comment.comment_date_time }}</small>
 				<br />
 				<div class="col-8 d-flex justify-content-end align-items-center">
 					{% if comment.get_children %}
 						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
-						<a class="btn btn-sm btn-outline-secondary" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+						<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
 					{% endif %}
 					{% if comment.get_children or request.user.is_authenticated %}
-					<button class="btn btn-sm btn-outline-secondary comment-reply-btn">Replies</button>
+					<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
 					{% endif %}
 				</div>
 			</div>
@@ -113,7 +123,7 @@
 					<br />
 					<div class="row justify-content-end">
 						<div class="col-auto col-offset-2">
-							<button class="btn btn-sm btn-outline-secondary" type="submit">Submit</button>
+							<button class="btn btn-sm btn-default" type="submit">Submit</button>
 						</div>
 					</div>
 					</form>

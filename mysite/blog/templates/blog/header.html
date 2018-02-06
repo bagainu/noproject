@@ -1,8 +1,49 @@
-<div class="container">
-    <br />
-    <!-- <p>Header</p> -->
-    <div align="center">
-    <a href="{% url 'blog:blog_index' %}">Go to home page</a>
+<!-- header -->
+<!-- <nav class="navbar navbar-expand-md fixed-top navbar-transparent" color-on-scroll="50"> -->
+<nav class="navbar navbar-expand-lg fixed-top navbar-primary">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" href="{% url 'blog:blog_index' %}">{% if request.user.is_authenticated %}Hi {{ request.user.username }}!{% else %}Bagainu{% endif %}</a>
+            <button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-bar"></span>
+                <span class="navbar-toggler-bar"></span>
+                <span class="navbar-toggler-bar"></span>
+            </button>
+        </div>
+        <div class="navbar collapse navbar-collapse" id="navbarToggler">
+            <ul class="nav navbar-nav">
+                <li class="nav-item">
+                    <a href="{% url 'blog:blog_index' %}" target="" class="nav-link">Home</a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <!-- <li class="nav-item">
+                    <a class="nav-link" rel="tooltip" title="Star on GitHub" data-placement="bottom" href="https://www.github.com/CreativeTimOfficial/paper-kit" target="_blank">
+                        <i class="fa fa-github"></i>
+                        <p class="d-lg-none">GitHub</p>
+                    </a>
+                </li> -->
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">Compose</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account:user_logout' %}" target="" class="nav-link">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'account:user_register' %}" target="" class="nav-link">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account:user_login' %}" target="" class="btn btn-danger btn-round">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
-    <hr />
-</div>
+</nav>
+
+<br />
+<br />
+<br />
+<br />

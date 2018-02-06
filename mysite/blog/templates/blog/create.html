@@ -23,7 +23,7 @@
             related link: https://www.w3schools.com/tags/att_form_enctype.asp -->
             <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ post_form.management_form }}
+            <!-- {{ post_form.management_form }}
             {% for item in post_form %}
                 {{ item.id }}
                 <div class="row">
@@ -32,11 +32,12 @@
                 <div class="row">
                     <p class="w-100">{{ item }}</p>
                 </div>
-            {% endfor %}
+                <br />
+            {% endfor %} -->
             <!-- {{ post_form.as_p }} -->
-            <!-- {{ post_form | crispy }} -->
-            <div class="row">
-                <input class="btn btn-outline-secondary" type="submit" value="Save" />
+            {{ post_form | crispy }}
+            <div class="row justify-content-end">
+                <input class="btn btn-default" type="submit" value="Save" />
             </div>
             </form>
         </div>

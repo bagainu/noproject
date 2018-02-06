@@ -28,7 +28,7 @@
             <form method="POST" action="">
             {% csrf_token %}
             {{ user_form | crispy }}
-            <input type="submit" value="Save" />
+            <input class="btn btn-default w-100" type="submit" value="Save" />
             </form>
         </div>
     </div>
