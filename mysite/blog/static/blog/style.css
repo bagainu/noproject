@@ -2,12 +2,18 @@ h1 {
 
 }
 
+li {
+    margin: 1%;
+}
+
 p {
     word-wrap: break-word;
 }
 
-li a {
-    color: blue;
+body {
+    /* background: white url("images/bg.jpg") no-repeat left top; */
+    word-wrap: break-word;
+    background-color: #FFFCF5;
 }
 
 .scrollToTop {
@@ -37,9 +43,8 @@ li a {
     display: unset !important;
 }
 
-body {
-    /* background: white url("images/bg.jpg") no-repeat left top; */
-    background-color: #FFFCF5;
+.wrapper {
+    background-color: inherit !important;
 }
 
 .navbar .navbar-nav .nav-item .nav-link {
@@ -50,6 +55,10 @@ body {
     margin: 5px 0px !important;
 }
 
+.navbar-nav {
+    display: -webkit-box;
+}
+
 .navbar .navbar-brand {
     padding: 15px 15px !important;
     margin: 0px 0px !important;
@@ -57,4 +66,17 @@ body {
 
 .navbar .navbar-burger {
     margin: 15px 15px !important;
+}
+
+.navbar-collapse {
+    box-shadow: none !important;
+}
+
+.navbar-collapse ul {
+    height: auto !important;
+}
+
+.blockquote {
+    text-align: unset !important;
+    padding: 1%;
 }

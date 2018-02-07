@@ -13,25 +13,25 @@
 		</div>
 	</div>
 
-<br />
-<br />
+	<br />
+	<br />
 
 	<div class="row">
+		<!-- blog posts -->
 		<div class="col-md-8">
-			<!-- blog posts -->
 			{% if post_list %}
 			{% for post in post_list %}
-			<div class="card flex-md-row mb-4 box-shadow">
+			<div class="card mb-4 box-shadow">
 				<div class="card-body align-items-start">
 					<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
-						<h3 class="card-title">{{ post.blog_title | truncatechars:50 }}</h3>
+						<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
 					</a>
 					<div class="row">
 						<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
 						<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 					</div>
 					<div class="card-text my-auto">
-						<p>{{ post.get_blog_content_html | truncatechars_html:100 }}</p>
+						<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
 					</div>
 					<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
 				</div>
@@ -44,10 +44,8 @@
 				data-holder-rendered="true">
 				{% endif %}
 			</div>
+			<br />
 			{% endfor %}
-			{% else %}
-			<p>No blogs.</p>
-			{% endif %}
 
 			<!-- pagination -->
 			<div class="row justify-content-center">
@@ -67,21 +65,30 @@
 					</span>
 				</div>
 			</div>
+
+			{% else %} 
+			<!-- if no blogs -->
+			<p class="text-center">No blogs.</p>
+			{% endif %}
 		</div>
 
+		<!-- widgets colume -->
 		<div class="col-md-4">
-			<div class="row">
-				<div class="d-flex">
+
+			<div class="card">
+				<h5 class="card-header">Search</h5>
+				<div class="card-body">
 					<form method="GET" action="">
-					<div class="input-group col-auto justify-content-end">
-						<input type="text" name="search_string" class="form-control" placeholder="Search blogs" aria-label="Recipient's username" aria-describedby="basic-addon2" value="{{ request.GET.search_string }}">
+					<div class="input-group">
+						<input type="text" name="search_string" class="form-control" placeholder="Search for..." aria-label="Recipient's username" aria-describedby="basic-addon2" value="{{ request.GET.search_string }}">
 						<div class="input-group-append">
-							<button class="btn btn-default" type="submit"><i class="fa fa-search" aria-hidden="true"></i>Search</button>
+							<button class="btn btn-default" type="submit"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
 						</div>
 					</div>
 					</form>
 				</div>
 			</div>
+
 		</div>
 
 	</div>
