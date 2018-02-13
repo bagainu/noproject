@@ -60,7 +60,10 @@ body {
 }
 
 .navbar .navbar-brand {
-    padding: 15px 15px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
     margin: 0px 0px !important;
 }
 

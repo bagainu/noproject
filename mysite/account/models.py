@@ -7,6 +7,7 @@ from django.contrib.auth.models import (
     # PermissionsMixin, 
 )
 
+from utils.image_utils import image_upload_to
 # Create your models here.
 
 
@@ -40,6 +41,7 @@ class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(unique=True, max_length=200)
     register_time = models.DateTimeField(auto_now=False, auto_now_add=True)
+    avatar = models.ImageField(null=True, blank=True, upload_to=image_upload_to)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 

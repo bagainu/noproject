@@ -11,12 +11,10 @@ from django.urls import reverse
 
 from markdown_deux import markdown
 
+from utils.image_utils import image_upload_to
 from comments.models import Comment
 # Create your models here.
 
-# Helping functions
-def image_upload_to(instance, file_name):
-    return '''images/{0}_{1}'''.format(instance.id, file_name)
 
 
 # Models

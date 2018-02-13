@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
+from utils.image_utils import image_upload_to
 from .models import CustomUser
 
 
@@ -85,4 +86,13 @@ class CustomUserLoginForm(forms.ModelForm):
         return user
 
 
+class CustomUserProfileForm(forms.ModelForm):
+    email = forms.EmailField(disabled=True)
 
+    class Meta:
+        model = CustomUser
+        fields = [
+            'email',
+            'username',
+            'avatar',
+        ]

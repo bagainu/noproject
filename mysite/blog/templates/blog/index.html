@@ -56,7 +56,7 @@
 						<a href="?page={{ post_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
 					{% endif %}
 					<span class="current">
-						Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}.
+						Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}
 					</span>
 					{% if post_list.has_next %}
 						<a href="?page={{ post_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
