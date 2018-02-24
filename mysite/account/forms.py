@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
 from utils.image_utils import image_upload_to
+from utils.string_utils import is_email_format
 from .models import CustomUser
 
 
@@ -53,7 +54,7 @@ class CustomUserUpdateForm(forms.ModelForm):
 
 
 class CustomUserLoginForm(forms.ModelForm):
-    username = forms.CharField(label='Username')
+    username = forms.CharField(label='Username or Email')
     password = forms.CharField(label='Password', widget=forms.PasswordInput)   
 
     class Meta:
@@ -64,12 +65,15 @@ class CustomUserLoginForm(forms.ModelForm):
         ]
 
     def clean(self, *args, **kwargs):
-        username = self.cleaned_data.get('username')
+        username_or_email = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
 
-        if username and password:
+        if username_or_email and password:
             try:
-                query_user = CustomUser.objects.get(username=username)
+                if is_email_format(username_or_email):
+                    query_user = CustomUser.objects.get(email=username_or_email)
+                else:
+                    query_user = CustomUser.objects.get(username=username_or_email)
             except:
                 raise forms.ValidationError('User not exists')
             user = authenticate(email=query_user.email, password=password)
@@ -80,9 +84,12 @@ class CustomUserLoginForm(forms.ModelForm):
         # return super().clean(*args, **kwargs)
 
     def get_user(self):
-        username = self.cleaned_data.get('username')
+        username_or_email = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        user = authenticate(email=CustomUser.objects.get(username=username).email, password=password)
+        if is_email_format(username_or_email):
+            user = authenticate(email=username_or_email, password=password)
+        else:
+            user = authenticate(email=CustomUser.objects.get(username=username_or_email).email, password=password)
         return user
 
 
