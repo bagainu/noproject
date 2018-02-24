@@ -20,6 +20,7 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path('book/', include('book.urls')),
     path('blog/', include('blog.urls')),
     path('account/', include('account.urls')),
     path('comments/', include('comments.urls')),

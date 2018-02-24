@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     # local apps
     'common.apps.CommonConfig',
     'account.apps.AccountConfig',
+    'book.apps.BookConfig',
     'blog.apps.BlogConfig',
     'comments.apps.CommentsConfig',
     # thirdparty apps
