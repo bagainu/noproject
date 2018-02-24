@@ -66,9 +66,7 @@ def profile(request, user_id):
     custom_user = get_object_or_404(CustomUser, id=user_id)
     profile_form = CustomUserProfileForm(request.POST or None, request.FILES or None, instance=custom_user)
     if profile_form.is_valid():
-        print(request.POST)
         profile_form.save(commit=True)
-        print(custom_user.avatar)
         return HttpResponseRedirect(reverse("blog:blog_index"))
     context = {
         'user_form': profile_form,

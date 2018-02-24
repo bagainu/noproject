@@ -37,6 +37,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     # local apps
+    'common.apps.CommonConfig',
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig',
     'comments.apps.CommentsConfig',
