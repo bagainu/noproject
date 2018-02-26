@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.html import format_html
 
 from utils.image_utils import image_upload_to
 # Create your models here.
@@ -55,3 +56,5 @@ class Book(models.Model):
     def get_absolute_url(self):
         pass
 
+    def get_book_intro_html(self):
+        return format_html(self.book_intro)

@@ -1,0 +1,107 @@
+﻿{% extends "common/base.html" %}
+
+<title>
+{% block head_title %}Books{% endblock %}
+</title>
+
+<body>
+{% block body_content %}
+<div class="container">
+	<div class="row flex-nowrap justify-content-between align-items-center">
+		<div class="col-auto pt-2 ml-2 text-left">
+			<h1>Books</h1>
+		</div>
+	</div>
+
+	<br />
+	<br />
+
+	<div class="row">
+		<!-- book books -->
+		<div class="col-md-8">
+			{% if book_list %}
+			{% for book in book_list %}
+			<div class="card box-shadow">
+				<div class="row justify-content-between">
+					<div class="col-md-8 col-sm-8 pr-0">
+						<div class="card-body align-items-start">
+							<a href="{% url 'book:book_detail' book_id=book.id %}">
+								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ book.book_title }}</strong></h3>
+							</a>
+							<div class="row mb-4">
+								<div class="col-sm-auto d-inline-block mb-2 text-primary">Authors: {{ book.authors }}</div>
+								<div class="col-sm-auto text-muted">Press: {{ book.presses }}</div>
+							</div>
+							<div class="card-text my-auto">
+								<p>{{ book.get_book_intro_html | truncatechars_html:200 }}</p>
+							</div>
+							<!-- <a href="{% url 'book:book_detail' book_id=book.id %}">Continue reading</a> -->
+						</div>
+					</div>
+					<div class="col-md-4 col-sm-4 px-0 text-center">
+						<!-- {% if book.book_cover %} -->
+						<img class="card-img my-4 img-fluid"
+						data-src="holder.js/150x200?theme=thumb" 
+						alt="Thumbnail [150x200]" 
+						style="width: 150px; height: 200px;" 
+						src="{{ book.book_cover.url }}" 
+						data-holder-rendered="true">
+						<!-- {% endif %} -->
+					</div>
+				</div>
+			</div>
+			<br />
+			{% endfor %}
+
+			<!-- pagination -->
+			<div class="row justify-content-center">
+				<div class="pagination col-auto">
+					<span class="step-links">
+					{% if book_list.has_previous %}
+						<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
+						<a href="?page={{ book_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
+					{% endif %}
+					<span class="current">
+						Page {{ book_list.number }} of {{ book_list.paginator.num_pages }}
+					</span>
+					{% if book_list.has_next %}
+						<a href="?page={{ book_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
+						<a href="?page={{ book_list.paginator.num_pages }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Last &raquo;</a>
+					{% endif %}
+					</span>
+				</div>
+			</div>
+
+			{% else %} 
+			<!-- if no books -->
+			<p class="text-center">No books.</p>
+			{% endif %}
+
+			<br />
+			<br />
+		</div>
+
+		<!-- widgets colume -->
+		<div class="col-md-4">
+
+			<div class="card">
+				<h5 class="card-header">Search</h5>
+				<div class="card-body">
+					<form method="GET" action="">
+					<div class="input-group">
+						<input type="text" name="search_string" class="form-control" placeholder="Search for..." aria-label="Recipient's username" aria-describedby="basic-addon2" value="{{ request.GET.search_string }}">
+						<div class="input-group-append">
+							<button class="btn btn-default" type="submit"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
+						</div>
+					</div>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+
+</body>

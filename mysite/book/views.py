@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.views import View
+
+from .models import Author, Press, Book
 
 # Create your views here.
 
@@ -8,7 +12,32 @@ from django.views import View
 class BookIndexView(View):
 
     def get(self, request):
-        return HttpResponse('Index')
+        book_list = Book.objects.order_by('book_title')
+
+        search_string = request.GET.get('search_string')
+        if search_string:
+            book_list = book_list.filter(
+                Q(book_title__icontains=search_string) |
+                Q(sub_title__icontains=search_string) |
+                Q(book_author__author_name__icontains=search_string) |
+                Q(book_press__press_name__icontains=search_string)
+            ).distinct()
+
+        paginator = Paginator(book_list, 5)
+        page = request.GET.get('page')
+        try:
+            page_book_list = paginator.page(page)
+        except PageNotAnInteger:
+            page_book_list = paginator.page(1)
+        except EmptyPage:
+            page_book_list = paginator.page(paginator.num_pages)
+        except:
+            page_book_list = None
+
+        context = {
+            'book_list': page_book_list, #post_list
+        }
+        return render(request, 'book/index.html', context)
 
 
 class BookCreateView(View):

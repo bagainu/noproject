@@ -83,3 +83,8 @@ body {
     text-align: unset !important;
     padding: 1%;
 }
+
+.card-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

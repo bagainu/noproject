@@ -1,0 +1,144 @@
+﻿{% extends "common/base.html" %}
+{% load crispy_forms_tags %}
+
+<head>
+	<title>
+	{% block head_title %}{{ post.blog_title }}{% endblock %}
+	{% block head_extension %}{{ comment_form.media }}{% endblock %}
+	</title>
+</head>
+
+<body>
+{% block body_content %}
+<div class="container">
+	<div class="row">
+		<div class="col-sm-10 offset-sm-1">
+			<div class="row">
+				<div class="col-sm-12">
+					<h2>{{ post.blog_title }}</h2>
+					<br />
+					<i>By {{ post.blog_author }}</i>
+					<br />
+					<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}
+						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
+					</small>
+					<br />
+					<!-- <wb:like type="simple"></wb:like> -->
+				</div>
+	
+				<!-- blog image -->
+				{% if post.blog_image %}
+				<div class="col">
+					<img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/250x250?theme=thumb" style="width: 250px; height: 250px;"
+					 src="{{ post.blog_image.url }}" data-holder-rendered="true">
+				</div>
+ 				{% endif %}
+			</div>
+	
+			<br />
+			<br />
+			<br />
+			<p class="content-markdown">{{ post.get_blog_content_html }}</p>
+			<br />
+			<br />
+			<br />
+	
+			{% if request.user.is_authenticated and request.user == post.blog_author %}
+			<div class="row justify-content-end">
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
+				</div>
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
+			{% endif %}
+	
+			<hr />
+			<h4>Comments</h4>
+			<br /> 
+			{% if request.user.is_authenticated %}
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ comment_form | crispy }}
+				<!-- {{ comment_form }} -->
+				<div class="row justify-content-end">
+					<div class="col-auto col-offset-2">
+						<button class="btn btn-default" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+			{% endif %}
+
+			<br />
+			{% for comment in post_comments %}
+			<div class="blockquote">
+				<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
+				<div class="row">
+					<div class="col-sm-11 offset-sm-1">
+						<div class="text-justify">{{ comment.get_comment_content_html }}</div>
+					</div>
+				</div>
+
+				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+					<small class="col-auto">{{ comment.comment_date_time }}</small>
+					<br />
+					<div class="col-8 d-flex justify-content-end align-items-center">
+						{% if comment.get_children %}
+						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
+						<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+						{% endif %} {% if comment.get_children or request.user.is_authenticated %}
+						<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="row comment-reply" style="display:none;">
+					{% if comment.get_children %} 
+					{% for child_comment in comment.get_children %}
+					<div class="col-sm-11 offset-sm-1">
+						<!-- <div class="blockquote" style="margin-bottom:2%;padding-bottom:2%;"> -->
+						<div class="blockquote">
+							<p class="lead"><strong>{{ child_comment.comment_user }}:</strong></p>
+							<div class="row">
+								<div class="col-sm-11 offset-sm-1">
+									<p class="text-justify">{{ child_comment.get_comment_content_html }}</p>
+								</div>
+							</div>
+							<div class="row justify-content-between align-items-center" style="margin-top:2%;">
+								<small class="col-auto">{{ child_comment.comment_date_time }}</small>
+							</div>
+						</div>
+					</div>
+					{% endfor %} 
+					{% endif %}
+					{% if request.user.is_authenticated %}
+					<div class="col-sm-11 offset-sm-1" style="padding-top:2%;">
+						<form method="POST" action="" enctype="multipart/form-data">
+							{% csrf_token %}
+							{{ comment_form | crispy }}
+							<!-- {{ comment_form }} -->
+							<input type="hidden" name="parent_id" value="{{ comment.id }}">
+							<div class="row justify-content-end">
+								<div class="col-auto col-offset-2">
+									<button class="btn btn-sm btn-default" type="submit">Submit</button>
+								</div>
+							</div>
+						</form>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+			<!-- <blockquote class="blockquote col-10 offset-1">
+				<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>
+				<footer class="blockquote-footer">{{ comment.comment_user }} at <cite title="Source Title">{{ comment.comment_date_time }}</cite></footer>
+			</blockquote> -->
+			{% endfor %}
+		</div>
+		<br />
+		<br />
+		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+	</div>
+</div>
+{% endblock %}
+</body>
