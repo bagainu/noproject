@@ -38,7 +38,7 @@ class Post(models.Model):
 
     @property
     def tags(self):
-        return ', '.join([ tag.name for tag in self.blog_tag.all() ])
+        return ' | '.join([ tag.name for tag in self.blog_tag.all() ])
 
     def get_absolute_url(self):
         return reverse('blog:blog_detail', kwargs={ 'blog_id': self.id, })

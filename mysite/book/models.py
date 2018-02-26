@@ -1,7 +1,10 @@
 from django.db import models
 from django.utils.html import format_html
 
+from taggit.managers import TaggableManager
+
 from utils.image_utils import image_upload_to
+
 # Create your models here.
 
 
@@ -38,6 +41,7 @@ class Book(models.Model):
     book_intro = models.TextField()
     book_author = models.ManyToManyField(Author)
     book_press = models.ManyToManyField(Press)
+    book_tag = TaggableManager(blank=True)
 
     @property
     def authors(self):
@@ -46,6 +50,10 @@ class Book(models.Model):
     @property
     def presses(self):
         return ' | '.join([ str(press) for press in self.book_press.all() ])
+
+    @property
+    def tags(self):
+        return ' | '.join([ tag.name for tag in self.blog_tag.all() ])
 
     def __str__(self):
         return '{0}'.format(self.book_title)

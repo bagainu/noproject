@@ -23,7 +23,9 @@
 						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
 					</small>
 					<br />
-					<small>{{ post.tags }}</small>
+					{% if post.tags %}
+					<strong>{{ post.tags }}</strong>
+					{% endif %}
 					<br />
 					<!-- <wb:like type="simple"></wb:like> -->
 				</div>
@@ -37,12 +39,9 @@
  				{% endif %}
 			</div>
 	
-			<br />
-			<br />
-			<p class="content-markdown">{{ post.get_blog_content_html }}</p>
-			<br />
-			<br />
-			<br />
+			<div class="my-5">
+				<p class="content-markdown">{{ post.get_blog_content_html }}</p>
+			</div>
 	
 			{% if request.user.is_authenticated and request.user == post.blog_author %}
 			<div class="row justify-content-end">
