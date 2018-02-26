@@ -23,6 +23,8 @@
 						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
 					</small>
 					<br />
+					<small>{{ post.tags }}</small>
+					<br />
 					<!-- <wb:like type="simple"></wb:like> -->
 				</div>
 	
@@ -35,7 +37,6 @@
  				{% endif %}
 			</div>
 	
-			<br />
 			<br />
 			<br />
 			<p class="content-markdown">{{ post.get_blog_content_html }}</p>

@@ -10,4 +10,3 @@ def is_email_format(email_address):
         return False
     return True
 
-    

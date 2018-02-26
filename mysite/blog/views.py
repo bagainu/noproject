@@ -57,6 +57,7 @@ def create(request):
             instance = post_form.save(commit=False) 
             instance.blog_author = request.user
             instance.save()
+            post_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
     else:
         post_form = PostForm()
@@ -100,6 +101,7 @@ def update(request, blog_id):
         if post_form.is_valid():
             instance = post_form.save(commit=False) 
             instance.save()
+            post_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
     else:
         post_form = PostForm(instance=post)

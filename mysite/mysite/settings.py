@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'crispy_forms', # http://django-crispy-forms.readthedocs.io/en/latest/
     'ckeditor', # https://github.com/django-ckeditor/django-ckeditor
     'ckeditor_uploader', # file uploader of ckeditor
+    'taggit', # https://github.com/alex/django-taggit
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -159,3 +160,6 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
 }
+
+# taggit config value
+TAGGIT_CASE_INSENSITIVE = False 

@@ -50,6 +50,11 @@
                         <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">New Blog</a>
                     </li>
                     {% endif %}
+                    {% if request.path == '/book/' %}
+                    <li class="nav-item">
+                        <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">New Book</a>
+                    </li>
+                    {% endif %}
                 {% else %}
                 <li class="nav-item">
                     <a href="{% url 'account:user_register' %}" target="" class="btn btn-info btn-round">Register</a>
