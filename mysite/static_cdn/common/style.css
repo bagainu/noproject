@@ -89,3 +89,19 @@ body {
     margin-top: 10px;
     margin-bottom: 10px;
 }
+
+
+@media screen and (max-width: 991px) {
+  .dropdown.show .dropdown-menu,
+  .dropdown .dropdown-menu {
+      position: relative;
+  }
+
+  .dropdown.show .dropdown-menu .dropdown-item:hover,
+  .dropdown.show .dropdown-menu .dropdown-item:focus,
+  .dropdown .dropdown-menu .dropdown-item:hover,
+  .dropdown .dropdown-menu .dropdown-item:focus {
+    color: unset !important;
+    font-weight: 550;
+  }
+}
