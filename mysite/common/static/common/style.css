@@ -8,6 +8,7 @@ li {
 
 p {
     word-wrap: break-word;
+    font-weight: normal !important;
 }
 
 body {

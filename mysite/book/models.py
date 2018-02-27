@@ -22,6 +22,9 @@ class Author(models.Model):
     def get_absolute_url(self):
         pass
 
+    def get_author_intro_html(self):
+        return format_html(self.author_intro)
+
 
 class Press(models.Model):
     press_name = models.CharField(max_length=200)

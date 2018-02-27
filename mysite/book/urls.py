@@ -1,18 +1,20 @@
 from django.urls import path, re_path
 
-from .views import (
+from .views.book_view import (
     BookIndexView,
     BookCreateView,
     BookDetailView,
     BookUpdateView,
     BookDeleteView,
-
+)
+from .views.author_view import (
     AuthorIndexView,
     AuthorCreateView,
     AuthorDetailView,
     AuthorUpdateView,
     AuthorDeleteView,
-
+)
+from .views.press_view import (
     PressIndexView,
     PressCreateView,
     PressDetailView,
