@@ -3,7 +3,7 @@
 
 <head>
 	<title>
-	{% block head_title %}{{ post.blog_title }}{% endblock %}
+	{% block head_title %}{{ book.book_title }}{% endblock %}
 	{% block head_extension %}{{ comment_form.media }}{% endblock %}
 	</title>
 </head>
@@ -12,43 +12,60 @@
 {% block body_content %}
 <div class="container">
 	<div class="row">
-		<div class="col-sm-10 offset-sm-1">
-			<div class="row">
-				<div class="col-sm-12">
-					<h2>{{ post.blog_title }}</h2>
-					<br />
-					<i>By {{ post.blog_author }}</i>
-					<br />
-					<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}
-						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
-					</small>
-					<br />
-					{% for tag in post.blog_tag.all %}
-					<a href="{% url 'blog:blog_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+		<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
+			<div class="row mx-1">
+				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
+				<div class="col-md-4 text-center">
+					<img class="card-img my-4 img-fluid"
+					data-src="holder.js/240x320?theme=thumb" 
+					alt="Thumbnail [240x320]" 
+					style="width: 240px; height: 320px;" 
+					src="{{ book.book_cover.url }}" 
+					data-holder-rendered="true">
+				</div>
+				<!-- <div class="col-md-8" style="background-color:red;"> -->
+				<div class="col-md-8">
+					<div class="row pl-3">
+						<h1 class="mt-3 mb-1">{{ book.book_title }}{% if book.sub_title %}<small> {{ book.sub_title }}</small>{% endif %}</h1>
+					</div>
+					<div class="row pl-3">
+						<span class="lead">Author: <strong>{{ book.authors }}</strong></span>
+					</div>
+					<div class="row pl-3">
+						<span class="lead">Press: <strong>{{ book.presses }}</strong></span>
+					</div>
+					<div class="row pl-3">
+						<span class="lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
+					</div>
+					{% for tag in book.book_tag.all %}
+					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
-					<!-- <wb:like type="simple"></wb:like> -->
 				</div>
-	
-				<!-- blog image -->
-				{% if post.blog_image %}
-				<div class="col">
-					<img class="card-img-right flex-auto d-none d-md-block" data-src="holder.js/250x250?theme=thumb" style="width: 250px; height: 250px;"
-					 src="{{ post.blog_image.url }}" data-holder-rendered="true">
+			</div>
+
+			<div class="row mx-1 my-2">
+				<div class="col-md-12">
+					<p class="lead"><strong>Book Introduction</strong></p>
+					<hr />
 				</div>
- 				{% endif %}
+				<div class="col-md-12">
+					<p class="content-markdown">{{ book.get_book_intro_html }}</p>
+				</div>
 			</div>
+			<br />
+			<br />
 	
-			<div class="my-5">
-				<p class="content-markdown">{{ post.get_blog_content_html }}</p>
-			</div>
+			<!-- <div class="my-5">
+				<p class="content-markdown">{{ book.get_book_intro_html }}</p>
+			</div> -->
 	
-			{% if request.user.is_authenticated and request.user == post.blog_author %}
+			{% if request.user.is_authenticated and request.user == book.book_author %}
 			<div class="row justify-content-end">
 				<div class="col-auto col-offset-2">
-					<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
+					<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
 				</div>
 				<div class="col-auto col-offset-2">
-					<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
+					<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
 				</div>
 			</div>
 			{% endif %}
@@ -70,7 +87,7 @@
 			{% endif %}
 
 			<br />
-			{% for comment in post_comments %}
+			{% for comment in book_comments %}
 			<div class="blockquote">
 				<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
 				<div class="row">

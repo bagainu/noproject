@@ -1,4 +1,6 @@
+from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.urls import reverse
 from django.utils.html import format_html
 
 from taggit.managers import TaggableManager
@@ -6,6 +8,7 @@ from taggit.models import TaggedItemBase
 
 from utils.image_utils import image_upload_to
 
+from comments.models import Comment
 # Create your models here.
 
 
@@ -56,6 +59,7 @@ class Book(models.Model):
     book_author = models.ManyToManyField(Author)
     book_press = models.ManyToManyField(Press)
     book_tag = TaggableManager(through=BookTag, blank=True)
+    book_comment = GenericRelation(Comment, related_query_name='book')
 
     @property
     def authors(self):
@@ -76,7 +80,7 @@ class Book(models.Model):
         return '{0}'.format(self.book_title)
 
     def get_absolute_url(self):
-        pass
+        return reverse('book:book_detail', kwargs={ 'book_id': self.id, })
 
     def get_book_intro_html(self):
         return format_html(self.book_intro)
