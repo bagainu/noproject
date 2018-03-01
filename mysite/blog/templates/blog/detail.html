@@ -23,9 +23,9 @@
 						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
 					</small>
 					<br />
-					{% if post.tags %}
-					<strong>{{ post.tags }}</strong>
-					{% endif %}
+					{% for tag in post.blog_tag.all %}
+					<a href="{% url 'blog:blog_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+					{% endfor %}
 					<br />
 					<!-- <wb:like type="simple"></wb:like> -->
 				</div>
