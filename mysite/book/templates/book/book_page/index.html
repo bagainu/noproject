@@ -98,6 +98,17 @@
 				</div>
 			</div>
 
+			<div class="card">
+				<h5 class="card-header">Catagory</h5>
+				<div class="card-body">
+					<form method="GET" action="">
+					{% for tag in tag_list %}
+						<input class="btn btn-success btn-round btn-sm" name="search_string" type="submit" value="{{ tag }}" />
+					{% endfor %}
+					</form>
+				</div>
+			</div>
+
 		</div>
 
 	</div>

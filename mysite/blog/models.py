@@ -11,12 +11,21 @@ from django.urls import reverse
 
 from markdown_deux import markdown
 from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
 from utils.image_utils import image_upload_to
 from comments.models import Comment
 # Create your models here.
 
 
+class PostTag(TaggedItemBase):
+    content_object = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.tag.name
+
+    def __unicode__(self):
+        return self.tag.name
 
 # Models
 class Post(models.Model):
@@ -28,7 +37,7 @@ class Post(models.Model):
     blog_content = models.TextField()
     blog_comment = GenericRelation(Comment, related_query_name='post')
     blog_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    blog_tag = TaggableManager(blank=True)
+    blog_tag = TaggableManager(through=PostTag, blank=True)
 
     def __str__(self):
         return '"{0}" by {1}'.format(self.blog_title, self.blog_author)

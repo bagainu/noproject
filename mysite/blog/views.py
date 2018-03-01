@@ -8,8 +8,9 @@ from django.urls import reverse
 from django.forms import modelformset_factory, inlineformset_factory, forms
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Post
+from .models import Post, PostTag
 from .forms import PostForm
+from taggit.models import Tag
 from comments.forms import CommentForm
 from comments.models import Comment
 # Create your views here.
@@ -24,7 +25,8 @@ def index(request):
             Q(blog_title__icontains=search_string) |
             Q(blog_content__icontains=search_string) |
             Q(blog_author__username__icontains=search_string) |
-            Q(blog_author__email__icontains=search_string)
+            Q(blog_author__email__icontains=search_string) |
+            Q(blog_tag__name__icontains=search_string)
         ).distinct()
 
     paginator = Paginator(post_list, 5)
@@ -38,12 +40,11 @@ def index(request):
     except:
         page_post_list = None
 
-    title_msg = 'Not Authenticated'
-    if request.user.is_authenticated:
-        title_msg = 'Authenticated'
+    tag_list = PostTag.objects.all()
 
     context = {
         'post_list': page_post_list, #post_list
+        'tag_list': tag_list,
     }
     return render(request, 'blog/index.html', context)
 

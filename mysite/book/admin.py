@@ -4,6 +4,7 @@ from .models import (
     Author,
     Press,
     Book,
+    BookTag,
 )
 # Register your models here.
 
@@ -27,3 +28,8 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ['book_title', ]
     list_display = ['book_title', 'authors', 'presses']
     search_fields = ['book_title', 'authors', 'presses']
+
+
+@admin.register(BookTag)
+class BookTagAdmin(admin.ModelAdmin):
+    pass

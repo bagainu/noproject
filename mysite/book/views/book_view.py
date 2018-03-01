@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
-from book.models import Author, Press, Book
+from book.models import Author, Press, Book, BookTag
 
 # Create your views here.
 
@@ -20,7 +20,8 @@ class BookIndexView(View):
                 Q(book_title__icontains=search_string) |
                 Q(sub_title__icontains=search_string) |
                 Q(book_author__author_name__icontains=search_string) |
-                Q(book_press__press_name__icontains=search_string)
+                Q(book_press__press_name__icontains=search_string) |
+                Q(book_tag__name__icontains=search_string)
             ).distinct()
 
         paginator = Paginator(book_list, 5)
@@ -34,8 +35,11 @@ class BookIndexView(View):
         except:
             page_book_list = None
 
+        tag_list = BookTag.objects.all()
+
         context = {
             'book_list': page_book_list, #post_list
+            'tag_list': tag_list,
         }
         return render(request, 'book/book_page/index.html', context)
 
