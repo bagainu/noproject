@@ -62,7 +62,8 @@ class BookDetailView(View):
         book = get_object_or_404(Book, pk=book_id)
         context = {
             'book': book,
-            'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+            # 'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+            'book_comments': [],
             'comment_form': CommentForm(),
         }
         return render(request, 'book/book_page/detail.html', context)
@@ -85,7 +86,8 @@ class BookDetailView(View):
                 return HttpResponseRedirect(book.get_absolute_url())
         context = {
             'book': book,
-            'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+            # 'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+            'book_comments': [],
             'comment_form': CommentForm(),
         }
         return render(request, 'book/book_page/detail.html', context)

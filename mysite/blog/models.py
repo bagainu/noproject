@@ -35,7 +35,7 @@ class Post(models.Model):
     update_date_time = models.DateTimeField(auto_now=True, auto_now_add=False, help_text='data updated')
     blog_image = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
     blog_content = models.TextField()
-    blog_comment = GenericRelation(Comment, related_query_name='post')
+    blog_comment = GenericRelation(Comment, related_query_name='blog_comment')
     blog_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     blog_tag = TaggableManager(through=PostTag, blank=True)
 

@@ -25,17 +25,22 @@
 				</div>
 				<!-- <div class="col-md-8" style="background-color:red;"> -->
 				<div class="col-md-8">
-					<div class="row pl-3">
-						<h1 class="mt-3 mb-1">{{ book.book_title }}{% if book.sub_title %}<small> {{ book.sub_title }}</small>{% endif %}</h1>
+					<div class="row">
+						<h1 class="col-md-12 mt-3 mb-0">{{ book.book_title }}</h1>
+						{% if book.sub_title %}
+						<h1 class="col-md-12 mt-0 mb-1 pb-1">
+							<small>{{ book.sub_title }}</small>
+						</h1>
+						{% endif %}
 					</div>
-					<div class="row pl-3">
-						<span class="lead">Author: <strong>{{ book.authors }}</strong></span>
+					<div class="row">
+						<span class="col-md-12 lead">Author: <strong>{{ book.authors }}</strong></span>
 					</div>
-					<div class="row pl-3">
-						<span class="lead">Press: <strong>{{ book.presses }}</strong></span>
+					<div class="row">
+						<span class="col-md-12 lead">Press: <strong>{{ book.presses }}</strong></span>
 					</div>
-					<div class="row pl-3">
-						<span class="lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
+					<div class="row">
+						<span class="col-md-12 lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
 					</div>
 					{% for tag in book.book_tag.all %}
 					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
