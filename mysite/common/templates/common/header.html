@@ -35,15 +35,27 @@
                     </a>
                 </li> -->
                 {% if request.user.is_authenticated %}
-                {% if request.user.is_admin and request.path == '/blog/' %}
-                    <li class="nav-item">
+                {% if request.user.is_admin %}
+                    {% if request.path == '/blog/' %}
+                    <li class="nav-item px-1">
                         <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">New Blog</a>
                     </li>
-                    {% endif %}
+                    {% endif %} 
                     {% if request.path == '/book/' %}
-                    <li class="nav-item">
-                        <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">New Book</a>
+                    <li class="nav-item px-1">
+                        <a href="{% url 'book:book_create' %}" target="" class="btn btn-info btn-round">New Book</a>
                     </li>
+                    {% endif %}
+                    {% if request.path == '/book/author/' %}
+                    <li class="nav-item px-1">
+                        <a href="{% url 'book:author_create' %}" target="" class="btn btn-info btn-round">New Author</a>
+                    </li>
+                    {% endif %}
+                    {% if request.path == '/book/press/' %}
+                    <li class="nav-item px-1">
+                        <a href="{% url 'book:press_create' %}" target="" class="btn btn-info btn-round">New Press</a>
+                    </li>
+                    {% endif %}
                 {% endif %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" href="#pk" role="button" aria-haspopup="true" aria-expanded="false">
@@ -61,10 +73,10 @@
                     </ul>
                 </li>
                 {% else %}
-                <li class="nav-item">
+                <li class="nav-item px-1">
                     <a href="{% url 'account:user_register' %}" target="" class="btn btn-info btn-round">Register</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item px-1">
                     <a href="{% url 'account:user_login' %}" target="" class="btn btn-danger btn-round">Login</a>
                 </li>
                 {% endif %}
