@@ -63,6 +63,7 @@ def create(request):
     else:
         post_form = PostForm()
         context = {
+            'title': 'New Blog',
             'post_form': post_form,
         }
         return render(request, 'blog/create.html', context)
@@ -107,6 +108,7 @@ def update(request, blog_id):
     else:
         post_form = PostForm(instance=post)
         context = {
+            'title': 'Edit Blog',
             'post_form': post_form,
         }
         return render(request, 'blog/create.html', context)

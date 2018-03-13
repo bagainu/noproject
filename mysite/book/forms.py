@@ -14,7 +14,6 @@ class BookForm(ModelForm):
 
     book_intro = forms.CharField(widget=CKEditorWidget())
     book_tag = TagField(widget=TagWidget(), required=False, help_text='A comma-separated list of tags.')
-    # pub_date = forms.DateField(widget=forms.SelectDateWidget(years=YEAR_CHOICES))
     pub_date = forms.DateField(widget=CustomSelectDateWidget(years=YEAR_CHOICES))
     book_cover = forms.ImageField(widget=PreviewImageWidget())
 
@@ -35,6 +34,7 @@ class BookForm(ModelForm):
 class AuthorForm(ModelForm):
 
     author_intro = forms.CharField(widget=CKEditorWidget())
+    author_photo = forms.ImageField(widget=PreviewImageWidget())
 
     class Meta:
         model = Author

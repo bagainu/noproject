@@ -64,6 +64,7 @@ class Author(models.Model):
     author_name = models.CharField(max_length=200)
     author_photo = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
     author_intro = models.TextField()
+    # need birthday
 
     def __str__(self):
         return '{0}'.format(self.author_name)
@@ -72,7 +73,7 @@ class Author(models.Model):
         return '{0}'.format(self.author_name)
 
     def get_absolute_url(self):
-        pass
+        return reverse('book:author_detail', kwargs={ 'author_id': self.id, })
 
     def get_author_intro_html(self):
         return format_html(self.author_intro)

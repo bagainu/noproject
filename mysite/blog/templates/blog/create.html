@@ -3,7 +3,7 @@
 
 <head>
 	<title>
-	{% block head_title %}Create{% endblock %}
+	{% block head_title %}{{ title }}{% endblock %}
 	{% block head_extension %}{{ post_form.media }}{% endblock %}
 	</title>
 </head>
@@ -13,7 +13,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8 offset-sm-2">
-            <h2 class="text-center">Compose</h2>
+            <h2 class="text-center">{{ title }}</h2>
         </div>
     </div>
     <div class="row">
@@ -37,7 +37,19 @@
             <!-- {{ post_form.as_p }} -->
             {{ post_form | crispy }}
             <div class="row justify-content-end">
-                <input class="btn btn-default" type="submit" value="Save" />
+                {% if post_form.instance.id %}
+                <div class="col float-left">
+					<a href="{% url 'blog:blog_detail' blog_id=post_form.instance.id %}" class="btn btn-default">Back</a>
+                </div>
+                <div class="col-auto">
+                    <input class="btn btn-danger" type="submit" value="Save" />
+                </div>
+                {% else %}
+                <div class="col-auto">
+                    <input class="btn btn-default" type="submit" value="Save" />
+                </div>
+                {% endif %}
+            </div>
             </div>
             </form>
         </div>

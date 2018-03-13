@@ -26,8 +26,8 @@ class PressAdmin(admin.ModelAdmin):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     ordering = ['book_title', ]
-    list_display = ['book_title', 'authors', 'presses']
-    search_fields = ['book_title', 'authors', 'presses']
+    list_display = ['book_title', 'authors', 'presses', ]
+    search_fields = ['book_title', 'authors', 'presses', ]
 
 
 @admin.register(BookTag)

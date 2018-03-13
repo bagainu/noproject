@@ -8,10 +8,10 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
+from book.forms import BookForm
 from book.models import Author, Press, Book, BookTag
 from comments.forms import CommentForm
 from comments.models import Comment
-from book.forms import BookForm
 
 # Create your views here.
 
@@ -57,6 +57,7 @@ class BookCreateView(View):
     def get(self, request):
         book_form = BookForm()
         context = {
+            'title': 'New Book',
             'book_form': book_form,
         }
         return render(request, 'book/book_page/create.html', context)
@@ -69,6 +70,7 @@ class BookCreateView(View):
             book_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
         context = {
+            'title': 'New Book',
             'book_form': book_form,
         }
         return render(request, 'book/book_page/create.html', context)
@@ -118,6 +120,7 @@ class BookUpdateView(View):
         book = get_object_or_404(Book, pk=book_id)
         book_form = BookForm(instance=book)
         context = {
+            'title': 'Edit Book',
             'book_form': book_form,
         }
         return render(request, 'book/book_page/create.html', context)
@@ -131,6 +134,7 @@ class BookUpdateView(View):
             book_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
         context = {
+            'title': 'Edit Book',
             'book_form': book_form,
         }
         return render(request, 'book/book_page/create.html', context)
