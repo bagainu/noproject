@@ -1,13 +1,17 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from book.models import Author, Press, Book, BookTag
 from comments.forms import CommentForm
 from comments.models import Comment
+from book.forms import BookForm
 
 # Create your views here.
 
@@ -47,13 +51,27 @@ class BookIndexView(View):
         return render(request, 'book/book_page/index.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class BookCreateView(View):
 
     def get(self, request):
-        return HttpResponse('Create get')
+        book_form = BookForm()
+        context = {
+            'book_form': book_form,
+        }
+        return render(request, 'book/book_page/create.html', context)
 
     def post(self, request):
-        return HttpResponse('Create post')
+        book_form = BookForm(request.POST or None, request.FILES or None)
+        if book_form.is_valid():
+            instance = book_form.save(commit=False)
+            instance.save()
+            book_form.save_m2m()
+            return HttpResponseRedirect(instance.get_absolute_url())
+        context = {
+            'book_form': book_form,
+        }
+        return render(request, 'book/book_page/create.html', context)
 
 
 class BookDetailView(View):
@@ -93,20 +111,42 @@ class BookDetailView(View):
         return render(request, 'book/book_page/detail.html', context)
 
 
-
+@method_decorator(login_required, name='dispatch')
 class BookUpdateView(View):
 
     def get(self, request, book_id):
-        return HttpResponse('Update get')
+        book = get_object_or_404(Book, pk=book_id)
+        book_form = BookForm(instance=book)
+        context = {
+            'book_form': book_form,
+        }
+        return render(request, 'book/book_page/create.html', context)
 
     def post(self, request, book_id):
-        return HttpResponse('Update post')
+        book = get_object_or_404(Book, pk=book_id)
+        book_form = BookForm(request.POST or None, request.FILES or None, instance=book)
+        if book_form.is_valid():
+            instance = book_form.save(commit=False)
+            instance.save()
+            book_form.save_m2m()
+            return HttpResponseRedirect(instance.get_absolute_url())
+        context = {
+            'book_form': book_form,
+        }
+        return render(request, 'book/book_page/create.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class BookDeleteView(View):
 
     def get(self, request, book_id):
-        return HttpResponse('Book Delete get')
+        book = get_object_or_404(Book, pk=book_id)
+        context = {
+            'book': book,
+        }
+        return render(request, 'book/book_page/delete.html', context)
 
     def post(self, request, book_id):
-        return HttpResponse('Book Delete post')
+        book = get_object_or_404(Book, pk=book_id)
+        book.delete()
+        return HttpResponseRedirect(reverse("book:book_index"))

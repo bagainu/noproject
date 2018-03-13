@@ -36,24 +36,21 @@
                 </li> -->
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
-                    {% if request.path == '/blog/' %}
+                    {% if '/blog/' in request.path %}
                     <li class="nav-item px-1">
                         <a href="{% url 'blog:blog_create' %}" target="" class="btn btn-info btn-round">New Blog</a>
                     </li>
-                    {% endif %} 
-                    {% if request.path == '/book/' %}
-                    <li class="nav-item px-1">
-                        <a href="{% url 'book:book_create' %}" target="" class="btn btn-info btn-round">New Book</a>
-                    </li>
-                    {% endif %}
-                    {% if request.path == '/book/author/' %}
+                    {% elif '/book/author/' in request.path %}
                     <li class="nav-item px-1">
                         <a href="{% url 'book:author_create' %}" target="" class="btn btn-info btn-round">New Author</a>
                     </li>
-                    {% endif %}
-                    {% if request.path == '/book/press/' %}
+                    {% elif '/book/press/' in request.path %}
                     <li class="nav-item px-1">
                         <a href="{% url 'book:press_create' %}" target="" class="btn btn-info btn-round">New Press</a>
+                    </li>
+                    {% elif '/book/' in request.path %}
+                    <li class="nav-item px-1">
+                        <a href="{% url 'book:book_create' %}" target="" class="btn btn-info btn-round">New Book</a>
                     </li>
                     {% endif %}
                 {% endif %}

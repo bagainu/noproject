@@ -36,10 +36,10 @@
 					<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
 				</div>
 				{% if post.blog_image %}
-				<img class="card-img-right flex-auto d-none d-md-block"
+				<img class="card-img-right flex-auto d-none d-md-block img-fluid img-thumbnail"
 				data-src="holder.js/200x250?theme=thumb" 
 				alt="Thumbnail [200x250]" 
-				style="width: 250px; height: 250px;" 
+				style="display:block; max-width:250px; height:auto; margin:auto;" 
 				src="{{ post.blog_image.url }}" 
 				data-holder-rendered="true">
 				{% endif %}
@@ -97,7 +97,7 @@
 				<div class="card-body">
 					<form method="GET" action="">
 					{% for tag in tag_list %}
-						<input class="btn btn-success btn-round btn-sm" name="search_string" type="submit" value="{{ tag }}" />
+						<input class="btn btn-success btn-round btn-sm my-1" name="search_string" type="submit" value="{{ tag }}" />
 					{% endfor %}
 					</form>
 				</div>

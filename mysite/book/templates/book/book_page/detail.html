@@ -16,17 +16,17 @@
 			<div class="row mx-1">
 				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
 				<div class="col-md-4 text-center">
-					<img class="card-img my-4 img-fluid"
+					<img class="card-img my-4 img-fluid img-thumbnail"
 					data-src="holder.js/240x320?theme=thumb" 
 					alt="Thumbnail [240x320]" 
-					style="width: 240px; height: 320px;" 
+					style="display:block; max-width:220px; height:auto; margin:auto;" 
 					src="{{ book.book_cover.url }}" 
 					data-holder-rendered="true">
 				</div>
 				<!-- <div class="col-md-8" style="background-color:red;"> -->
 				<div class="col-md-8">
 					<div class="row">
-						<h1 class="col-md-12 mt-3 mb-0">{{ book.book_title }}</h1>
+						<h1 class="col-md-12 mt-4 mb-0">{{ book.book_title }}</h1>
 						{% if book.sub_title %}
 						<h1 class="col-md-12 mt-0 mb-1 pb-1">
 							<small>{{ book.sub_title }}</small>
@@ -54,7 +54,7 @@
 					<hr />
 				</div>
 				<div class="col-md-12">
-					<p class="content-markdown">{{ book.get_book_intro_html }}</p>
+					<p>{{ book.get_book_intro_html }}</p>
 				</div>
 			</div>
 			<br />
@@ -64,7 +64,7 @@
 				<p class="content-markdown">{{ book.get_book_intro_html }}</p>
 			</div> -->
 	
-			{% if request.user.is_authenticated and request.user == book.book_author %}
+			{% if request.user.is_authenticated and request.user.is_admin %}
 			<div class="row justify-content-end">
 				<div class="col-auto col-offset-2">
 					<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>

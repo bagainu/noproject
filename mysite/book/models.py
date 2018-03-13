@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.template.defaultfilters import linebreaks
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -56,7 +57,7 @@ class Book(models.Model):
         return reverse('book:book_detail', kwargs={ 'book_id': self.id, })
 
     def get_book_intro_html(self):
-        return format_html(self.book_intro)
+        return format_html(linebreaks(self.book_intro))
 
 
 class Author(models.Model):
