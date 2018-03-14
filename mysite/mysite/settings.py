@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'ckeditor', # https://github.com/django-ckeditor/django-ckeditor
     'ckeditor_uploader', # file uploader of ckeditor
     'taggit', # https://github.com/alex/django-taggit
+    'mathfilters', # https://pypi.python.org/pypi/django-mathfilters
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',

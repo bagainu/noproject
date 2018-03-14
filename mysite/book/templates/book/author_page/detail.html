@@ -20,9 +20,11 @@
 						<div class="row">
 							<h1 class="col-md-12 mt-4 mb-0">{{ author.author_name }}</h1>
 						</div>
-						<!-- <div class="row">
-							<span class="col-md-12 lead">Birth & Death Date: <strong>{{ author }}</strong></span>
-						</div> -->
+						<div class="row">
+							<span class="col-md-12 lead">
+								<strong>From</strong> {% if author.author_birth_date %}{{ author.author_birth_date }}{% else %}-{% endif %} <strong>To</strong> {% if author.author_death_date %}{{ author.author_death_date }}{% else %}-{% endif %}</strong>
+							</span>
+						</div>
 					</div>
 				</div>
 

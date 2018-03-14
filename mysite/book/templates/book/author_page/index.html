@@ -28,10 +28,13 @@
 							<a href="{% url 'book:author_detail' author_id=author.id %}">
 								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ author.author_name }}</strong></h3>
 							</a>
-							<!-- <div class="row mb-4">
-								<div class="col-sm-auto d-inline-block mb-2 text-primary">Authors: {{ author.authors }}</div>
-								<div class="col-sm-auto text-muted">Press: {{ author.presses }}</div>
-							</div> -->
+							{% if author.author_birth_date or author.author_death_date %}
+							<div class="row mb-4">
+								<div class="col-sm-auto d-inline-block mb-2 text-primary">
+									From {% if author.author_birth_date %}{{ author.author_birth_date }}{% else %}-{% endif %} to {% if author.author_death_date %}{{ author.author_death_date }}{% else %}-{% endif %}
+								</div>
+							</div>
+							{% endif %}
 							<div class="card-text my-auto">
 								<p>{{ author.get_author_intro_html | truncatechars_html:200 }}</p>
 							</div>
@@ -55,21 +58,7 @@
 
 			<!-- pagination -->
 			<div class="row justify-content-center">
-				<div class="pagination col-auto">
-					<span class="step-links">
-					{% if author_list.has_previous %}
-						<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
-						<a href="?page={{ author_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
-					{% endif %}
-					<span class="current">
-						Page {{ author_list.number }} of {{ author_list.paginator.num_pages }}
-					</span>
-					{% if author_list.has_next %}
-						<a href="?page={{ author_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
-						<a href="?page={{ author_list.paginator.num_pages }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Last &raquo;</a>
-					{% endif %}
-					</span>
-				</div>
+				{% include 'common/paginator.html' with item_list=author_list %}
 			</div>
 
 			{% else %} 

@@ -6,7 +6,7 @@ from ckeditor.widgets import CKEditorWidget
 from taggit.forms import TagField, TagWidget
 
 from utils.image_utils import PreviewImageWidget
-from utils.time_utils import YEAR_CHOICES, CustomSelectDateWidget
+from utils.time_utils import YEAR_CHOICES, EMPTY_LABEL, CustomSelectDateWidget
 from .models import Book, Author, Press
 
 
@@ -35,6 +35,8 @@ class AuthorForm(ModelForm):
 
     author_intro = forms.CharField(widget=CKEditorWidget())
     author_photo = forms.ImageField(widget=PreviewImageWidget())
+    author_birth_date = forms.DateField(required=False, widget=CustomSelectDateWidget(years=YEAR_CHOICES, empty_label=EMPTY_LABEL))
+    author_death_date = forms.DateField(required=False, widget=CustomSelectDateWidget(years=YEAR_CHOICES, empty_label=EMPTY_LABEL))
 
     class Meta:
         model = Author
@@ -42,6 +44,8 @@ class AuthorForm(ModelForm):
             'author_name',
             'author_photo',
             'author_intro',
+            'author_birth_date',
+            'author_death_date',
         ]
 
 

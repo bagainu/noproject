@@ -49,20 +49,23 @@
 
 			<!-- pagination -->
 			<div class="row justify-content-center">
-				<div class="pagination col-auto">
+				<!-- <div class="pagination col-auto">
 					<span class="step-links">
-					{% if post_list.has_previous %}
+						{% if post_list.has_previous %}
 						<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
 						<a href="?page={{ post_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
-					{% endif %}
-					<span class="current">
-						Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}
-					</span>
-					{% if post_list.has_next %}
+						{% endif %}
+						<span class="current">
+							Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}
+						</span>
+						{% if post_list.has_next %}
 						<a href="?page={{ post_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
 						<a href="?page={{ post_list.paginator.num_pages }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Last &raquo;</a>
-					{% endif %}
+						{% endif %}
 					</span>
+				</div> -->
+				<div class="col-auto" aria-label="Page navigation">
+				{% include 'common/paginator.html' with item_list=post_list %}
 				</div>
 			</div>
 

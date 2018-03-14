@@ -55,21 +55,7 @@
 
 			<!-- pagination -->
 			<div class="row justify-content-center">
-				<div class="pagination col-auto">
-					<span class="step-links">
-					{% if book_list.has_previous %}
-						<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
-						<a href="?page={{ book_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
-					{% endif %}
-					<span class="current">
-						Page {{ book_list.number }} of {{ book_list.paginator.num_pages }}
-					</span>
-					{% if book_list.has_next %}
-						<a href="?page={{ book_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
-						<a href="?page={{ book_list.paginator.num_pages }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Last &raquo;</a>
-					{% endif %}
-					</span>
-				</div>
+				{% include 'common/paginator.html' with item_list=book_list %}
 			</div>
 
 			{% else %} 

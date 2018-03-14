@@ -18,7 +18,7 @@
     <br />
     <div class="row flex-nowrap justify-content-center align-items-center">
         <div class="col-auto text-center">
-            <p>Do you really want to delete this blog?</p>
+            <p>Do you really want to delete this press?</p>
         </div>
     </div>
     <div class="row flex-nowrap justify-content-center align-items-center">
@@ -27,7 +27,7 @@
             {% csrf_token %}
             <br />
             <button class="btn btn-sm btn-danger" type="submit">Confirm</button>
-            <a class="btn btn-sm btn-default" href="{{ post.get_absolute_url }}">Cancel</a>
+            <a class="btn btn-sm btn-default" href="{{ press.get_absolute_url }}">Cancel</a>
             </form>
         </div>
     </div>

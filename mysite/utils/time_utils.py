@@ -3,6 +3,7 @@ from django.utils import timezone
 
 
 YEAR_CHOICES = [str(year) for year in range(timezone.now().year + 1, 1800, -1)]
+EMPTY_LABEL = ("Choose Year", "Choose Month", "Choose Day")
 
 
 class CustomSelectDateWidget(forms.SelectDateWidget):

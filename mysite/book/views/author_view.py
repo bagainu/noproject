@@ -9,8 +9,6 @@ from django.views import View
 
 from book.forms import AuthorForm 
 from book.models import Author, Press, Book
-from comments.forms import CommentForm
-from comments.models import Comment
 
 # Create your views here.
 

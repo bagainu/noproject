@@ -17,6 +17,10 @@ body {
     background-color: #FFFCF5;
 }
 
+.form-control.selectmultiple {
+    height: inherit !important;
+}
+
 .scrollToTop {
     position: fixed;
     bottom: 3%;

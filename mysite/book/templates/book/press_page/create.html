@@ -1,10 +1,11 @@
+
 {% extends "common/base.html" %}
 {% load crispy_forms_tags %}
 
 <head>
 	<title>
-	{% block head_title %}Create{% endblock %}
-	{% block head_extension %}{{ post_form.media }}{% endblock %}
+	{% block head_title %}{{ title }}{% endblock %}
+	{% block head_extension %}{{ press_form.media }}{% endblock %}
 	</title>
 </head>
 
@@ -13,7 +14,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-8 offset-sm-2">
-            <h2 class="text-center">Compose</h2>
+            <h2 class="text-center">{{ title }}</h2>
         </div>
     </div>
     <div class="row">
@@ -23,21 +24,20 @@
             related link: https://www.w3schools.com/tags/att_form_enctype.asp -->
             <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <!-- {{ post_form.management_form }}
-            {% for item in post_form %}
-                {{ item.id }}
-                <div class="row">
-                    <div class="lead">{{ item.name }}</div>
-                </div>
-                <div class="row">
-                    <p class="w-100">{{ item }}</p>
-                </div>
-                <br />
-            {% endfor %} -->
-            <!-- {{ post_form.as_p }} -->
-            {{ post_form | crispy }}
+            {{ press_form | crispy }}
             <div class="row justify-content-end">
-                <input class="btn btn-default" type="submit" value="Save" />
+                {% if press_form.instance.id %}
+                <div class="col float-left">
+					<a href="{% url 'book:press_detail' press_id=press_form.instance.id %}" class="btn btn-default">Back</a>
+                </div>
+                <div class="col-auto">
+                    <input class="btn btn-danger" type="submit" value="Save" />
+                </div>
+                {% else %}
+                <div class="col-auto">
+                    <input class="btn btn-default" type="submit" value="Save" />
+                </div>
+                {% endif %}
             </div>
             </form>
         </div>
@@ -45,3 +45,4 @@
 </div>
 {% endblock %}
 </body>
+

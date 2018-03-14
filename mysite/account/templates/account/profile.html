@@ -28,9 +28,9 @@
         {% if request.user.avatar %}
         <div class="col-sm-6 offset-sm-3 text-center">
             <img src="{{ request.user.avatar.url }}" 
-                class="img-circle"
+                class="img-circle img-fluid img-thumbnail"
 			    alt="Thumbnail [250x250]" 
-				style="width: 250px; height: 250px;" 
+				style="display:block; width:250px; height:250px; margin:auto;" 
                 alt="{{ request.user.username }}" />
         </div>
         {% endif %}
