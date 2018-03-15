@@ -1,5 +1,6 @@
 ﻿{% extends "common/base.html" %}
 {% load crispy_forms_tags %}
+{% load ratings %}
 
 <head>
 	<title>
@@ -33,22 +34,28 @@
 						</h1>
 						{% endif %}
 					</div>
-					<div class="row">
+					<div class="row my-1">
 						<span class="col-md-12 lead">Author: <strong>{{ book.authors }}</strong></span>
 					</div>
-					<div class="row">
+					<div class="row my-1">
 						<span class="col-md-12 lead">Press: <strong>{{ book.presses }}</strong></a></span>
 					</div>
-					<div class="row">
+					<div class="row my-1">
 						<span class="col-md-12 lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
 					</div>
+					{% if book.book_rates %}
+					<div class="row my-1 justify-content-start">
+						<div class="col-auto pr-0 align-self-center"><span class="lead">Rates:</span></div>
+						<div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html"%}</div>
+					</div>
+					{% endif %}
 					{% for tag in book.book_tag.all %}
 					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
 				</div>
 			</div>
 
-			<div class="row mx-1 my-2">
+			<div class="row mx-1 my-4">
 				<div class="col-md-12">
 					<p class="lead"><strong>Book Introduction</strong></p>
 					<hr />

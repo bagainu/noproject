@@ -6,6 +6,7 @@ from django.utils.html import format_html
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from star_ratings.models import Rating
 
 from utils.image_utils import image_upload_to
 
@@ -33,7 +34,8 @@ class Book(models.Model):
     book_press = models.ManyToManyField('Press')
     book_tag = TaggableManager(through=BookTag, blank=True)
     # the book_score field needs to be updated in shelf.create/update view whenever shelf.booklog is saved
-    book_score = models.DecimalField(default=0, max_digits=2, decimal_places=1) # range from 0 to 5
+    # book_score = models.DecimalField(default=0, max_digits=2, decimal_places=1) # range from 0 to 5
+    book_rates = GenericRelation(Rating, related_query_name='book_rates')
 
     @property
     def authors(self):
