@@ -46,7 +46,7 @@
 					{% if book.book_rates %}
 					<div class="row my-1 justify-content-start">
 						<div class="col-auto pr-0 align-self-center"><span class="lead">Rates:</span></div>
-						<div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html"%}</div>
+						<div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html" %}</div>
 					</div>
 					{% endif %}
 					{% for tag in book.book_tag.all %}

@@ -138,7 +138,7 @@ function updateRating(rating, sender) {
         return;
     }
 
-    parent.setAttribute("data-avg-rating", rating.average);
+    // parent.setAttribute("data-avg-rating", rating.average);
 
     var avgElem = parent.getElementsByClassName("star-ratings-rating-average")[0];
     if(avgElem) {

@@ -1,3 +1,7 @@
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.starRatings = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+module.exports = require('./src/ratings');
+
+},{"./src/ratings":2}],2:[function(require,module,exports){
 var rest = require('./rest.js');
 var utils = require('./utils');
 
@@ -161,7 +165,8 @@ function updateRating(rating, sender) {
         }
     }
 
-    parent.querySelector(".star-ratings-rating-foreground").style.width = rating.percentage + '%';
+    // prevent set star-ratings-rating-foreground to average by default
+    // parent.querySelector(".star-ratings-rating-foreground").style.width = rating.percentage + '%';
 }
 
 
@@ -190,3 +195,122 @@ document.addEventListener('DOMContentLoaded', function(event) {
 module.exports = {
     bindRating: bindRatings
 };
+
+},{"./rest.js":3,"./utils":4}],3:[function(require,module,exports){
+/*jslint browser:true */
+"use strict";
+
+
+var djangoRemarkRest = {
+    getCookie: function (name) {
+        // From https://docs.djangoproject.com/en/1.7/ref/contrib/csrf/
+        var cookieValue = null, cookies, i, cookie;
+        if (document.cookie && document.cookie !== '') {
+            cookies = document.cookie.split(';');
+            for (i = 0; i < cookies.length; i += 1) {
+                cookie = cookies[i].trim(); // Doesn't work in all browsers
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    },
+
+    makeRequest: function (url, method, success, fail) {
+        var req = new XMLHttpRequest();
+        if (req.overrideMimeType !== undefined) {
+            req.overrideMimeType("application/json");
+        }
+        req.open(method, url, true);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+        // When done processing data
+        req.onreadystatechange = function () {
+            if (req.readyState !== 4) {
+                return;
+            }
+
+            if (req.status >= 200 && req.status <= 299) {
+                if (success) {
+                    if (req.responseText) {
+                        success(JSON.parse(req.responseText));
+                    } else { success(); }
+                }
+            } else {
+                if (fail) {
+                    fail(JSON.parse(req.responseText));
+                }
+            }
+        };
+
+        return req;
+    },
+
+    get: function (url, data, success, fail) {
+        var req = this.makeRequest(url, 'GET', success, fail);
+        req.send(JSON.stringify(data));
+    },
+
+    post: function (url, data, success, fail) {
+        var req = this.makeRequest(url, 'POST', success, fail);
+        req.setRequestHeader("X-CSRFToken", this.getCookie('csrftoken'));
+        req.send(JSON.stringify(data));
+    },
+
+    put: function (url, data, success, fail) {
+        var req = this.makeRequest(url, 'PUT', success, fail);
+        req.setRequestHeader("X-CSRFToken", this.getCookie('csrftoken'));
+        req.send(JSON.stringify(data));
+    },
+
+    patch: function (url, data, success, fail) {
+        var req = this.makeRequest(url, 'PATCH', success, fail);
+        req.setRequestHeader("X-CSRFToken", this.getCookie('csrftoken'));
+        req.send(JSON.stringify(data));
+    },
+
+    "delete": function (url, data, success, fail) {
+        var req = this.makeRequest(url, 'DELETE', success, fail);
+        req.setRequestHeader("X-CSRFToken", this.getCookie('csrftoken'));
+        req.send(JSON.stringify(data));
+    }
+};
+
+
+module.exports = djangoRemarkRest;
+
+},{}],4:[function(require,module,exports){
+/**************************
+ * Check if an element has a class
+ **************************/
+function hasClass (el, name) {
+    return (' ' + el.className + ' ').indexOf(' ' + name + ' ') > -1;
+}
+
+
+/**************************
+ * Find parent element
+ **************************/
+function findParent(el, className) {
+    var parentNode = el.parentNode;
+    while (hasClass(parentNode, className) === false) {
+        if (parentNode.parentNode === undefined) {
+            return null;
+        }
+        parentNode = parentNode.parentNode;
+    }
+    return parentNode
+}
+
+
+module.exports = {
+    hasClass: hasClass,
+    findParent: findParent
+};
+
+},{}]},{},[1])(1)
+});
