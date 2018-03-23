@@ -1,4 +1,6 @@
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.defaultfilters import linebreaks
 from django.urls import reverse
@@ -6,7 +8,7 @@ from django.utils.html import format_html
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
-from star_ratings.models import Rating
+from star_ratings.models import Rating, UserRating
 
 from utils.image_utils import image_upload_to
 
@@ -33,8 +35,7 @@ class Book(models.Model):
     book_author = models.ManyToManyField('Author')
     book_press = models.ManyToManyField('Press')
     book_tag = TaggableManager(through=BookTag, blank=True)
-    # the book_score field needs to be updated in shelf.create/update view whenever shelf.booklog is saved
-    # book_score = models.DecimalField(default=0, max_digits=2, decimal_places=1) # range from 0 to 5
+    # use common/star_rating.html for average rates and common/star_rating_user.html for user rates
     book_rates = GenericRelation(Rating, related_query_name='book_rates')
 
     @property

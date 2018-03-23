@@ -1,0 +1,46 @@
+{% extends "common/base.html" %}
+{% load crispy_forms_tags %}
+
+<head>
+	<title>
+	{% block head_title %}{{ title }}{% endblock %}
+	{% block head_extension %}{{ book_form.media }}{% endblock %}
+	</title>
+</head>
+
+<body>
+{% block body_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <h2 class="text-center">{{ title }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <!-- need to set enctype to multipart/form-data for uploading file image
+            this type will not encrypt uploaded file name so that image file could be visited
+            related link: https://www.w3schools.com/tags/att_form_enctype.asp -->
+            <form method="POST" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ book_form | crispy }}
+            <div class="row justify-content-end">
+                {% if book_form.instance.id %}
+                <div class="col float-left">
+					<a href="{% url 'book:book_detail' book_id=book_form.instance.id %}" class="btn btn-default">Back</a>
+                </div>
+                <div class="col-auto">
+                    <input class="btn btn-danger" type="submit" value="Save" />
+                </div>
+                {% else %}
+                <div class="col-auto">
+                    <input class="btn btn-default" type="submit" value="Save" />
+                </div>
+                {% endif %}
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+</body>

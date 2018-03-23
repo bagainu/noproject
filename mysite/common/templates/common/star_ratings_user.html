@@ -20,21 +20,23 @@
     {% endif %}
 </style>
 
+{% if user_rating %}
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 $(document).ready(function(){
     $('#{{ id }}').on('rate-success', function(){
-        var score = $('.star-ratings-rating-average .star-ratings-rating-value').text();
+        var score = $('.star-ratings-rating-user .star-ratings-rating-value').text();
         $(this).attr('data-avg-rating', score);
         var user_percentage = score / {{ star_count }} * 100;
         $('.star-ratings-rating-foreground').css('width', user_percentage + '%');
     });
 });
 </script>
+{% endif %}
 {% endblock rating_style %}
 
 {% block rating_container %}
-<div id="{{ id }}" class="star-ratings" data-max-rating="{{ star_count }}" data-avg-rating="{{ rating.average }}">
+<div id="{{ id }}" class="star-ratings" data-max-rating="{{ star_count }}" data-avg-rating="{% if user_rating %}{{ user_rating.score }}{% else %}0{% endif %}">
 
 {% block rating_stars %}
 <div class="row justify-content-start">
@@ -56,7 +58,7 @@ $(document).ready(function(){
                 </li>
                 {% endfor %}
             </ul>
-            <ul class="star-ratings-rating-foreground" style="width:{{ percentage|floatformat }}%">
+            <ul class="star-ratings-rating-foreground" style="width:{% if user_rating %}{{ user_rating_percentage|floatformat }}{% else %}0{% endif %}%">
                 {% for star in stars %}
                 <li>
                     {% if editable %}
@@ -73,8 +75,8 @@ $(document).ready(function(){
         </div>
     </div>
     <div class="col-auto align-self-center pl-0">
-        <div class="star-ratings-rating-average">
-            <p><span class="star-ratings-rating-value">{{ rating.average|floatformat:"-2" }}</span> Points</p>
+        <div class="star-ratings-rating-user">
+            <p><span class="star-ratings-rating-value">{{ user_rating.score }}</span> Points</p>
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
 
 <head>
 	<title>
-	{% block head_title %}{{ book.book_title }}{% endblock %}
+	{% block head_title %}{{ booklog.booklog_book.book_title }}{% endblock %}
 	{% block head_extension %}{{ comment_form.media }}{% endblock %}
 	</title>
 </head>
@@ -16,42 +16,38 @@
 		<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
 			<div class="row mx-1">
 				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
-				{% if book.book_cover %}
 				<div class="col-md-4 text-center">
 					<img class="card-img my-4 img-fluid img-thumbnail"
 					data-src="holder.js/240x320?theme=thumb" 
 					alt="Thumbnail [240x320]" 
 					style="display:block; max-width:220px; height:auto; margin:auto;" 
-					src="{{ book.book_cover.url }}" 
+					src="{{ booklog.booklog_book.book_cover.url }}" 
 					data-holder-rendered="true">
 				</div>
-				{% endif %}
 				<!-- <div class="col-md-8" style="background-color:red;"> -->
 				<div class="col-md-8">
 					<div class="row">
-						<h1 class="col-md-12 mt-4 mb-0">{{ book.book_title }}</h1>
-						{% if book.sub_title %}
+						<h1 class="col-md-12 mt-4 mb-0">{{ booklog.booklog_book.book_title }}</h1>
+						{% if booklog.booklog_book.sub_title %}
 						<h1 class="col-md-12 mt-0 mb-1 pb-1">
-							<small>{{ book.sub_title }}</small>
+							<small>{{ booklog.booklog_book.sub_title }}</small>
 						</h1>
 						{% endif %}
 					</div>
 					<div class="row my-1">
-						<span class="col-md-12 lead">Author: <strong>{{ book.authors }}</strong></span>
+						<span class="col-md-12 lead">Author: <strong>{{ booklog.booklog_book.authors }}</strong></span>
 					</div>
 					<div class="row my-1">
-						<span class="col-md-12 lead">Press: <strong>{{ book.presses }}</strong></a></span>
+						<span class="col-md-12 lead">Press: <strong>{{ booklog.booklog_book.presses }}</strong></a></span>
 					</div>
 					<div class="row my-1">
-						<span class="col-md-12 lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
+						<span class="col-md-12 lead">Publish Date: <strong>{{ booklog.booklog_book.pub_date }}</strong></span>
 					</div>
-					{% if book.book_rates %}
 					<div class="row my-1 justify-content-start">
 						<div class="col-auto pr-0 align-self-center"><span class="lead">Rates:</span></div>
-						<div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html" %}</div>
+						<div class="col">{% ratings item=booklog.booklog_book read_only=False template_name="common/star_ratings_user.html" %}</div>
 					</div>
-					{% endif %}
-					{% for tag in book.book_tag.all %}
+					{% for tag in booklog.booklog_book.book_tag.all %}
 					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
 				</div>
@@ -59,11 +55,11 @@
 
 			<div class="row mx-1 my-4">
 				<div class="col-md-12">
-					<p class="lead"><strong>Book Introduction</strong></p>
+					<p class="lead"><strong>My Introduction</strong></p>
 					<hr />
 				</div>
 				<div class="col-md-12">
-					<p>{{ book.get_book_intro_html }}</p>
+					<p>{{ booklog.get_booklog_intro_html }}</p>
 				</div>
 			</div>
 			<br />
@@ -76,10 +72,10 @@
 			{% if request.user.is_authenticated and request.user.is_admin %}
 			<div class="row justify-content-end">
 				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
+					<a href="{% url 'book:book_update' book_id=booklog.booklog_book.id %}" class="btn btn-default">Edit</a>
 				</div>
 				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
+					<a href="{% url 'book:book_delete' book_id=booklog.booklog_book.id %}" class="btn btn-danger">Delete</a>
 				</div>
 			</div>
 			{% endif %}
@@ -101,7 +97,7 @@
 			{% endif %}
 
 			<br />
-			{% for comment in book_comments %}
+			{% for comment in booklog_comments %}
 			<div class="blockquote">
 				<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
 				<div class="row">

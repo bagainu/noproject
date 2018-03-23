@@ -1,12 +1,18 @@
 from django.urls import path, re_path
-from . import views
+from .views import (
+    BookShelfView,
+    BookLogCreateView,
+    BookLogDetailView,
+    BookLogUpdateView,
+    BookLogDeleteView
+)
 
 app_name = 'shelf'
 urlpatterns = [
-    # path('', views.index, name='shelf_index'),
-    # path('create/', views.create, name='shelf_create'),
-    # path('b<int:shelf_id>/', views.detail, name='shelf_detail'),
-    # path('b<int:shelf_id>/update/', views.update, name='shelf_update'),
-    # path('b<int:shelf_id>/delete/', views.delete, name='shelf_delete'),
+    path('bsh<int:bookshelf_id>/', BookShelfView.as_view(), name='bookshelf_view'),
+    path('create/', BookLogCreateView.as_view(), name='booklog_create'),
+    path('blg<int:booklog_id>/', BookLogDetailView.as_view(), name='booklog_detail'),
+    path('blg<int:booklog_id>/update/', BookLogUpdateView.as_view(), name='booklog_update'),
+    path('blg<int:booklog_id>/delete/', BookLogDeleteView.as_view(), name='booklog_delete'),
 ]
 
