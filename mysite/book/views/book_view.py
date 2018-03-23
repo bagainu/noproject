@@ -21,14 +21,14 @@ class BookIndexView(View):
     def get(self, request):
         book_list = Book.objects.order_by('book_title')
 
-        search_string = request.GET.get('search_string')
-        if search_string:
+        qs = request.GET.get('qs')
+        if qs:
             book_list = book_list.filter(
-                Q(book_title__icontains=search_string) |
-                Q(sub_title__icontains=search_string) |
-                Q(book_author__author_name__icontains=search_string) |
-                Q(book_press__press_name__icontains=search_string) |
-                Q(book_tag__name__icontains=search_string)
+                Q(book_title__icontains=qs) |
+                Q(sub_title__icontains=qs) |
+                Q(book_author__author_name__icontains=qs) |
+                Q(book_press__press_name__icontains=qs) |
+                Q(book_tag__name__icontains=qs)
             ).distinct()
 
         paginator = Paginator(book_list, 5)

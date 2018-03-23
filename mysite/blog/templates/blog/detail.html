@@ -24,7 +24,7 @@
 					</small>
 					<br />
 					{% for tag in post.blog_tag.all %}
-					<a href="{% url 'blog:blog_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+					<a href="{% url 'blog:blog_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
 					<br />
 					<!-- <wb:like type="simple"></wb:like> -->

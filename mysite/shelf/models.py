@@ -46,6 +46,7 @@ class BookShelf(models.Model):
     shelf_name = models.CharField(max_length=200)
     shelf_books = models.ManyToManyField(BookLog, blank=True)
     shelf_update_date_time = models.DateTimeField(auto_now=True, auto_now_add=False, help_text='data updated')
+    shelf_public = models.BooleanField(default=True, unique=True)
 
     def __str__(self):
         return "{0}'s bookshelf {1}".format(self.shelf_owner, self.shelf_name)

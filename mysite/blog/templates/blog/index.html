@@ -52,15 +52,15 @@
 				<!-- <div class="pagination col-auto">
 					<span class="step-links">
 						{% if post_list.has_previous %}
-						<a href="?page=1{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">&laquo; First</a>
-						<a href="?page={{ post_list.previous_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Previous</a>
+						<a href="?page=1{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">&laquo; First</a>
+						<a href="?page={{ post_list.previous_page_number }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Previous</a>
 						{% endif %}
 						<span class="current">
 							Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}
 						</span>
 						{% if post_list.has_next %}
-						<a href="?page={{ post_list.next_page_number }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Next</a>
-						<a href="?page={{ post_list.paginator.num_pages }}{% if request.GET.search_string %}&search_string={{ request.GET.search_string }}{% endif %}">Last &raquo;</a>
+						<a href="?page={{ post_list.next_page_number }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Next</a>
+						<a href="?page={{ post_list.paginator.num_pages }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Last &raquo;</a>
 						{% endif %}
 					</span>
 				</div> -->
@@ -86,7 +86,7 @@
 				<div class="card-body">
 					<form method="GET" action="">
 					<div class="input-group">
-						<input type="text" name="search_string" class="form-control" placeholder="Search for..." aria-label="Recipient's username" aria-describedby="basic-addon2" value="{{ request.GET.search_string }}">
+						<input type="text" name="qs" class="form-control" placeholder="Search for..." aria-label="Recipient's username" aria-describedby="basic-addon2" value="{{ request.GET.qs }}">
 						<div class="input-group-append">
 							<button class="btn btn-default" type="submit"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
 						</div>
@@ -100,7 +100,7 @@
 				<div class="card-body">
 					<form method="GET" action="">
 					{% for tag in tag_list %}
-						<input class="btn btn-success btn-round btn-sm my-1" name="search_string" type="submit" value="{{ tag }}" />
+						<input class="btn btn-success btn-round btn-sm my-1" name="qs" type="submit" value="{{ tag }}" />
 					{% endfor %}
 					</form>
 				</div>

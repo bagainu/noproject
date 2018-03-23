@@ -19,14 +19,14 @@ from comments.models import Comment
 def index(request):
     post_list = Post.objects.order_by('-update_date_time') # use '-' to order items in reversed order
 
-    search_string = request.GET.get('search_string')
-    if search_string:
+    qs = request.GET.get('qs')
+    if qs:
         post_list = post_list.filter(
-            Q(blog_title__icontains=search_string) |
-            Q(blog_content__icontains=search_string) |
-            Q(blog_author__username__icontains=search_string) |
-            Q(blog_author__email__icontains=search_string) |
-            Q(blog_tag__name__icontains=search_string)
+            Q(blog_title__icontains=qs) |
+            Q(blog_content__icontains=qs) |
+            Q(blog_author__username__icontains=qs) |
+            Q(blog_author__email__icontains=qs) |
+            Q(blog_tag__name__icontains=qs)
         ).distinct()
 
     paginator = Paginator(post_list, 5)

@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -20,20 +20,21 @@ class BookShelfView(View):
     """
     BookShelf view = BookLog index view
     """
+    is_public = True
 
-    def get(self, request, bookshelf_id):
-        book_shelf = get_object_or_404(BookShelf, pk=bookshelf_id)
+    def get(self, request):
+        book_shelf = get_list_or_404(BookShelf, shelf_public=self.is_public)[0]
         booklogs_list = book_shelf.shelf_books.all()
 
-        search_string = request.GET.get('search_string')
-        if search_string:
+        qs = request.GET.get('qs')
+        if qs:
             booklogs_list = booklogs_list.filter(
-                Q(booklog_book__book_title__icontains=search_string) |
-                Q(booklog_book__sub_title__icontains=search_string) |
-                Q(booklog_book__book_author__author_name__icontains=search_string) |
-                Q(booklog_book__book_press__press_name__icontains=search_string) |
-                Q(booklog_book__book_tag__name__icontains=search_string) |
-                Q(booklog_intro__icontains=search_string)
+                Q(booklog_book__book_title__icontains=qs) |
+                Q(booklog_book__sub_title__icontains=qs) |
+                Q(booklog_book__book_author__author_name__icontains=qs) |
+                Q(booklog_book__book_press__press_name__icontains=qs) |
+                Q(booklog_book__book_tag__name__icontains=qs) |
+                Q(booklog_intro__icontains=qs)
             ).distinct()
 
         paginator = Paginator(booklogs_list, 5)

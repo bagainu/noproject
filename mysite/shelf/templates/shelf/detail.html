@@ -16,6 +16,7 @@
 		<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
 			<div class="row mx-1">
 				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
+				{% if booklog.booklog_book.book_cover %}
 				<div class="col-md-4 text-center">
 					<img class="card-img my-4 img-fluid img-thumbnail"
 					data-src="holder.js/240x320?theme=thumb" 
@@ -24,6 +25,7 @@
 					src="{{ booklog.booklog_book.book_cover.url }}" 
 					data-holder-rendered="true">
 				</div>
+				{% endif %}
 				<!-- <div class="col-md-8" style="background-color:red;"> -->
 				<div class="col-md-8">
 					<div class="row">
@@ -48,7 +50,7 @@
 						<div class="col">{% ratings item=booklog.booklog_book read_only=False template_name="common/star_ratings_user.html" %}</div>
 					</div>
 					{% for tag in booklog.booklog_book.book_tag.all %}
-					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+					<a href="{% url 'book:book_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
 				</div>
 			</div>

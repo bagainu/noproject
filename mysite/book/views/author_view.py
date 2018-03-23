@@ -18,11 +18,11 @@ class AuthorIndexView(View):
     def get(self, request):
         author_list = Author.objects.order_by('author_name')
 
-        search_string = request.GET.get('search_string')
-        if search_string:
+        qs = request.GET.get('qs')
+        if qs:
             author_list = author_list.filter(
-                Q(author_name__icontains=search_string) |
-                Q(author_intro__icontains=search_string)
+                Q(author_name__icontains=qs) |
+                Q(author_intro__icontains=qs)
             ).distinct()
 
         paginator = Paginator(author_list, 5)

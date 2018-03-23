@@ -18,10 +18,10 @@ class PressIndexView(View):
     def get(self, request):
         press_list = Press.objects.order_by('press_name')
 
-        search_string = request.GET.get('search_string')
-        if search_string:
+        qs = request.GET.get('qs')
+        if qs:
             press_list = press_list.filter(
-                Q(press_name__icontains=search_string)
+                Q(press_name__icontains=qs)
             ).distinct()
 
         paginator = Paginator(press_list, 5)

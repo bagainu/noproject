@@ -52,7 +52,7 @@
 					</div>
 					{% endif %}
 					{% for tag in book.book_tag.all %}
-					<a href="{% url 'book:book_index' %}?search_string={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+					<a href="{% url 'book:book_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
 				</div>
 			</div>
