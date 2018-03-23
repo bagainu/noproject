@@ -37,7 +37,7 @@ class BookShelfView(View):
                 Q(booklog_intro__icontains=qs)
             ).distinct()
 
-        paginator = Paginator(booklogs_list, 5)
+        paginator = Paginator(booklogs_list, 20)
         page = request.GET.get('page')
         try:
             page_booklogs_list = paginator.page(page)
