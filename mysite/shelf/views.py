@@ -91,7 +91,7 @@ class BookLogPostCreateView(View):
             instance.save()
             post_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
-        self.get(request, booklog_id)
+        return self.get(request, booklog_id)
 
 
 class BookLogDetailView(View):

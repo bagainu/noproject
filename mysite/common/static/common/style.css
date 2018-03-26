@@ -17,6 +17,10 @@ body {
     background-color: #FFFCF5;
 }
 
+.blockquote small {
+    font-size: 60% !important;
+}
+
 .form-control.selectmultiple {
     height: inherit !important;
 }

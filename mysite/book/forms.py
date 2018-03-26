@@ -5,7 +5,7 @@ from pagedown.widgets import PagedownWidget
 from ckeditor.widgets import CKEditorWidget
 from taggit.forms import TagField, TagWidget
 
-from utils.image_utils import PreviewImageWidget
+from utils.image_utils import PreviewImageWidget, MAX_IMAGE_UPLOAD_SIZE, CustomImageField
 from utils.time_utils import YEAR_CHOICES, EMPTY_LABEL, CustomSelectDateWidget
 from .models import Book, Author, Press
 
@@ -15,7 +15,8 @@ class BookForm(ModelForm):
     book_intro = forms.CharField(widget=CKEditorWidget())
     book_tag = TagField(widget=TagWidget(), required=False, help_text='A comma-separated list of tags.')
     pub_date = forms.DateField(widget=CustomSelectDateWidget(years=YEAR_CHOICES))
-    book_cover = forms.ImageField(widget=PreviewImageWidget())
+    # book_cover = forms.ImageField(widget=PreviewImageWidget())
+    book_cover = CustomImageField(widget=PreviewImageWidget())
 
     class Meta:
         model = Book
@@ -34,7 +35,8 @@ class BookForm(ModelForm):
 class AuthorForm(ModelForm):
 
     author_intro = forms.CharField(widget=CKEditorWidget())
-    author_photo = forms.ImageField(widget=PreviewImageWidget())
+    # author_photo = forms.ImageField(widget=PreviewImageWidget())
+    author_photo = CustomImageField(widget=PreviewImageWidget())
     author_birth_date = forms.DateField(required=False, widget=CustomSelectDateWidget(years=YEAR_CHOICES, empty_label=EMPTY_LABEL))
     author_death_date = forms.DateField(required=False, widget=CustomSelectDateWidget(years=YEAR_CHOICES, empty_label=EMPTY_LABEL))
 

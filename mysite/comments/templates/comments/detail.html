@@ -33,7 +33,7 @@
 				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
 					<small class="col-auto">{{ comment.comment_date_time }}</small>
 					<br />
-					<div class="col-8 d-flex justify-content-end align-items-center">
+					<div class="col-auto d-flex justify-content-end align-items-center">
 						{% if comment.get_children %}
 						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
 						{% endif %}

@@ -133,11 +133,7 @@ class BookUpdateView(View):
             instance.save()
             book_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
-        context = {
-            'title': 'Edit Book',
-            'book_form': book_form,
-        }
-        return render(request, 'book/book_page/create.html', context)
+        return self.get(request, book_id)
 
 
 @method_decorator(login_required, name='dispatch')
