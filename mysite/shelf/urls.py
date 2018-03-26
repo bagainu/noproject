@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from .views import (
     BookShelfView,
     BookLogCreateView,
+    BookLogPostCreateView,
     BookLogDetailView,
     BookLogUpdateView,
     BookLogDeleteView
@@ -13,6 +14,7 @@ urlpatterns = [
     path('private/', BookShelfView.as_view(is_public=False), name='bookshelf_view_private'),
     path('create/', BookLogCreateView.as_view(), name='booklog_create'),
     path('blg<int:booklog_id>/', BookLogDetailView.as_view(), name='booklog_detail'),
+    path('blg<int:booklog_id>/createpost/', BookLogPostCreateView.as_view(), name='booklog_createpost'),
     path('blg<int:booklog_id>/update/', BookLogUpdateView.as_view(), name='booklog_update'),
     path('blg<int:booklog_id>/delete/', BookLogDeleteView.as_view(), name='booklog_delete'),
 ]

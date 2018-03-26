@@ -18,7 +18,7 @@
     <br />
     <div class="row flex-nowrap justify-content-center align-items-center">
         <div class="col-auto text-center">
-            <p>Do you really want to delete this comment?</p>
+            <p>Do you really want to delete this?</p>
         </div>
     </div>
     <div class="row flex-nowrap justify-content-center align-items-center">
@@ -27,7 +27,11 @@
             {% csrf_token %}
             <br />
             <button class="btn btn-sm btn-danger" type="submit">Confirm</button>
+            {% if comment.parent_comment %}
             <a class="btn btn-sm btn-default" href="{{ comment.get_parent_url }}">Cancel</a>
+            {% else %}
+            <a class="btn btn-sm btn-default" href="{{ comment.get_content_object_url }}">Cancel</a>
+            {% endif %}
             </form>
         </div>
     </div>

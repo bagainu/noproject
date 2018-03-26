@@ -7,6 +7,7 @@ from django.db.models import F
 from django.db.models.signals import pre_init, post_init, post_save
 from django.dispatch import receiver
 from django.template.defaultfilters import linebreaks
+from django.urls import reverse
 from django.utils.html import format_html
 
 from book.models import Book
@@ -15,19 +16,11 @@ from comments.models import Comment
 # Create your models here.
 
 
-class BookPost(models.Model):
-    post_obj = models.OneToOneField(Post, on_delete=models.CASCADE, primary_key=True)
-    object_id = models.PositiveIntegerField()
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    content_object = GenericForeignKey('content_type', 'object_id')
-
-
 class BookLog(models.Model):
     booklog_book = models.OneToOneField(Book, on_delete=models.CASCADE, default=1)
     booklog_owner = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
-    booklog_intro = models.TextField()
     booklog_comment = GenericRelation(Comment, related_query_name='booklog_comment')
-    booklog_post = GenericRelation(BookPost, related_query_name='booklog_post')
+    booklog_post = GenericRelation(Post, related_query_name='booklog_post')
     booklog_create_date_time = models.DateTimeField(auto_now=False, auto_now_add=True, help_text='data published')
     booklog_update_date_time = models.DateTimeField(auto_now=True, auto_now_add=False, help_text='data updated')
 
@@ -37,8 +30,8 @@ class BookLog(models.Model):
     def __unicode__(self):
         return "{0}'s book log of {1}".format(self.booklog_owner, self.booklog_book)
 
-    def get_booklog_intro_html(self):
-        return format_html(linebreaks(self.booklog_intro))
+    def get_absolute_url(self):
+        return reverse('shelf:booklog_detail', kwargs={ 'booklog_id': self.id, })
 
 
 class BookShelf(models.Model):

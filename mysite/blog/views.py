@@ -13,6 +13,7 @@ from .forms import PostForm
 from taggit.models import Tag
 from comments.forms import CommentForm
 from comments.models import Comment
+from shelf.models import BookLog
 # Create your views here.
 
 
@@ -87,6 +88,7 @@ def detail(request, blog_id):
             comment_form.save_m2m()
             return HttpResponseRedirect(post.get_absolute_url())
     context = {
+        'booklog': post.content_object,
         'post': post,
         'post_comments': post.blog_comment.filter(parent_comment=None).order_by('-comment_date_time'),
         'comment_form': CommentForm(),

@@ -3,6 +3,8 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 from django.template.defaultfilters import linebreaks
 from django.utils import timezone
 from django.utils.text import slugify
@@ -33,11 +35,15 @@ class Post(models.Model):
     slug_title = models.SlugField(unique=True) # used for ease of url visiting
     create_date_time = models.DateTimeField(auto_now=False, auto_now_add=True, help_text='data published')
     update_date_time = models.DateTimeField(auto_now=True, auto_now_add=False, help_text='data updated')
-    blog_image = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
+    # blog_image = models.ImageField(null=True, blank=True, upload_to=image_upload_to) # upload_to='images'
     blog_content = models.TextField()
     blog_comment = GenericRelation(Comment, related_query_name='blog_comment')
     blog_author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     blog_tag = TaggableManager(through=PostTag, blank=True)
+
+    content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField(null=True, blank=True)
+    content_object = GenericForeignKey()
 
     def __str__(self):
         return '"{0}" by {1}'.format(self.blog_title, self.blog_author)
@@ -50,7 +56,7 @@ class Post(models.Model):
         return ' | '.join([ tag.name for tag in self.blog_tag.all() ])
 
     def get_absolute_url(self):
-        return reverse('blog:blog_detail', kwargs={ 'blog_id': self.id, })
+        return reverse('blog:blog_detail', kwargs={ 'blog_id': self.id })
 
     def get_blog_content_markdown(self):
         return format_html(linebreaks(markdown(self.blog_content)))

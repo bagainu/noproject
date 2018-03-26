@@ -11,7 +11,7 @@
 		<div class="col-md-auto col-sm-auto text-left my-2">
 			<h1>{{ title|truncatechars:25 }}</h1>
 		</div>
-		<div class="col-md-auto col-sm-auto">
+		<div class="col-md-auto col-sm-12">
 			<div class="row justify-content-end">
 				<div class="col-md-8 col-sm-6 my-2">
 					<!-- search widgets -->
@@ -24,7 +24,7 @@
 					</div>
 					</form>
 				</div>
-				<div class="col-md-4 col-sm-6 my-2">
+				<div class="col-md-4 col-sm-auto col-auto my-2">
 					<button type="button" class= "btn btn-success float-right">New Archive</button>
 				</div>
 			</div>
@@ -42,59 +42,32 @@
 			<div class="row">
 				{% for booklog in booklog_list %}
 				<div class="col-lg-2 col-md-4 col-sm-6">
-					<div class="card box-shadow">
-						<!-- <img class="card-img-top" src="..." alt="Card image cap"> -->
+					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
+					<div class="card box-shadow text-center center-block" style="height:200px; width:150px;">
 						{% if booklog.booklog_book.book_cover %}
-						<img class="card-img my-4 img-fluid img-thumbnail" data-src="holder.js/150x200?theme=thumb" alt="Thumbnail [150x200]" style="display:block; max-width:150px; height:auto; margin:auto;"
-						 src="{{ booklog.booklog_book.book_cover.url }}" data-holder-rendered="true"> {% else %}
+						<img class="card-img img-fluid img-thumbnail" 
+						data-src="holder.js/150x200?theme=thumb" 
+						alt="Book cover" 
+						style="object-fit:cover; display:block; max-width:150px; height:200px; margin:auto; padding:auto;"
+						src="{{ booklog.booklog_book.book_cover.url }}" 
+						data-holder-rendered="true"> 
+						{% else %}
 						<div class="card-body">
-							<h5 class="card-title">Card title</h5>
-							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-							<a href="#" class="btn btn-primary">Go somewhere</a>
+							<h4 class="card-title text-primary">{{ booklog.booklog_book.book_title }}</h4>
+							<h5 class="card-subtitle text-muted">{{ booklog.booklog_book.sub_title }}</h5>
+							<p class="card-text">{{ booklog.get_booklog_intro_html|truncatechars_html:80 }}</p>
 						</div>
 						{% endif %}
 					</div>
+					</a>
 				</div>
 				{% endfor %}
 			</div>
-	
-			<!-- {% for booklog in booklog_list %}
-			<div class="card box-shadow">
-				<div class="row justify-content-between">
-					<div class="col-md-8 col-sm-8 pr-0">
-						<div class="card-body align-items-start">
-							<a href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
-								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ booklog.booklog_book.book_title }}</strong></h3>
-							</a>
-							<div class="row mb-4">
-								<div class="col-sm-auto d-inline-block mb-2 text-primary">Authors: {{ booklog.booklog_book.authors }}</div>
-								<div class="col-sm-auto text-muted">Press: {{ booklog.booklog_book.presses }}</div>
-							</div>
-							<div class="card-text my-auto">
-								<p>{{ booklog.booklog_book.get_book_intro_html | truncatechars_html:200 }}</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-4 col-sm-4 px-0">
-						{% if booklog.booklog_book.book_cover %}
-						<img class="card-img my-4 img-fluid img-thumbnail"
-						data-src="holder.js/150x200?theme=thumb" 
-						alt="Thumbnail [150x200]" 
-						style="display:block; max-width:150px; height:auto; margin:auto;" 
-						src="{{ booklog.booklog_book.book_cover.url }}" 
-						data-holder-rendered="true">
-						{% endif %}
-					</div>
-				</div>
-			</div>
-			{% endfor %} -->
 			<br />
-	
 			<!-- pagination -->
 			<div class="row justify-content-center">
 				{% include 'common/paginator.html' with item_list=booklog_list %}
 			</div>
-	
 			{% else %}
 			<!-- if no books -->
 			<p class="text-center">No books.</p>

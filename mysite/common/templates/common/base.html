@@ -98,7 +98,8 @@
 $(document).ready(function(){
 	$(".comment-reply-btn").click(function(event){
 		event.preventDefault();
-		$(this).parent().parent().next(".comment-reply").fadeToggle();
+		// $(this).parent().parent().next(".comment-reply").fadeToggle();
+		$(".comment-reply").fadeToggle();
 	});
 
 	//Check to see if the window is top if not then display button

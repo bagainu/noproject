@@ -8,12 +8,9 @@ from .models import BookLog
 
 class BookLogForm(ModelForm):
 
-    booklog_intro = forms.CharField(widget=CKEditorWidget())
-
     class Meta:
         model = BookLog
         fields = [
-            'booklog_intro',
             # 'booklog_rates',
             # 'booklog_comment',
             # 'booklog_post',

@@ -21,6 +21,5 @@ class PostForm(ModelForm):
         fields = [
             'blog_title',
             'blog_content',
-            'blog_image',
             'blog_tag',
         ]

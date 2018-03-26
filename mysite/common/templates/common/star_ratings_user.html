@@ -20,7 +20,6 @@
     {% endif %}
 </style>
 
-{% if user_rating %}
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -32,7 +31,6 @@ $(document).ready(function(){
     });
 });
 </script>
-{% endif %}
 {% endblock rating_style %}
 
 {% block rating_container %}
@@ -76,7 +74,7 @@ $(document).ready(function(){
     </div>
     <div class="col-auto align-self-center pl-0">
         <div class="star-ratings-rating-user">
-            <p><span class="star-ratings-rating-value">{{ user_rating.score }}</span> Points</p>
+            <p><span class="star-ratings-rating-value">{% if user_rating.score %}{{ user_rating.score }}{% else %}0{% endif %}</span> Points</p>
         </div>
     </div>
 </div>

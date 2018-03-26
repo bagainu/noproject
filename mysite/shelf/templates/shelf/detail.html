@@ -46,7 +46,7 @@
 						<span class="col-md-12 lead">Publish Date: <strong>{{ booklog.booklog_book.pub_date }}</strong></span>
 					</div>
 					<div class="row my-1 justify-content-start">
-						<div class="col-auto pr-0 align-self-center"><span class="lead">Rates:</span></div>
+						<div class="col-auto pr-0 align-self-center"><span class="lead">Your Rates:</span></div>
 						<div class="col">{% ratings item=booklog.booklog_book read_only=False template_name="common/star_ratings_user.html" %}</div>
 					</div>
 					{% for tag in booklog.booklog_book.book_tag.all %}
@@ -54,114 +54,134 @@
 					{% endfor %}
 				</div>
 			</div>
-
-			<div class="row mx-1 my-4">
-				<div class="col-md-12">
-					<p class="lead"><strong>My Introduction</strong></p>
-					<hr />
-				</div>
-				<div class="col-md-12">
-					<p>{{ booklog.get_booklog_intro_html }}</p>
-				</div>
-			</div>
-			<br />
-			<br />
-	
-			<!-- <div class="my-5">
-				<p class="content-markdown">{{ book.get_book_intro_html }}</p>
-			</div> -->
-	
-			{% if request.user.is_authenticated and request.user.is_admin %}
-			<div class="row justify-content-end">
-				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_update' book_id=booklog.booklog_book.id %}" class="btn btn-default">Edit</a>
-				</div>
-				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_delete' book_id=booklog.booklog_book.id %}" class="btn btn-danger">Delete</a>
-				</div>
-			</div>
-			{% endif %}
-	
 			<hr />
-			<h4>Comments</h4>
-			<br /> 
-			{% if request.user.is_authenticated %}
-			<form method="POST" action="" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ comment_form | crispy }}
-				<!-- {{ comment_form }} -->
-				<div class="row justify-content-end">
-					<div class="col-auto col-offset-2">
-						<button class="btn btn-default" type="submit">Submit</button>
+
+			<div class="row mx-1 my-5">
+				<div class="col-md-12">
+					<div class="row justify-content-between align-items-end">
+						<div class="col-auto">
+							<p class="lead"><strong>Reading Notes</strong></p>
+						</div>
+						<div class="col-auto col-offset-2">
+							<button class="btn btn-sm btn-success comment-reply-btn">New Note</button>
+						</div>
 					</div>
 				</div>
-			</form>
-			{% endif %}
-
-			<br />
-			{% for comment in booklog_comments %}
-			<div class="blockquote">
-				<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
-				<div class="row">
-					<div class="col-sm-11 offset-sm-1">
-						<div class="text-justify">{{ comment.get_comment_content_html }}</div>
-					</div>
-				</div>
-
-				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
-					<small class="col-auto">{{ comment.comment_date_time }}</small>
-					<br />
-					<div class="col-8 d-flex justify-content-end align-items-center">
-						{% if comment.get_children %}
-						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
-						<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
-						{% endif %} {% if comment.get_children or request.user.is_authenticated %}
-						<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
-						{% endif %}
-					</div>
-				</div>
-
-				<div class="row comment-reply" style="display:none;">
-					{% if comment.get_children %} 
-					{% for child_comment in comment.get_children %}
-					<div class="col-sm-11 offset-sm-1">
-						<!-- <div class="blockquote" style="margin-bottom:2%;padding-bottom:2%;"> -->
-						<div class="blockquote">
-							<p class="lead"><strong>{{ child_comment.comment_user }}:</strong></p>
-							<div class="row">
-								<div class="col-sm-11 offset-sm-1">
-									<p class="text-justify">{{ child_comment.get_comment_content_html }}</p>
-								</div>
+				<div class="col-md-12 my-4 comment-reply" style="display:none;">
+					{% if request.user.is_authenticated %}
+					<form method="POST" action="" enctype="multipart/form-data">
+						{% csrf_token %}
+						{{ comment_form | crispy }}
+						<div class="row justify-content-end">
+							<div class="col-auto col-offset-2">
+								<button class="btn btn-default" type="submit">Submit</button>
 							</div>
-							<div class="row justify-content-between align-items-center" style="margin-top:2%;">
-								<small class="col-auto">{{ child_comment.comment_date_time }}</small>
+						</div>
+					</form>
+					{% endif %}
+				</div>
+				<div class="col-md-12">
+					{% if booklog_comments %}
+					{% for comment in booklog_comments %}
+					<div class="blockquote">
+						<!-- <p class="lead"><strong>{{ comment.comment_user }}:</strong></p> -->
+						<div class="row my-1">
+							<div class="col-sm-11 offset-sm-1">
+								<p class="text-justify">{{ comment.get_comment_content_html }}</p>
+							</div>
+						</div>
+
+						<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+							<p class="col-auto">{{ comment.comment_date_time }}</p>
+							<div class="col-8 d-flex justify-content-end align-items-center">
+								{% if comment.get_children %}
+								<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
+								<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+								<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
+								{% endif %}
+								{% if request.user.is_authenticated and request.user == comment.comment_user %}
+								<a class="btn btn-sm btn-danger" href="{{ comment.get_delete_url }}">Delete</a>
+								{% endif %}
 							</div>
 						</div>
 					</div>
-					{% endfor %} 
-					{% endif %}
-					{% if request.user.is_authenticated %}
-					<div class="col-sm-11 offset-sm-1" style="padding-top:2%;">
-						<form method="POST" action="" enctype="multipart/form-data">
-							{% csrf_token %}
-							{{ comment_form | crispy }}
-							<!-- {{ comment_form }} -->
-							<input type="hidden" name="parent_id" value="{{ comment.id }}">
-							<div class="row justify-content-end">
-								<div class="col-auto col-offset-2">
-									<button class="btn btn-sm btn-default" type="submit">Submit</button>
-								</div>
-							</div>
-						</form>
-					</div>
+					{% endfor %}
+					{% else %}
+					<p>Have anything in mind?</p>
 					{% endif %}
 				</div>
 			</div>
-			<!-- <blockquote class="blockquote col-10 offset-1">
-				<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>
-				<footer class="blockquote-footer">{{ comment.comment_user }} at <cite title="Source Title">{{ comment.comment_date_time }}</cite></footer>
-			</blockquote> -->
-			{% endfor %}
+
+			<div class="row mx-1 my-5">
+				<div class="col-md-12">
+					<div class="row justify-content-between align-items-end">
+						<div class="col-auto">
+							<p class="lead"><strong>Reading Posts</strong></p>
+						</div>
+						<div class="col-auto col-offset-2">
+							<a class="btn btn-success btn-sm" href="{% url 'shelf:booklog_createpost' booklog_id=booklog.id %}">New Post</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12 my-4">
+					{% if booklog_posts %}
+					{% for post in booklog_posts %}
+					<div class="card mb-4 box-shadow">
+						<div class="card-body align-items-start">
+							<a href="{% url 'blog:blog_detail' blog_id=post.id booklog_id=booklog.id %}">
+								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
+							</a>
+							<div class="row">
+								<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
+								<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
+							</div>
+							<div class="card-text my-auto">
+								<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
+							</div>
+						</div>
+					</div>
+					<br />
+					{% endfor %}
+		
+					<!-- pagination of booklog_posts -->
+					<div class="row justify-content-center">
+						<div class="col-auto" aria-label="Page navigation">
+						{% include 'common/paginator.html' with item_list=booklog_posts %}
+						</div>
+					</div>
+
+					<!-- blockquote style post list -->
+					<!-- <div class="blockquote">
+						<p class="lead"><strong>{{ post.blog_title }}:</strong></p>
+						<div class="row">
+							<div class="col-sm-11 offset-sm-1">
+								<div class="text-justify">{{ post.get_blog_content_html|truncatechars_html:100 }}</div>
+							</div>
+						</div>
+						<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+							<small class="col-auto">{{ post.update_date_time }}</small>
+							<br />
+							<div class="col-8 d-flex justify-content-end align-items-center">
+								<a class="btn btn-sm btn-default" href="{{ post.get_absolute_url }}" style="margin-right:10px;">View Post</a>
+							</div>
+						</div>
+					</div> -->
+					{% else %}
+					<p>Doesn't this book touch you?</p>
+					{% endif %}
+				</div>
+			</div>
+	
+			{% if request.user.is_authenticated %}
+			<hr />
+			<div class="row justify-content-center">
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'shelf:booklog_delete' booklog_id=booklog.id %}" class="btn btn-danger">Remove From Shelf</a>
+				</div>
+			</div>
+			{% endif %}
+
+			<br />
 		</div>
 		<br />
 		<br />
