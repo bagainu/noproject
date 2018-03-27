@@ -12,181 +12,138 @@
 <body>
 {% block body_content %}
 <div class="container">
-	<div class="row">
-		<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
-			<div class="row mx-1">
-				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
-				{% if booklog.booklog_book.book_cover %}
-				<div class="col-md-4 text-center">
-					<img class="card-img my-4 img-fluid img-thumbnail"
-					data-src="holder.js/240x320?theme=thumb" 
-					alt="Thumbnail [240x320]" 
-					style="display:block; max-width:220px; height:auto; margin:auto;" 
-					src="{{ booklog.booklog_book.book_cover.url }}" 
-					data-holder-rendered="true">
+	{% include 'book/book_profile.html' with book=booklog.booklog_book user_rate=True view_book=True %}
+	<hr />
+
+	<div class="row my-5">
+		<div class="col-md-12">
+			<div class="row justify-content-between align-items-end">
+				<div class="col-auto">
+					<p class="lead"><strong>Reading Notes</strong></p>
 				</div>
-				{% endif %}
-				<!-- <div class="col-md-8" style="background-color:red;"> -->
-				<div class="col-md-8">
-					<div class="row">
-						<h1 class="col-md-12 mt-4 mb-0">{{ booklog.booklog_book.book_title }}</h1>
-						{% if booklog.booklog_book.sub_title %}
-						<h1 class="col-md-12 mt-0 mb-1 pb-1">
-							<small>{{ booklog.booklog_book.sub_title }}</small>
-						</h1>
+				<div class="col-auto col-offset-2">
+					<button class="btn btn-sm btn-success comment-reply-btn">New Note</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 my-4 comment-reply" style="display:none;">
+			{% if request.user.is_authenticated %}
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ comment_form | crispy }}
+				<div class="row justify-content-end">
+					<div class="col-auto col-offset-2">
+						<button class="btn btn-default" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+			{% endif %}
+		</div>
+		<div class="col-md-12">
+			{% if booklog_comments %}
+			{% for comment in booklog_comments %}
+			<div class="blockquote">
+				<!-- <p class="lead"><strong>{{ comment.comment_user }}:</strong></p> -->
+				<div class="row my-1">
+					<div class="col-sm-11 offset-sm-1">
+						<p class="text-justify">{{ comment.get_comment_content_html }}</p>
+					</div>
+				</div>
+
+				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+					<p class="col-auto">{{ comment.comment_date_time }}</p>
+					<div class="col-auto d-flex justify-content-end align-items-center">
+						{% if comment.get_children %}
+						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
+						<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+						<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
+						{% endif %}
+						{% if request.user.is_authenticated and request.user == comment.comment_user %}
+						<a class="btn btn-sm btn-danger" href="{{ comment.get_delete_url }}">Delete</a>
 						{% endif %}
 					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Author: <strong>{{ booklog.booklog_book.authors }}</strong></span>
-					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Press: <strong>{{ booklog.booklog_book.presses }}</strong></a></span>
-					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Publish Date: <strong>{{ booklog.booklog_book.pub_date }}</strong></span>
-					</div>
-					<div class="row my-1 justify-content-start">
-						<div class="col-auto pr-0 align-self-center"><span class="lead">Your Rates:</span></div>
-						<div class="col">{% ratings item=booklog.booklog_book read_only=False template_name="common/star_ratings_user.html" %}</div>
-					</div>
-					{% for tag in booklog.booklog_book.book_tag.all %}
-					<a href="{% url 'book:book_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
-					{% endfor %}
 				</div>
 			</div>
-			<hr />
-
-			<div class="row mx-1 my-5">
-				<div class="col-md-12">
-					<div class="row justify-content-between align-items-end">
-						<div class="col-auto">
-							<p class="lead"><strong>Reading Notes</strong></p>
-						</div>
-						<div class="col-auto col-offset-2">
-							<button class="btn btn-sm btn-success comment-reply-btn">New Note</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12 my-4 comment-reply" style="display:none;">
-					{% if request.user.is_authenticated %}
-					<form method="POST" action="" enctype="multipart/form-data">
-						{% csrf_token %}
-						{{ comment_form | crispy }}
-						<div class="row justify-content-end">
-							<div class="col-auto col-offset-2">
-								<button class="btn btn-default" type="submit">Submit</button>
-							</div>
-						</div>
-					</form>
-					{% endif %}
-				</div>
-				<div class="col-md-12">
-					{% if booklog_comments %}
-					{% for comment in booklog_comments %}
-					<div class="blockquote">
-						<!-- <p class="lead"><strong>{{ comment.comment_user }}:</strong></p> -->
-						<div class="row my-1">
-							<div class="col-sm-11 offset-sm-1">
-								<p class="text-justify">{{ comment.get_comment_content_html }}</p>
-							</div>
-						</div>
-
-						<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
-							<p class="col-auto">{{ comment.comment_date_time }}</p>
-							<div class="col-auto d-flex justify-content-end align-items-center">
-								{% if comment.get_children %}
-								<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
-								<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
-								<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
-								{% endif %}
-								{% if request.user.is_authenticated and request.user == comment.comment_user %}
-								<a class="btn btn-sm btn-danger" href="{{ comment.get_delete_url }}">Delete</a>
-								{% endif %}
-							</div>
-						</div>
-					</div>
-					{% endfor %}
-					{% else %}
-					<p class="my-4">Have anything in mind?</p>
-					{% endif %}
-				</div>
-			</div>
-
-			<div class="row mx-1 my-5">
-				<div class="col-md-12">
-					<div class="row justify-content-between align-items-end">
-						<div class="col-auto">
-							<p class="lead"><strong>Reading Posts</strong></p>
-						</div>
-						<div class="col-auto col-offset-2">
-							<a class="btn btn-success btn-sm" href="{% url 'shelf:booklog_createpost' booklog_id=booklog.id %}">New Post</a>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-12 my-4">
-					{% if booklog_posts %}
-					{% for post in booklog_posts %}
-					<div class="card mb-4 box-shadow">
-						<div class="card-body align-items-start">
-							<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
-								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
-							</a>
-							<div class="row">
-								<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
-								<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
-							</div>
-							<div class="card-text my-auto">
-								<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
-							</div>
-						</div>
-					</div>
-					<br />
-					{% endfor %}
-		
-					<!-- pagination of booklog_posts -->
-					<div class="row justify-content-center">
-						<div class="col-auto" aria-label="Page navigation">
-						{% include 'common/paginator.html' with item_list=booklog_posts %}
-						</div>
-					</div>
-
-					<!-- blockquote style post list -->
-					<!-- <div class="blockquote">
-						<p class="lead"><strong>{{ post.blog_title }}:</strong></p>
-						<div class="row">
-							<div class="col-sm-11 offset-sm-1">
-								<div class="text-justify">{{ post.get_blog_content_html|truncatechars_html:100 }}</div>
-							</div>
-						</div>
-						<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
-							<small class="col-auto">{{ post.update_date_time }}</small>
-							<br />
-							<div class="col-8 d-flex justify-content-end align-items-center">
-								<a class="btn btn-sm btn-default" href="{{ post.get_absolute_url }}" style="margin-right:10px;">View Post</a>
-							</div>
-						</div>
-					</div> -->
-					{% else %}
-					<p>Doesn't this book touch you?</p>
-					{% endif %}
-				</div>
-			</div>
-	
-			{% if request.user.is_authenticated %}
-			<hr />
-			<div class="row justify-content-center">
-				<div class="col-auto col-offset-2">
-					<a href="{% url 'shelf:booklog_delete' booklog_id=booklog.id %}" class="btn btn-danger">Remove From Shelf</a>
-				</div>
-			</div>
+			{% endfor %}
+			{% else %}
+			<p class="my-4">Have anything in mind?</p>
 			{% endif %}
-
-			<br />
 		</div>
-		<br />
-		<br />
-		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 	</div>
+
+	<div class="row my-5">
+		<div class="col-md-12">
+			<div class="row justify-content-between align-items-end">
+				<div class="col-auto">
+					<p class="lead"><strong>Reading Posts</strong></p>
+				</div>
+				<div class="col-auto col-offset-2">
+					<a class="btn btn-success btn-sm" href="{% url 'shelf:booklog_createpost' booklog_id=booklog.id %}">New Post</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-12 my-4">
+			{% if booklog_posts %}
+			{% for post in booklog_posts %}
+			<div class="card mb-4 box-shadow">
+				<div class="card-body align-items-start">
+					<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
+						<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
+					</a>
+					<div class="row">
+						<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
+						<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
+					</div>
+					<div class="card-text my-auto">
+						<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
+					</div>
+				</div>
+			</div>
+			<br />
+			{% endfor %}
+		
+			<!-- pagination of booklog_posts -->
+			<div class="row justify-content-center">
+				<div class="col-auto" aria-label="Page navigation">
+				{% include 'common/paginator.html' with item_list=booklog_posts %}
+				</div>
+			</div>
+
+			<!-- blockquote style post list -->
+			<!-- <div class="blockquote">
+				<p class="lead"><strong>{{ post.blog_title }}:</strong></p>
+				<div class="row">
+					<div class="col-sm-11 offset-sm-1">
+						<div class="text-justify">{{ post.get_blog_content_html|truncatechars_html:100 }}</div>
+					</div>
+				</div>
+				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+					<small class="col-auto">{{ post.update_date_time }}</small>
+					<br />
+					<div class="col-8 d-flex justify-content-end align-items-center">
+						<a class="btn btn-sm btn-default" href="{{ post.get_absolute_url }}" style="margin-right:10px;">View Post</a>
+					</div>
+				</div>
+			</div> -->
+			{% else %}
+			<p>Doesn't this book touch you?</p>
+			{% endif %}
+		</div>
+	</div>
+	
+	{% if request.user.is_authenticated %}
+	<hr />
+	<div class="row justify-content-center">
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'shelf:booklog_delete' booklog_id=booklog.id %}" class="btn btn-danger">Remove From Shelf</a>
+		</div>
+	</div>
+	{% endif %}
+
+	<br />
+	<br />
+	<br />
+	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 </div>
 {% endblock %}
 </body>

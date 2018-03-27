@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -13,6 +14,7 @@ from .forms import BookLogForm
 from comments.forms import CommentForm
 from comments.models import Comment
 from blog.forms import PostForm
+from book.models import Book
 
 # Create your views here.
 
@@ -21,10 +23,12 @@ class BookShelfView(View):
     """
     BookShelf view = BookLog index view
     """
-    is_public = True
-
-    def get(self, request):
-        book_shelf = get_list_or_404(BookShelf, shelf_public=self.is_public)[0]
+    def get(self, request, user_id=None):
+        if user_id:
+            user = get_object_or_404(get_user_model(), pk=user_id)
+            book_shelf = get_list_or_404(BookShelf, shelf_public=True, shelf_owner=user)[0]
+        else:
+            book_shelf = get_list_or_404(BookShelf, shelf_public=False)[0]
         booklogs_list = book_shelf.shelf_books.all()
 
         qs = request.GET.get('qs')
@@ -59,11 +63,25 @@ class BookShelfView(View):
 @method_decorator(login_required, name='dispatch')
 class BookLogCreateView(View):
 
-    def get(self, request):
-        return HttpResponse('create get')
+    def get(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        context = {
+            'title': 'Add to Shelf',
+            'book': book,
+            'previous_url': request.META.get('HTTP_REFERER'),
+        }
+        return render(request, 'shelf/create.html', context)
     
-    def post(self, request):
-        return HttpResponse('create post')
+    def post(self, request, book_id):
+        book = get_object_or_404(Book, pk=book_id)
+        book_shelf, created = BookShelf.objects.get_or_create(shelf_owner=request.user)
+        booklog, created = BookLog.objects.get_or_create(booklog_book=book, booklog_owner=request.user)
+        book_shelf.shelf_books.add(booklog)
+        previous_url = request.META.get('HTTP_REFERER')
+        if previous_url:
+            return HttpResponseRedirect(booklog.get_absolute_url())
+        else:
+            return HttpResponseRedirect(booklog.get_absolute_url())
 
 
 @method_decorator(login_required, name='dispatch')
@@ -147,8 +165,14 @@ class BookLogUpdateView(View):
 class BookLogDeleteView(View):
 
     def get(self, request, booklog_id):
-        return HttpResponse('delete get')
+        booklog = get_object_or_404(BookLog, pk=booklog_id)
+        context = {
+            'booklog': booklog,
+        }
+        return render(request, 'shelf/delete.html', context)
     
     def post(self, request, booklog_id):
-        return HttpResponse('delete post')
+        booklog = get_object_or_404(BookLog, pk=booklog_id)
+        booklog.delete()
+        return HttpResponseRedirect(reverse("shelf:bookshelf_view", user_id=request.user.id))
 

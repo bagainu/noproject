@@ -12,6 +12,7 @@ from book.forms import BookForm
 from book.models import Author, Press, Book, BookTag
 from comments.forms import CommentForm
 from comments.models import Comment
+from shelf.models import BookLog
 
 # Create your views here.
 
@@ -80,7 +81,11 @@ class BookDetailView(View):
 
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
+        booklog = None
+        if request.user.is_authenticated:
+            booklog = BookLog.objects.filter(booklog_owner=request.user, booklog_book=book).first()
         context = {
+            'booklog': booklog,
             'book': book,
             # 'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
             'book_comments': [],
@@ -104,13 +109,7 @@ class BookDetailView(View):
                 comment_form.save()
                 comment_form.save_m2m()
                 return HttpResponseRedirect(book.get_absolute_url())
-        context = {
-            'book': book,
-            # 'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
-            'book_comments': [],
-            'comment_form': CommentForm(),
-        }
-        return render(request, 'book/book_page/detail.html', context)
+        return self.get(request, book_id)
 
 
 @method_decorator(login_required, name='dispatch')

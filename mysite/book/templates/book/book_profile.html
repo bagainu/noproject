@@ -1,0 +1,83 @@
+{% load ratings %}
+<div class="row justify-content-between">
+    {% if book.book_cover %}
+    <div class="col-md-3 col-lg-3">
+        <div class="row justify-content-center">
+            <div class="col-auto" style="margin:auto;">
+                <img class="card-img my-4 img-fluid img-thumbnail" data-src="holder.js/240x320?theme=thumb" alt="Thumbnail [240x320]" style="object-fit:cover; width:200px; height:300px; margin:auto; padding:auto;"
+                    src="{{ book.book_cover.url }}" data-holder-rendered="true">
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="col-md-6 col-lg-7">
+        <div class="row">
+            <h1 class="col-md-12 mt-4 mb-0">{{ book.book_title }}</h1>
+            {% if book.sub_title %}
+            <h1 class="col-md-12 mt-0 mb-1 pb-1">
+                <small>{{ book.sub_title }}</small>
+            </h1>
+            {% endif %}
+        </div>
+        <div class="row my-1">
+            <span class="col-md-12 lead">Author:
+                <strong>{{ book.authors }}</strong>
+            </span>
+        </div>
+        <div class="row my-1">
+            <span class="col-md-12 lead">Press:
+                <strong>{{ book.presses }}</strong>
+                </a>
+            </span>
+        </div>
+        <div class="row my-1">
+            <span class="col-md-12 lead">Publish Date:
+                <strong>{{ book.pub_date }}</strong>
+            </span>
+        </div>
+        <div class="row my-1 justify-content-start">
+            <div class="col-auto pr-0 align-self-center">
+            {% if user_rate %}
+                <span class="lead">Your Rates:</span>
+            {% else %}
+                <span class="lead">Avg Rates:</span>
+            {% endif %}
+            </div>
+            {% if user_rate %}
+            <div class="col">{% ratings item=book read_only=False template_name="common/star_ratings_user.html" %}</div>
+            {% else %}
+            <div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html" %}</div>
+            {% endif %}
+        </div>
+        {% for tag in book.book_tag.all %}
+        <a href="{% url 'book:book_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+        {% endfor %}
+    </div>
+    <div class="col-md-3 col-lg-2">
+        <div class="row my-4">
+            {% if view_book %}
+            <div class="col my-2">
+                <a href="{{ book.get_absolute_url }}" class="btn btn-primary w-100">View Book</a>
+            </div>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+                {% if view_booklog and booklog %}
+                <div class="col my-2">
+                    <a href="{{ booklog.get_absolute_url }}" class="btn btn-primary w-100">My Booklog</a>
+                </div>
+                {% endif %} 
+                {% if add_to_shelf %}
+                    {% if booklog %}
+                    <div class="col my-2">
+                        <a href="#" class="btn btn-primary w-100 active">In Shelf</a>
+                    </div>
+                    {% else %}
+                    <div class="col my-2">
+                        <a href="{% url 'shelf:booklog_create' book_id=book.id %}" class="btn btn-primary w-100">Add to Shelf</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</div>

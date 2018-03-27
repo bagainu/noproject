@@ -15,9 +15,6 @@
                 <li class="nav-item">
                     <a href="{% url 'blog:blog_index' %}" target="" class="nav-link">Blogs</a>
                 </li>
-                <li class="nav-item">
-                    <a href="{% url 'shelf:bookshelf_view' %}" target="" class="nav-link">Books</a>
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" href="#pk" role="button" aria-haspopup="true" aria-expanded="false">Library</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -34,6 +31,11 @@
                         <p class="d-lg-none">GitHub</p>
                     </a>
                 </li> -->
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'shelf:bookshelf_view' user_id=request.user.id %}" target="" class="nav-link">My Shelf</a>
+                </li>
+                {% endif %}
                 {% if request.user.is_authenticated %}
                 {% if request.user.is_admin %}
                     {% if '/blog/' in request.path %}

@@ -12,163 +12,114 @@
 <body>
 {% block body_content %}
 <div class="container">
-	<div class="row">
-		<div class="col-md-10 col-sm-10 offset-md-1 offset-sm-1">
-			<div class="row mx-1">
-				<!-- <div class="col-md-4 text-center" style="background-color:blue;"> -->
-				{% if book.book_cover %}
-				<div class="col-md-4 text-center">
-					<img class="card-img my-4 img-fluid img-thumbnail"
-					data-src="holder.js/240x320?theme=thumb" 
-					alt="Thumbnail [240x320]" 
-					style="display:block; max-width:220px; height:auto; margin:auto;" 
-					src="{{ book.book_cover.url }}" 
-					data-holder-rendered="true">
-				</div>
-				{% endif %}
-				<!-- <div class="col-md-8" style="background-color:red;"> -->
-				<div class="col-md-8">
-					<div class="row">
-						<h1 class="col-md-12 mt-4 mb-0">{{ book.book_title }}</h1>
-						{% if book.sub_title %}
-						<h1 class="col-md-12 mt-0 mb-1 pb-1">
-							<small>{{ book.sub_title }}</small>
-						</h1>
-						{% endif %}
-					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Author: <strong>{{ book.authors }}</strong></span>
-					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Press: <strong>{{ book.presses }}</strong></a></span>
-					</div>
-					<div class="row my-1">
-						<span class="col-md-12 lead">Publish Date: <strong>{{ book.pub_date }}</strong></span>
-					</div>
-					{% if book.book_rates %}
-					<div class="row my-1 justify-content-start">
-						<div class="col-auto pr-0 align-self-center"><span class="lead">Rates:</span></div>
-						<div class="col">{% ratings item=book read_only=True template_name="common/star_ratings.html" %}</div>
-					</div>
-					{% endif %}
-					{% for tag in book.book_tag.all %}
-					<a href="{% url 'book:book_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
-					{% endfor %}
-				</div>
-			</div>
+	{% include 'book/book_profile.html' with book=book user_rate=False add_to_shelf=True booklog=booklog view_booklog=True %}
 
-			<div class="row mx-1 my-4">
-				<div class="col-md-12">
-					<p class="lead"><strong>Book Introduction</strong></p>
-					<hr />
-				</div>
-				<div class="col-md-12">
-					<p>{{ book.get_book_intro_html }}</p>
-				</div>
-			</div>
-			<br />
-			<br />
-	
-			<!-- <div class="my-5">
-				<p class="content-markdown">{{ book.get_book_intro_html }}</p>
-			</div> -->
-	
-			{% if request.user.is_authenticated and request.user.is_admin %}
-			<div class="row justify-content-end">
-				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
-				</div>
-				<div class="col-auto col-offset-2">
-					<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
-				</div>
-			</div>
-			{% endif %}
-	
+	<div class="row my-4">
+		<div class="col-md-12">
+			<p class="lead"><strong>Book Introduction</strong></p>
 			<hr />
-			<h4>Comments</h4>
-			<br /> 
-			{% if request.user.is_authenticated %}
-			<form method="POST" action="" enctype="multipart/form-data">
-				{% csrf_token %}
-				{{ comment_form | crispy }}
-				<!-- {{ comment_form }} -->
-				<div class="row justify-content-end">
-					<div class="col-auto col-offset-2">
-						<button class="btn btn-default" type="submit">Submit</button>
-					</div>
-				</div>
-			</form>
-			{% endif %}
+		</div>
+		<div class="col-md-12">
+			<p>{{ book.get_book_intro_html }}</p>
+		</div>
+	</div>
+	<br />
+	<br />
+	
+	{% if request.user.is_authenticated and request.user.is_admin %}
+	<div class="row justify-content-end">
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
+		</div>
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+	{% endif %}
+	
+	<hr />
+	<h4>Comments</h4>
+	<br /> 
+	{% if request.user.is_authenticated %}
+	<form method="POST" action="" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ comment_form | crispy }}
+		<!-- {{ comment_form }} -->
+		<div class="row justify-content-end">
+			<div class="col-auto col-offset-2">
+				<button class="btn btn-default" type="submit">Submit</button>
+			</div>
+		</div>
+	</form>
+	{% endif %}
 
+	<br />
+	{% for comment in book_comments %}
+	<div class="blockquote">
+		<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
+		<div class="row">
+			<div class="col-sm-11 offset-sm-1">
+				<div class="text-justify">{{ comment.get_comment_content_html }}</div>
+			</div>
+		</div>
+
+		<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
+			<small class="col-auto">{{ comment.comment_date_time }}</small>
 			<br />
-			{% for comment in book_comments %}
-			<div class="blockquote">
-				<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
-				<div class="row">
-					<div class="col-sm-11 offset-sm-1">
-						<div class="text-justify">{{ comment.get_comment_content_html }}</div>
-					</div>
-				</div>
+			<div class="col-8 d-flex justify-content-end align-items-center">
+				{% if comment.get_children %}
+				<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
+				<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
+				{% endif %} {% if comment.get_children or request.user.is_authenticated %}
+				<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
+				{% endif %}
+			</div>
+		</div>
 
-				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
-					<small class="col-auto">{{ comment.comment_date_time }}</small>
-					<br />
-					<div class="col-8 d-flex justify-content-end align-items-center">
-						{% if comment.get_children %}
-						<small style="margin-right:10px;">{{ comment.get_children.count }} Comments</small>
-						<a class="btn btn-sm btn-default" href="{{ comment.get_absolute_url }}" style="margin-right:10px;">Discussion</a>
-						{% endif %} {% if comment.get_children or request.user.is_authenticated %}
-						<button class="btn btn-sm btn-default comment-reply-btn">Replies</button>
-						{% endif %}
-					</div>
-				</div>
-
-				<div class="row comment-reply" style="display:none;">
-					{% if comment.get_children %} 
-					{% for child_comment in comment.get_children %}
-					<div class="col-sm-11 offset-sm-1">
-						<!-- <div class="blockquote" style="margin-bottom:2%;padding-bottom:2%;"> -->
-						<div class="blockquote">
-							<p class="lead"><strong>{{ child_comment.comment_user }}:</strong></p>
-							<div class="row">
-								<div class="col-sm-11 offset-sm-1">
-									<p class="text-justify">{{ child_comment.get_comment_content_html }}</p>
-								</div>
-							</div>
-							<div class="row justify-content-between align-items-center" style="margin-top:2%;">
-								<small class="col-auto">{{ child_comment.comment_date_time }}</small>
-							</div>
+		<div class="row comment-reply" style="display:none;">
+			{% if comment.get_children %} 
+			{% for child_comment in comment.get_children %}
+			<div class="col-sm-11 offset-sm-1">
+				<!-- <div class="blockquote" style="margin-bottom:2%;padding-bottom:2%;"> -->
+				<div class="blockquote">
+					<p class="lead"><strong>{{ child_comment.comment_user }}:</strong></p>
+					<div class="row">
+						<div class="col-sm-11 offset-sm-1">
+							<p class="text-justify">{{ child_comment.get_comment_content_html }}</p>
 						</div>
 					</div>
-					{% endfor %} 
-					{% endif %}
-					{% if request.user.is_authenticated %}
-					<div class="col-sm-11 offset-sm-1" style="padding-top:2%;">
-						<form method="POST" action="" enctype="multipart/form-data">
-							{% csrf_token %}
-							{{ comment_form | crispy }}
-							<!-- {{ comment_form }} -->
-							<input type="hidden" name="parent_id" value="{{ comment.id }}">
-							<div class="row justify-content-end">
-								<div class="col-auto col-offset-2">
-									<button class="btn btn-sm btn-default" type="submit">Submit</button>
-								</div>
-							</div>
-						</form>
+					<div class="row justify-content-between align-items-center" style="margin-top:2%;">
+						<small class="col-auto">{{ child_comment.comment_date_time }}</small>
 					</div>
-					{% endif %}
 				</div>
 			</div>
-			<!-- <blockquote class="blockquote col-10 offset-1">
-				<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>
-				<footer class="blockquote-footer">{{ comment.comment_user }} at <cite title="Source Title">{{ comment.comment_date_time }}</cite></footer>
-			</blockquote> -->
-			{% endfor %}
+			{% endfor %} 
+			{% endif %}
+			{% if request.user.is_authenticated %}
+			<div class="col-sm-11 offset-sm-1" style="padding-top:2%;">
+				<form method="POST" action="" enctype="multipart/form-data">
+					{% csrf_token %}
+					{{ comment_form | crispy }}
+					<!-- {{ comment_form }} -->
+					<input type="hidden" name="parent_id" value="{{ comment.id }}">
+					<div class="row justify-content-end">
+						<div class="col-auto col-offset-2">
+							<button class="btn btn-sm btn-default" type="submit">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			{% endif %}
 		</div>
-		<br />
-		<br />
-		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 	</div>
+	<!-- <blockquote class="blockquote col-10 offset-1">
+		<p class="text-justify mb-1">{{ comment.get_comment_content_markdown }}</p>
+		<footer class="blockquote-footer">{{ comment.comment_user }} at <cite title="Source Title">{{ comment.comment_date_time }}</cite></footer>
+	</blockquote> -->
+	{% endfor %}
+	<br />
+	<br />
+	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 </div>
 {% endblock %}
 </body>
