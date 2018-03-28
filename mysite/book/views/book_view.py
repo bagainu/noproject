@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -87,25 +87,29 @@ class BookDetailView(View):
         context = {
             'booklog': booklog,
             'book': book,
-            # 'book_comments': book.book_comment.filter(parent_comment=None).order_by('-comment_date_time'),
-            'book_comments': [],
+            # the booklog_comment is the related_query_name of BookLog and used as a reverse lookup from Comment
+            'book_comments': Comment.objects.filter(booklog_comment__booklog_book=book, parent_comment=None).order_by('-comment_date_time'),
             'comment_form': CommentForm(),
         }
         return render(request, 'book/book_page/detail.html', context)
 
+    @login_required
     def post(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
         if request.user.is_authenticated:
             comment_form = CommentForm(request.POST, request.FILES)
             if comment_form.is_valid():
                 comment_instance = comment_form.save(commit=False)
-                comment_instance.comment_user = request.user
-                comment_instance.content_type = ContentType.objects.get_for_model(Book)
-                comment_instance.content_object = book 
-                comment_instance.object_id = book.id
                 parent_id = request.POST.get('parent_id')
                 if parent_id is not None:
-                    comment_instance.parent_comment = Comment.objects.get(pk=int(parent_id))
+                    parent_obj = Comment.objects.get(pk=int(parent_id))
+                else:
+                    return self.get(request, book_id)
+                comment_instance.parent_comment = parent_obj
+                comment_instance.comment_user = request.user
+                comment_instance.content_type = ContentType.objects.get_for_model(BookLog)
+                comment_instance.content_object = BookLog.objects.get(booklog_book=book, booklog_owner=parent_obj.comment_user) 
+                comment_instance.object_id = book.id
                 comment_form.save()
                 comment_form.save_m2m()
                 return HttpResponseRedirect(book.get_absolute_url())

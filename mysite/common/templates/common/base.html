@@ -96,10 +96,9 @@
 <!-- custom js -->
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".comment-reply-btn").click(function(event){
+	$(".new-comment-btn").click(function(event){
 		event.preventDefault();
-		// $(this).parent().parent().next(".comment-reply").fadeToggle();
-		$(".comment-reply").fadeToggle();
+		$(".new-comment").fadeToggle();
 	});
 
 	//Check to see if the window is top if not then display button

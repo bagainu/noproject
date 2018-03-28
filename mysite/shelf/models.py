@@ -17,7 +17,7 @@ from comments.models import Comment
 
 
 class BookLog(models.Model):
-    booklog_book = models.OneToOneField(Book, on_delete=models.CASCADE, default=1)
+    booklog_book = models.ForeignKey(Book, on_delete=models.CASCADE, default=1)
     booklog_owner = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     booklog_comment = GenericRelation(Comment, related_query_name='booklog_comment')
     booklog_post = GenericRelation(Post, related_query_name='booklog_post')

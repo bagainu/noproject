@@ -13,7 +13,6 @@ from markdown_deux import markdown
 
 class Comment(models.Model):
     comment_user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
-    # comment_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')

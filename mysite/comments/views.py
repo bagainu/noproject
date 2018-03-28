@@ -35,10 +35,11 @@ def detail(request, comment_id):
 def delete(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     if request.method == "POST":
-        if comment.parent_comment:
-            redirect_url = comment.parent_comment.get_absolute_url()
-        else:
-            redirect_url = comment.content_object.get_absolute_url()
+        # if comment.parent_comment:
+        #     redirect_url = comment.parent_comment.get_absolute_url()
+        # else:
+        #     redirect_url = comment.content_object.get_absolute_url()
+        redirect_url = comment.content_object.get_absolute_url()
         comment.delete()
         return HttpResponseRedirect(redirect_url)
     context = {

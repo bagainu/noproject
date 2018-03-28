@@ -74,14 +74,10 @@ class BookLogCreateView(View):
     
     def post(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
-        book_shelf, created = BookShelf.objects.get_or_create(shelf_owner=request.user)
-        booklog, created = BookLog.objects.get_or_create(booklog_book=book, booklog_owner=request.user)
+        book_shelf, shelf_created = BookShelf.objects.get_or_create(shelf_owner=request.user)
+        booklog, booklog_created = BookLog.objects.get_or_create(booklog_book=book, booklog_owner=request.user)
         book_shelf.shelf_books.add(booklog)
-        previous_url = request.META.get('HTTP_REFERER')
-        if previous_url:
-            return HttpResponseRedirect(booklog.get_absolute_url())
-        else:
-            return HttpResponseRedirect(booklog.get_absolute_url())
+        return HttpResponseRedirect(booklog.get_absolute_url())
 
 
 @method_decorator(login_required, name='dispatch')
@@ -145,6 +141,9 @@ class BookLogDetailView(View):
             comment_instance.content_type = ContentType.objects.get_for_model(BookLog)
             comment_instance.content_object = booklog
             comment_instance.object_id = booklog.id
+            parent_id = request.POST.get('parent_id')
+            if parent_id is not None:
+                comment_instance.parent_comment = Comment.objects.get(pk=int(parent_id))
             comment_form.save()
             comment_form.save_m2m()
             return HttpResponseRedirect(booklog.get_absolute_url())
@@ -174,5 +173,4 @@ class BookLogDeleteView(View):
     def post(self, request, booklog_id):
         booklog = get_object_or_404(BookLog, pk=booklog_id)
         booklog.delete()
-        return HttpResponseRedirect(reverse("shelf:bookshelf_view", user_id=request.user.id))
-
+        return HttpResponseRedirect(reverse("shelf:bookshelf_view", kwargs={ 'user_id': request.user.id }))
