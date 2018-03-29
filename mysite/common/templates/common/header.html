@@ -13,7 +13,7 @@
         <div class="navbar collapse navbar-collapse" id="navbarToggler">
             <ul class="nav navbar-nav">
                 <li class="nav-item">
-                    <a href="{% url 'blog:blog_index' %}" target="" class="nav-link">Blogs</a>
+                    <a href="{% url 'blog:blog_index' %}" target="" class="nav-link">Posts</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" href="#pk" role="button" aria-haspopup="true" aria-expanded="false">Library</a>
@@ -34,6 +34,9 @@
                 {% if request.user.is_authenticated %}
                 <li class="nav-item">
                     <a href="{% url 'shelf:bookshelf_view' user_id=request.user.id %}" target="" class="nav-link">My Shelf</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'blog:blog_index_own' user_id=request.user.id %}" target="" class="nav-link">My Post</a>
                 </li>
                 {% endif %}
                 {% if request.user.is_authenticated %}

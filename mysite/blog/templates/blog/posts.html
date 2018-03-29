@@ -5,7 +5,9 @@
 			<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
 		</a>
 		<div class="row">
-			<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
+			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 
+				<a href="{% url 'blog:blog_index_own' user_id=post.blog_author.id %}"><strong>{{ post.blog_author }}</strong></a>
+			</div>
 			<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 		</div>
 		<div class="card-text my-auto">

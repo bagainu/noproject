@@ -1,12 +1,14 @@
-from django.db.models import Q
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+from django.forms import modelformset_factory, inlineformset_factory, forms
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
-from django.forms import modelformset_factory, inlineformset_factory, forms
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.html import format_html
 
 from .models import Post, PostTag
 from .forms import PostForm
@@ -22,6 +24,11 @@ from utils.paginator import page_list
 def index(request):
     post_list = Post.objects.order_by('-update_date_time') # use '-' to order items in reversed order
 
+    owner_id = request.GET.get('owner_id')
+    if owner_id:
+        user = get_object_or_404(get_user_model(), pk=owner_id)
+        post_list = post_list.filter(blog_author=user)
+
     qs = request.GET.get('qs')
     if qs:
         post_list = post_list.filter(
@@ -36,6 +43,37 @@ def index(request):
     tag_list = PostTag.objects.all()
 
     context = {
+        'title': 'Posts',
+        'post_list': page_post_list, #post_list
+        'tag_list': tag_list,
+    }
+    return render(request, 'blog/index.html', context)
+
+
+@login_required
+def index_own(request, user_id):
+    user = get_object_or_404(get_user_model(), pk=user_id)
+    post_list = Post.objects.filter(blog_author=user).order_by('-update_date_time') # use '-' to order items in reversed order
+
+    qs = request.GET.get('qs')
+    if qs:
+        post_list = post_list.filter(
+            Q(blog_title__icontains=qs) |
+            Q(blog_content__icontains=qs) |
+            Q(blog_author__username__icontains=qs) |
+            Q(blog_author__email__icontains=qs) |
+            Q(blog_tag__name__icontains=qs)
+        ).distinct()
+
+    page_post_list = page_list(request, post_list, 5)
+    tag_list = PostTag.objects.all()
+
+    title = format_html("""<i>{0}</i>'s Post""".format(user.username))
+    if request.user == user:
+        title = 'My Posts'
+
+    context = {
+        'title': title,
         'post_list': page_post_list, #post_list
         'tag_list': tag_list,
     }

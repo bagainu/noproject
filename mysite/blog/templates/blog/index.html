@@ -9,7 +9,7 @@
 <div class="container">
 	<div class="row flex-nowrap justify-content-left align-items-center">
 		<div class="col-12 pt-2 ml-2 text-left">
-			<h1>Blogs</h1>
+			<h1>{{ title }}</h1>
 		</div>
 	</div>
 
@@ -24,12 +24,12 @@
 			<!-- pagination -->
 			<div class="row justify-content-center">
 				<div class="col-auto" aria-label="Page navigation">
-				{% include 'common/paginator.html' with item_list=post_list %}
+				{% include 'common/paginator.html' with item_list=post_list qs_extern='&owner_id={{ request.GET.owner_id }}' %}
 				</div>
 			</div>
 			{% else %} 
 			<!-- if no blogs -->
-			<p class="text-center">No blogs.</p>
+			<p class="text-center">No Posts.</p>
 			{% endif %}
 
 			<br />
