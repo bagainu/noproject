@@ -8,11 +8,14 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
+from blog.models import Post
 from book.forms import BookForm
 from book.models import Author, Press, Book, BookTag
 from comments.forms import CommentForm
 from comments.models import Comment
 from shelf.models import BookLog
+
+from utils.paginator import page_list
 
 # Create your views here.
 
@@ -32,21 +35,10 @@ class BookIndexView(View):
                 Q(book_tag__name__icontains=qs)
             ).distinct()
 
-        paginator = Paginator(book_list, 5)
-        page = request.GET.get('page')
-        try:
-            page_book_list = paginator.page(page)
-        except PageNotAnInteger:
-            page_book_list = paginator.page(1)
-        except EmptyPage:
-            page_book_list = paginator.page(paginator.num_pages)
-        except:
-            page_book_list = None
-
         tag_list = BookTag.objects.all()
 
         context = {
-            'book_list': page_book_list, #post_list
+            'book_list': page_list(request, book_list, 5), #post_list
             'tag_list': tag_list,
         }
         return render(request, 'book/book_page/index.html', context)
@@ -81,14 +73,22 @@ class BookDetailView(View):
 
     def get(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
-        booklog = None
+        user_booklog = None
         if request.user.is_authenticated:
-            booklog = BookLog.objects.filter(booklog_owner=request.user, booklog_book=book).first()
+            user_booklog = BookLog.objects.filter(booklog_owner=request.user, booklog_book=book).first()
+
+        # the booklog_comment is the related_query_name of BookLog and used as a reverse lookup from Comment
+        book_comments = Comment.objects.filter(booklog_comment__booklog_book=book, parent_comment=None).order_by('-comment_date_time')
+        page_book_comments = page_list(request, book_comments, 5, 'c-page') 
+
+        book_posts = Post.objects.filter(booklog_post__booklog_book=book).order_by('-create_date_time')
+        page_book_posts = page_list(request, book_posts, 5, 'p-page')
+
         context = {
-            'booklog': booklog,
+            'booklog': user_booklog,
             'book': book,
-            # the booklog_comment is the related_query_name of BookLog and used as a reverse lookup from Comment
-            'book_comments': Comment.objects.filter(booklog_comment__booklog_book=book, parent_comment=None).order_by('-comment_date_time'),
+            'book_comments': page_book_comments,
+            'book_posts': page_book_posts,
             'comment_form': CommentForm(),
         }
         return render(request, 'book/book_page/detail.html', context)

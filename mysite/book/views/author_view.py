@@ -10,6 +10,8 @@ from django.views import View
 from book.forms import AuthorForm 
 from book.models import Author, Press, Book
 
+from utils.paginator import page_list
+
 # Create your views here.
 
 # Author view
@@ -25,17 +27,7 @@ class AuthorIndexView(View):
                 Q(author_intro__icontains=qs)
             ).distinct()
 
-        paginator = Paginator(author_list, 5)
-        page = request.GET.get('page')
-        try:
-            page_author_list = paginator.page(page)
-        except PageNotAnInteger:
-            page_author_list = paginator.page(1)
-        except EmptyPage:
-            page_author_list = paginator.page(paginator.num_pages)
-        except:
-            page_author_list = None
-
+        page_author_list = page_list(request, author_list, 5)
         context = {
             'author_list': page_author_list,
         }

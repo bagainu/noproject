@@ -1,0 +1,17 @@
+{% for post in post_list %}
+<div class="card mb-4 box-shadow">
+	<div class="card-body align-items-start">
+		<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
+			<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
+		</a>
+		<div class="row">
+			<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
+			<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
+		</div>
+		<div class="card-text my-auto">
+			<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
+		</div>
+	</div>
+</div>
+<br />
+{% endfor %}

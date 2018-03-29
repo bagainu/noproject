@@ -10,6 +10,8 @@ from django.views import View
 from book.models import Author, Press, Book
 from book.forms import PressForm
 
+from utils.paginator import page_list
+
 # Create your views here.
 
 # Press view
@@ -23,18 +25,8 @@ class PressIndexView(View):
             press_list = press_list.filter(
                 Q(press_name__icontains=qs)
             ).distinct()
-
-        paginator = Paginator(press_list, 5)
-        page = request.GET.get('page')
-        try:
-            page_press_list = paginator.page(page)
-        except PageNotAnInteger:
-            page_press_list = paginator.page(1)
-        except EmptyPage:
-            page_press_list = paginator.page(paginator.num_pages)
-        except:
-            page_press_list = None
-
+        
+        page_press_list = page_list(request, press_list, 5)
         context = {
             'press_list': page_press_list,
         }

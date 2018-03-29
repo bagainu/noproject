@@ -20,47 +20,13 @@
 		<!-- blog posts -->
 		<div class="col-md-8">
 			{% if post_list %}
-			{% for post in post_list %}
-			<div class="card mb-4 box-shadow">
-				<div class="card-body align-items-start">
-					<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
-						<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
-					</a>
-					<div class="row">
-						<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
-						<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
-					</div>
-					<div class="card-text my-auto">
-						<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
-					</div>
-					<!-- <a href="{% url 'blog:blog_detail' blog_id=post.id %}">Continue reading</a> -->
-				</div>
-			</div>
-			<br />
-			{% endfor %}
-
+			{% include 'blog/posts.html' with post_list=post_list %}
 			<!-- pagination -->
 			<div class="row justify-content-center">
-				<!-- <div class="pagination col-auto">
-					<span class="step-links">
-						{% if post_list.has_previous %}
-						<a href="?page=1{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">&laquo; First</a>
-						<a href="?page={{ post_list.previous_page_number }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Previous</a>
-						{% endif %}
-						<span class="current">
-							Page {{ post_list.number }} of {{ post_list.paginator.num_pages }}
-						</span>
-						{% if post_list.has_next %}
-						<a href="?page={{ post_list.next_page_number }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Next</a>
-						<a href="?page={{ post_list.paginator.num_pages }}{% if request.GET.qs %}&qs={{ request.GET.qs }}{% endif %}">Last &raquo;</a>
-						{% endif %}
-					</span>
-				</div> -->
 				<div class="col-auto" aria-label="Page navigation">
 				{% include 'common/paginator.html' with item_list=post_list %}
 				</div>
 			</div>
-
 			{% else %} 
 			<!-- if no blogs -->
 			<p class="text-center">No blogs.</p>

@@ -16,6 +16,8 @@ from comments.models import Comment
 from blog.forms import PostForm
 from book.models import Book
 
+from utils.paginator import page_list
+
 # Create your views here.
 
 
@@ -42,17 +44,7 @@ class BookShelfView(View):
                 Q(booklog_intro__icontains=qs)
             ).distinct()
 
-        paginator = Paginator(booklogs_list, 20)
-        page = request.GET.get('page')
-        try:
-            page_booklogs_list = paginator.page(page)
-        except PageNotAnInteger:
-            page_booklogs_list = paginator.page(1)
-        except EmptyPage:
-            page_booklogs_list = paginator.page(paginator.num_pages)
-        except:
-            page_booklogs_list = None
-
+        page_booklogs_list = page_list(request, booklogs_list, 20)
         context = {
             'title': book_shelf.shelf_name,
             'booklog_list': page_booklogs_list,
@@ -113,16 +105,8 @@ class BookLogDetailView(View):
     def get(self, request, booklog_id):
         booklog = get_object_or_404(BookLog, pk=booklog_id)
         booklog_posts = booklog.booklog_post.all().order_by('-update_date_time')
-        paginator = Paginator(booklog_posts, 20)
-        page = request.GET.get('page')
-        try:
-            page_booklog_posts_list = paginator.page(page)
-        except PageNotAnInteger:
-            page_booklog_posts_list = paginator.page(1)
-        except EmptyPage:
-            page_booklog_posts_list = paginator.page(paginator.num_pages)
-        except:
-            page_booklog_posts_list = None
+
+        page_booklog_posts_list = page_list(request, booklog_posts, 5)
 
         context = {
             'booklog': booklog,

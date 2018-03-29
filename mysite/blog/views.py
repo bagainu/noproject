@@ -14,6 +14,8 @@ from taggit.models import Tag
 from comments.forms import CommentForm
 from comments.models import Comment
 from shelf.models import BookLog
+
+from utils.paginator import page_list
 # Create your views here.
 
 
@@ -30,17 +32,7 @@ def index(request):
             Q(blog_tag__name__icontains=qs)
         ).distinct()
 
-    paginator = Paginator(post_list, 5)
-    page = request.GET.get('page')
-    try:
-        page_post_list = paginator.page(page)
-    except PageNotAnInteger:
-        page_post_list = paginator.page(1)
-    except EmptyPage:
-        page_post_list = paginator.page(paginator.num_pages)
-    except:
-        page_post_list = None
-
+    page_post_list = page_list(request, post_list, 5)
     tag_list = PostTag.objects.all()
 
     context = {

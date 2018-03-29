@@ -61,47 +61,13 @@
 		</div>
 		<div class="col-md-12 my-4">
 			{% if booklog_posts %}
-			{% for post in booklog_posts %}
-			<div class="card mb-4 box-shadow">
-				<div class="card-body align-items-start">
-					<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
-						<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
-					</a>
-					<div class="row">
-						<div class="col-sm-auto d-inline-block mb-2 text-primary">By {{ post.blog_author }}</div>
-						<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
-					</div>
-					<div class="card-text my-auto">
-						<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
-					</div>
-				</div>
-			</div>
-			<br />
-			{% endfor %}
-		
+			{% include 'blog/posts.html' with post_list=booklog_posts %}
 			<!-- pagination of booklog_posts -->
 			<div class="row justify-content-center">
 				<div class="col-auto" aria-label="Page navigation">
 				{% include 'common/paginator.html' with item_list=booklog_posts %}
 				</div>
 			</div>
-
-			<!-- blockquote style post list -->
-			<!-- <div class="blockquote">
-				<p class="lead"><strong>{{ post.blog_title }}:</strong></p>
-				<div class="row">
-					<div class="col-sm-11 offset-sm-1">
-						<div class="text-justify">{{ post.get_blog_content_html|truncatechars_html:100 }}</div>
-					</div>
-				</div>
-				<div class="row flex-nowrap justify-content-between align-items-center" style="margin-top:2%;">
-					<small class="col-auto">{{ post.update_date_time }}</small>
-					<br />
-					<div class="col-8 d-flex justify-content-end align-items-center">
-						<a class="btn btn-sm btn-default" href="{{ post.get_absolute_url }}" style="margin-right:10px;">View Post</a>
-					</div>
-				</div>
-			</div> -->
 			{% else %}
 			<p>Doesn't this book touch you?</p>
 			{% endif %}
