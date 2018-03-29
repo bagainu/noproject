@@ -117,10 +117,13 @@ def detail(request, blog_id):
             comment_form.save()
             comment_form.save_m2m()
             return HttpResponseRedirect(post.get_absolute_url())
+
+    post_comments = post.blog_comment.filter(parent_comment=None).order_by('-comment_date_time')
+    page_post_comments = page_list(request, post_comments, 10)
     context = {
         'booklog': post.content_object,
         'post': post,
-        'post_comments': post.blog_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+        'post_comments': page_post_comments,
         'comment_form': CommentForm(),
     }
     return render(request, 'blog/detail.html', context)
