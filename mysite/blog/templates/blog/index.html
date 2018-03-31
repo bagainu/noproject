@@ -1,7 +1,7 @@
 ﻿{% extends "common/base.html" %}
 
 <title>
-{% block head_title %}Blogs{% endblock %}
+{% block head_title %}{{ title }}{% endblock %}
 </title>
 
 <body>
@@ -20,7 +20,7 @@
 		<!-- blog posts -->
 		<div class="col-md-8">
 			{% if post_list %}
-			{% include 'blog/posts.html' with post_list=post_list %}
+			{% include 'blog/posts.html' with post_list=post_list broad=True %}
 			<!-- pagination -->
 			<div class="row justify-content-center">
 				<div class="col-auto" aria-label="Page navigation">
@@ -53,6 +53,7 @@
 				</div>
 			</div>
 
+			{% if tag_list %}
 			<div class="card">
 				<h5 class="card-header">Catagory</h5>
 				<div class="card-body">
@@ -63,6 +64,7 @@
 					</form>
 				</div>
 			</div>
+			{% endif %}
 
 		</div>
 

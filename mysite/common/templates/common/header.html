@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a href="{% url 'blog:blog_index' %}" target="" class="nav-link">Posts</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'sharelist:share_index' %}" target="" class="nav-link">Shares</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" id="dropdownMenuButton" href="#pk" role="button" aria-haspopup="true" aria-expanded="false">Library</a>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -36,7 +39,10 @@
                     <a href="{% url 'shelf:bookshelf_view' user_id=request.user.id %}" target="" class="nav-link">My Shelf</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'blog:blog_index_own' user_id=request.user.id %}" target="" class="nav-link">My Post</a>
+                    <a href="{% url 'blog:blog_index_own' user_id=request.user.id %}" target="" class="nav-link">My Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'sharelist:share_index_own' user_id=request.user.id %}" target="" class="nav-link">My Shares</a>
                 </li>
                 {% endif %}
                 {% if request.user.is_authenticated %}
@@ -87,7 +93,6 @@
     </div>
 </nav>
 
-<br />
 <br />
 <br />
 <br />

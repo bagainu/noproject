@@ -1,6 +1,10 @@
+{% if not broad %}
 <div class="row mb-3 justify-content-center">
+{% endif %}
 {% for post in post_list %}
+{% if not broad %}
 <div class="col-md-10 col-offset-md-1 col-sm-10 col-offset-sm-1 my-1">
+{% endif %}
 <div class="card mb-4 box-shadow">
 	<div class="card-body align-items-start">
 		<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
@@ -17,6 +21,10 @@
 		</div>
 	</div>
 </div>
+{% if not broad %}
 </div>
+{% endif %}
 {% endfor %}
+{% if not broad %}
 </div>
+{% endif %}

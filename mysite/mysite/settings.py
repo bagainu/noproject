@@ -38,6 +38,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     # local apps
     'shelf.apps.ShelfConfig',
+    'sharelist.apps.SharelistConfig',
     'common.apps.CommonConfig',
     'account.apps.AccountConfig',
     'book.apps.BookConfig',

@@ -17,6 +17,10 @@ body {
     background-color: #FFFCF5;
 }
 
+.blockquote small {
+    font-size: 60% !important;
+}
+
 .form-control.selectmultiple {
     height: inherit !important;
 }
@@ -57,7 +61,7 @@ body {
 }
 
 .navbar .btn {
-    margin: 5px 0px !important;
+    margin: 8px 0px !important;
 }
 
 .navbar-nav {
