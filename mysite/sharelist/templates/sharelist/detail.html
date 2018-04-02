@@ -4,7 +4,7 @@
 
 <head>
 	<title>
-	{% block head_title %}{{ booklog.booklog_book.book_title }}{% endblock %}
+	{% block head_title %}{{ bookshare.share_title }}{% endblock %}
 	{% block head_extension %}{{ comment_form.media }}{% endblock %}
 	</title>
 </head>
@@ -12,21 +12,92 @@
 <body>
 {% block body_content %}
 <div class="container">
-	{% include 'book/book_profile.html' with book=booklog.booklog_book user_rate=True view_book=True %}
-	<hr />
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>{{ bookshare.share_title }}</h2>
+		</div>
+		<div class="col-sm-auto text-center">
+			<i>By <strong>{{ bookshare.share_user }}</strong></i>
+		</div>
+		<div class="col-sm-8">
+			<small>Last modified: {{ bookshare.share_update_date_time }} | Created: {{ bookshare.share_create_date_time }}</small>
+		</div>
+		<div class="col-sm-12">
+			{% for tag in bookshare.share_tag.all %}
+			<a href="{% url 'sharelist:share_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+			{% endfor %}
+		</div>
+	</div>
 
 	<div class="row my-5">
 		<div class="col-md-12">
 			<div class="row justify-content-between align-items-end">
 				<div class="col-auto">
-					<p class="lead"><strong>Reading Notes</strong></p>
-				</div>
-				<div class="col-auto col-offset-2">
-					<button class="btn btn-sm btn-success new-comment-btn">New Note</button>
+					<p class="lead"><strong>Share Introduction</strong></p>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12 my-4 new-comment" style="display:none;">
+		<div class="col-sm-10 offset-sm-1">
+			<p class="content-markdown">{{ bookshare.get_intro_content_html }}</p>
+		</div>
+	</div>
+
+	<div class="row my-5">
+		<div class="col-md-12">
+			<div class="row justify-content-between align-items-end">
+				<div class="col-auto">
+					<p class="lead"><strong>Share Books</strong></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-10 offset-md-1 my-4">
+			{% if bookshare_books %}
+			<div class="row">
+				{% for booklog in bookshare_books %}
+				<div class="col-lg-2 col-md-4 col-sm-6">
+					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
+					<div class="card box-shadow text-center center-block" style="height:200px; width:150px;">
+						{% if booklog.booklog_book.book_cover %}
+						<img class="card-img img-fluid img-thumbnail" 
+						data-src="holder.js/150x200?theme=thumb" 
+						alt="Book cover" 
+						style="object-fit:cover; display:block; max-width:150px; height:200px; margin:auto; padding:auto;"
+						src="{{ booklog.booklog_book.book_cover.url }}" 
+						data-holder-rendered="true"> 
+						{% else %}
+						<div class="card-body">
+							<h4 class="card-title text-primary">{{ booklog.booklog_book.book_title }}</h4>
+							<h5 class="card-subtitle text-muted">{{ booklog.booklog_book.sub_title }}</h5>
+							<p class="card-text">{{ booklog.get_booklog_intro_html|truncatechars_html:80 }}</p>
+						</div>
+						{% endif %}
+					</div>
+					</a>
+				</div>
+				{% endfor %}
+			</div>
+			<br />
+			<!-- pagination -->
+			<div class="row justify-content-center">
+				{% include 'common/paginator.html' with item_list=bookshare_books %}
+			</div>
+			{% else %}
+			<!-- if no books -->
+			<p class="text-center">No books.</p>
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="row my-5">
+		<div class="col-md-12">
+			<div class="row justify-content-between align-items-end">
+				<div class="col-auto">
+					<p class="lead"><strong>Comments</strong></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-10 offset-md-1 my-4">
 			{% if request.user.is_authenticated %}
 			<form method="POST" action="" enctype="multipart/form-data">
 				{% csrf_token %}
@@ -39,46 +110,19 @@
 			</form>
 			{% endif %}
 		</div>
-		<div class="col-md-12">
-			{% if booklog_comments %}
-			{% include "comments/comments.html" with comment_list=booklog_comments %}
-			{% else %}
-			<p class="my-4">Have anything in mind?</p>
-			{% endif %}
-		</div>
-	</div>
 
-	<div class="row my-5">
+		{% if bookshare_comments %}
 		<div class="col-md-12">
-			<div class="row justify-content-between align-items-end">
-				<div class="col-auto">
-					<p class="lead"><strong>Reading Posts</strong></p>
-				</div>
-				<div class="col-auto col-offset-2">
-					<a class="btn btn-success btn-sm" href="{% url 'shelf:booklog_createpost' booklog_id=booklog.id %}">New Post</a>
-				</div>
-			</div>
+			{% include "comments/comments.html" with comment_list=bookshare_comments %}
 		</div>
-		<div class="col-md-12 my-4">
-			{% if booklog_posts %}
-			{% include 'blog/posts.html' with post_list=booklog_posts %}
-			<!-- pagination of booklog_posts -->
-			<div class="row justify-content-center">
-				<div class="col-auto" aria-label="Page navigation">
-				{% include 'common/paginator.html' with item_list=booklog_posts %}
-				</div>
-			</div>
-			{% else %}
-			<p>Doesn't this book touch you?</p>
-			{% endif %}
-		</div>
+		{% endif %}
 	</div>
 	
 	{% if request.user.is_authenticated %}
 	<hr />
 	<div class="row justify-content-center">
 		<div class="col-auto col-offset-2">
-			<a href="{% url 'shelf:booklog_delete' booklog_id=booklog.id %}" class="btn btn-danger">Remove From Shelf</a>
+			<a href="{% url 'sharelist:share_delete' share_id=bookshare.id %}" class="btn btn-danger">Remove this share</a>
 		</div>
 	</div>
 	{% endif %}

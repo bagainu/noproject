@@ -24,7 +24,7 @@
 			<!-- pagination -->
 			<div class="row justify-content-center">
 				<div class="col-auto" aria-label="Page navigation">
-				{% include 'common/paginator.html' with item_list=post_list qs_extern='&owner_id={{ request.GET.owner_id }}' %}
+				{% include 'common/paginator.html' with item_list=post_list %}
 				</div>
 			</div>
 			{% else %} 

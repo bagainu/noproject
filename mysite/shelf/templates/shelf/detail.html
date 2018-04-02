@@ -26,7 +26,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-12 my-4 new-comment" style="display:none;">
+		<div class="col-md-10 offset-md-1 my-4 new-comment" style="display:none;">
 			{% if request.user.is_authenticated %}
 			<form method="POST" action="" enctype="multipart/form-data">
 				{% csrf_token %}
@@ -43,7 +43,11 @@
 			{% if booklog_comments %}
 			{% include "comments/comments.html" with comment_list=booklog_comments %}
 			{% else %}
-			<p class="my-4">Have anything in mind?</p>
+			<div class="row">
+				<div class="col-md-10 offset-md-1">
+					<p class="my-4">Have anything in mind?</p>
+				</div>
+			</div>
 			{% endif %}
 		</div>
 	</div>
@@ -69,7 +73,11 @@
 				</div>
 			</div>
 			{% else %}
-			<p>Doesn't this book touch you?</p>
+			<div class="row">
+				<div class="col-md-10 offset-md-1">
+					<p>Doesn't this book touch you?</p>
+				</div>
+			</div>
 			{% endif %}
 		</div>
 	</div>

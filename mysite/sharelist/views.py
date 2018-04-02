@@ -11,6 +11,8 @@ from django.utils.html import format_html
 from django.views import View
 
 from .models import BookShareList, ShareTag
+from comments.forms import CommentForm
+from comments.models import Comment
 
 from utils.paginator import page_list
 # Create your views here.
@@ -80,10 +82,34 @@ class ShareListCreateView(View):
 class ShareListDetailView(View):
 
     def get(self, request, share_id):
-        return HttpResponse('detail get')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        bookshare_books = bookshare.share_books.all()
+        page_bookshare_books = page_list(request, bookshare_books, 20)
+
+        context = {
+            'bookshare': bookshare,
+            'bookshare_books': page_bookshare_books,
+            'bookshare_comments': bookshare.share_comment.filter(parent_comment=None).order_by('-comment_date_time'),
+            'comment_form': CommentForm(),
+        }
+        return render(request, 'sharelist/detail.html', context)
     
     def post(self, request, share_id):
-        return HttpResponse('detail post')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        comment_form = CommentForm(request.POST, request.FILES)
+        if comment_form.is_valid():
+            comment_instance = comment_form.save(commit=False)
+            comment_instance.comment_user = request.user
+            comment_instance.content_type = ContentType.objects.get_for_model(BookShareList)
+            comment_instance.content_object =bookshare 
+            comment_instance.object_id = bookshare.id
+            parent_id = request.POST.get('parent_id')
+            if parent_id is not None:
+                comment_instance.parent_comment = Comment.objects.get(pk=int(parent_id))
+            comment_form.save()
+            comment_form.save_m2m()
+            return HttpResponseRedirect(bookshare.get_absolute_url())
+        return self.get(request, share_id)
 
 
 @method_decorator(login_required, name='dispatch')

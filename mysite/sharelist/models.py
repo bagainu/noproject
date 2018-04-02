@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
 from django.urls import reverse
+from django.utils.html import format_html
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
@@ -38,3 +39,6 @@ class BookShareList(models.Model):
 
     def get_absolute_url(self):
         return reverse('sharelist:share_detail', kwargs={ 'share_id': self.id, })
+
+    def get_intro_content_html(self):
+        return format_html(self.share_intro)

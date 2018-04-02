@@ -17,27 +17,25 @@
 	<hr />
 	{% endif %}
 
-	<div class="row">
-		<div class="col-sm-10 offset-sm-1">
 			<div class="row">
 				<div class="col-sm-12">
 					<h2>{{ post.blog_title }}</h2>
-					<br />
+				</div>
+				<div class="col-sm-auto text-center">
 					<i>By <strong>{{ post.blog_author }}</strong></i>
-					<br />
-					<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}
-						<wb:share-button addition="simple" style="padding-left:2%;">{{ request.build_absolute_uri }}</wb:share-button>
-					</small>
-					<br />
+				</div>
+				<div class="col-sm-8">
+					<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}</small>
+				</div>
+				<div class="col-sm-12">
 					{% for tag in post.blog_tag.all %}
 					<a href="{% url 'blog:blog_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
 					{% endfor %}
-					<!-- <wb:like type="simple"></wb:like> -->
 				</div>
 			</div>
 	
 			<div class="row my-5">
-				<div class="col">
+				<div class="col-sm-10 offset-sm-1">
 					<p class="content-markdown">{{ post.get_blog_content_html }}</p>
 				</div>
 			</div>
@@ -65,7 +63,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-12 my-3">
+				<div class="col-sm-10 offset-sm-1 my-3">
 					{% if request.user.is_authenticated %}
 					<form method="POST" action="" enctype="multipart/form-data">
 						{% csrf_token %}
@@ -95,7 +93,6 @@
 		<br />
 		<br />
 		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
-	</div>
 </div>
 {% endblock %}
 </body>
