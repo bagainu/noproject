@@ -40,20 +40,21 @@
 					</div>
 				</div>
 				<br />
-				<br /> {% if request.user.is_authenticated and request.user.is_admin %}
-				<div class="row justify-content-end">
-					<div class="col-auto col-offset-2">
-						<a href="{% url 'book:author_update' author_id=author.id %}" class="btn btn-default">Edit</a>
-					</div>
-					<div class="col-auto col-offset-2">
-						<a href="{% url 'book:author_delete' author_id=author.id %}" class="btn btn-danger">Delete</a>
-					</div>
-				</div>
-				{% endif %}
+				<br />
 			</div>
-			<br />
-			<br />
 			<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+
+			{% if request.user.is_authenticated and request.user.is_admin %}
+			<hr />
+			<div class="row justify-content-center">
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'book:author_update' author_id=author.id %}" class="btn btn-default">Edit</a>
+				</div>
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'book:author_delete' author_id=author.id %}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 	{% endblock %}

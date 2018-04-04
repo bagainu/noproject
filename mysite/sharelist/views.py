@@ -11,6 +11,7 @@ from django.utils.html import format_html
 from django.views import View
 
 from .models import BookShareList, ShareTag
+from .forms import BookShareListForm
 from comments.forms import CommentForm
 from comments.models import Comment
 
@@ -75,10 +76,22 @@ class ShareListIndexOwnView(View):
 class ShareListCreateView(View):
 
     def get(self, request):
-        return HttpResponse('create get')
+        share_form = BookShareListForm()
+        context = {
+            'title': 'New Share',
+            'share_form': share_form,
+            'previous_url': request.META.get('HTTP_REFERER'),
+        }
+        return render(request, 'sharelist/create.html', context)
     
     def post(self, request):
-        return HttpResponse('create post')
+        share_form = BookShareListForm(request.POST or None, request.FILES or None)
+        if share_form.is_valid():
+            instance = share_form.save(commit=False)
+            instance.save()
+            share_form.save_m2m()
+            return HttpResponseRedirect(instance.get_absolute_url())
+        return self.get(request)
 
 
 class ShareListDetailView(View):
@@ -118,10 +131,24 @@ class ShareListDetailView(View):
 class ShareListUpdateView(View):
 
     def get(self, request, share_id):
-        return HttpResponse('update get')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        share_form = BookShareListForm(instance=bookshare)
+        context = {
+            'title': 'New Share',
+            'share_form': share_form,
+            'previous_url': request.META.get('HTTP_REFERER'),
+        }
+        return render(request, 'sharelist/create.html', context)
     
     def post(self, request, share_id):
-        return HttpResponse('update post')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        share_form = BookShareListForm(request.POST or None, request.FILES or None, instance=bookshare)
+        if share_form.is_valid():
+            instance = share_form.save(commit=False)
+            instance.save()
+            share_form.save_m2m()
+            return HttpResponseRedirect(instance.get_absolute_url())
+        return self.get(request, share_id)
 
 
 @method_decorator(login_required, name='dispatch')

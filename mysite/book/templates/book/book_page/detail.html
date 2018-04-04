@@ -22,21 +22,7 @@
 			<p>{{ book.get_book_intro_html }}</p>
 		</div>
 	</div>
-	<br />
-	<br />
 	
-	{% if request.user.is_authenticated and request.user.is_admin %}
-	<div class="row justify-content-end">
-		<div class="col-auto col-offset-2">
-			<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
-		</div>
-		<div class="col-auto col-offset-2">
-			<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
-		</div>
-	</div>
-	{% endif %}
-	
-	<hr />
 	<div class="row my-5">
 		<div class="col-md-12">
 			<div class="row justify-content-between align-items-end">
@@ -83,6 +69,18 @@
 		</div>
 	</div>
 	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+
+	{% if request.user.is_authenticated and request.user.is_admin %}
+	<hr />
+	<div class="row justify-content-center">
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'book:book_update' book_id=book.id %}" class="btn btn-default">Edit</a>
+		</div>
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'book:book_delete' book_id=book.id %}" class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}
 </body>

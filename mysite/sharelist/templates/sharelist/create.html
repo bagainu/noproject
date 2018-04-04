@@ -4,35 +4,38 @@
 <head>
 	<title>
 	{% block head_title %}{{ title }}{% endblock %}
-	{% block head_extension %}{{ book_form.media }}{% endblock %}
+	{% block head_extension %}{{ share_form.media }}{% endblock %}
 	</title>
 </head>
 
 <body>
 {% block body_content %}
 <div class="container">
-
-    {% include 'book/book_profile.html' with book=book user_rate=False view_book=True %}
-
-    <br />
-    <div class="row flex-nowrap justify-content-center align-items-center">
-        <div class="col-4 text-center">
-            <h3>{{ title }}</h3>
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <h2 class="text-center">{{ title }}</h2>
         </div>
     </div>
-    <br />
-    <div class="row flex-nowrap justify-content-center align-items-center">
-        <div class="col-auto text-center">
-            <p>Add this book to your shelf?</p>
-        </div>
-    </div>
-    <div class="row flex-nowrap justify-content-center align-items-center">
-        <div class="col-4 d-flex justify-content-center align-items-center">
-            <form method="POST" action="">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <!-- need to set enctype to multipart/form-data for uploading file image
+            this type will not encrypt uploaded file name so that image file could be visited
+            related link: https://www.w3schools.com/tags/att_form_enctype.asp -->
+            <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
-            <br />
-            <button class="btn btn-sm btn-danger" type="submit">Confirm</button>
-            <a class="btn btn-sm btn-default" href="{{ previous_url }}">Back</a>
+            {{ share_form | crispy }}
+            <div class="row justify-content-end">
+                <div class="col float-left">
+                {% if share_form.instance.id %}
+					<a href="{% url 'sharelist:share_detail' share_id=share_form.instance.id %}" class="btn btn-default">Back</a>
+                {% else %}
+                    <a class="btn btn-default" href="{{ previous_url }}">Back</a>
+                {% endif %}
+                </div>
+                <div class="col-auto">
+                    <input class="btn btn-success" type="submit" value="Save" />
+                </div>
+            </div>
             </form>
         </div>
     </div>

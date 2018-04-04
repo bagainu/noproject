@@ -38,7 +38,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-10 offset-sm-1">
+		<div class="col-sm-10 offset-sm-1 mt-4">
 			<p class="content-markdown">{{ bookshare.get_intro_content_html }}</p>
 		</div>
 	</div>
@@ -122,7 +122,10 @@
 	<hr />
 	<div class="row justify-content-center">
 		<div class="col-auto col-offset-2">
-			<a href="{% url 'sharelist:share_delete' share_id=bookshare.id %}" class="btn btn-danger">Remove this share</a>
+			<a href="{% url 'sharelist:share_update' share_id=bookshare.id %}" class="btn btn-default">Edit</a>
+		</div>
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'sharelist:share_delete' share_id=bookshare.id %}" class="btn btn-danger">Delete</a>
 		</div>
 	</div>
 	{% endif %}

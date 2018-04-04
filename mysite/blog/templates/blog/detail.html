@@ -39,21 +39,6 @@
 					<p class="content-markdown">{{ post.get_blog_content_html }}</p>
 				</div>
 			</div>
-
-			{% if request.user.is_authenticated and request.user == post.blog_author %}
-			<div class="row my-5">
-				<div class="col">
-					<div class="row justify-content-end">
-						<div class="col-auto col-offset-2">
-							<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
-						</div>
-						<div class="col-auto col-offset-2">
-							<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
-						</div>
-					</div>
-				</div>
-			</div>
-			{% endif %}
 	
 			<div class="row my-5">
 				<div class="col-md-12">
@@ -90,9 +75,19 @@
 				</div>
 			</div>
 		</div>
-		<br />
-		<br />
 		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+
+		{% if request.user.is_authenticated and request.user == post.blog_author %}
+		<hr />
+		<div class="row justify-content-center">
+			<div class="col-auto col-offset-2">
+				<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
+			</div>
+			<div class="col-auto col-offset-2">
+				<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
+			</div>
+		</div>
+		{% endif %}
 </div>
 {% endblock %}
 </body>

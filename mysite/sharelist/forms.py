@@ -17,5 +17,6 @@ class BookShareListForm(ModelForm):
         fields = [
             'share_title',
             'share_intro',
+            'share_books',
             'share_tag',
         ]

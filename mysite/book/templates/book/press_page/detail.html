@@ -18,20 +18,21 @@
 						</div>
 					</div>
 				</div>
-
-				<br /> {% if request.user.is_authenticated and request.user.is_admin %}
-				<div class="row justify-content-end">
-					<div class="col-auto col-offset-2">
-						<a href="{% url 'book:press_update' press_id=press.id %}" class="btn btn-default">Edit</a>
-					</div>
-					<div class="col-auto col-offset-2">
-						<a href="{% url 'book:press_delete' press_id=press.id %}" class="btn btn-danger">Delete</a>
-					</div>
-				</div>
-				{% endif %}
 			</div>
 			<br />
 			<br />
+
+			{% if request.user.is_authenticated and request.user.is_admin %}
+			<hr />
+			<div class="row justify-content-center">
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'book:press_update' press_id=press.id %}" class="btn btn-default">Edit</a>
+				</div>
+				<div class="col-auto col-offset-2">
+					<a href="{% url 'book:press_delete' press_id=press.id %}" class="btn btn-danger">Delete</a>
+				</div>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 	{% endblock %}
