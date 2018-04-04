@@ -55,7 +55,7 @@
 			{% if bookshare_books %}
 			<div class="row">
 				{% for booklog in bookshare_books %}
-				<div class="col-lg-2 col-md-4 col-sm-6">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-6">
 					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
 					<div class="card box-shadow text-center center-block" style="height:150px; width:100px;">
 						{% if booklog.booklog_book.book_cover %}

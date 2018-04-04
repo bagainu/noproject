@@ -41,7 +41,7 @@
 			{% if booklog_list %}
 			<div class="row">
 				{% for booklog in booklog_list %}
-				<div class="col-lg-2 col-md-4 col-sm-6">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-6">
 					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
 					<div class="card box-shadow text-center center-block" style="height:200px; width:150px;">
 						{% if booklog.booklog_book.book_cover %}
