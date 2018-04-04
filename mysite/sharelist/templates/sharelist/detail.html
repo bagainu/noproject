@@ -57,12 +57,12 @@
 				{% for booklog in bookshare_books %}
 				<div class="col-lg-2 col-md-4 col-sm-6">
 					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
-					<div class="card box-shadow text-center center-block" style="height:200px; width:150px;">
+					<div class="card box-shadow text-center center-block" style="height:150px; width:100px;">
 						{% if booklog.booklog_book.book_cover %}
 						<img class="card-img img-fluid img-thumbnail" 
 						data-src="holder.js/150x200?theme=thumb" 
 						alt="Book cover" 
-						style="object-fit:cover; display:block; max-width:150px; height:200px; margin:auto; padding:auto;"
+						style="object-fit:cover; display:block; max-width:100px; height:150px; margin:auto; padding:auto;"
 						src="{{ booklog.booklog_book.book_cover.url }}" 
 						data-holder-rendered="true"> 
 						{% else %}

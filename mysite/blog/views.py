@@ -155,7 +155,7 @@ def delete(request, blog_id):
     post = get_object_or_404(Post, pk=blog_id)
     if request.method == "POST":
         post.delete()
-        return HttpResponseRedirect(reverse("blog:blog_index"))
+        return HttpResponseRedirect(reverse("blog:blog_index_own", kwargs={ 'user_id': request.user.id }))
     context = {
         'post': post,
     }

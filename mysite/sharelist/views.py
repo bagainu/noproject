@@ -27,7 +27,8 @@ class ShareListIndexView(View):
         if qs:
             book_sharelist = book_sharelist.filter(
                 Q(share_title__icontains=qs) |
-                Q(share_intro__icontains=qs)
+                Q(share_intro__icontains=qs) |
+                Q(share_tag__name__icontains=qs)
             ).distinct()
 
         page_book_sharelist = page_list(request, book_sharelist, 20)
@@ -51,7 +52,8 @@ class ShareListIndexOwnView(View):
         if qs:
             book_sharelist = book_sharelist.filter(
                 Q(share_title__icontains=qs) |
-                Q(share_intro__icontains=qs)
+                Q(share_intro__icontains=qs) |
+                Q(share_tag__name__icontains=qs)
             ).distinct()
 
         page_book_sharelist = page_list(request, book_sharelist, 20)
@@ -126,7 +128,13 @@ class ShareListUpdateView(View):
 class ShareListDeleteView(View):
 
     def get(self, request, share_id):
-        return HttpResponse('delete get')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        context = {
+            'bookshare': bookshare,
+        }
+        return render(request, 'sharelist/delete.html', context)
     
     def post(self, request, share_id):
-        return HttpResponse('delete post')
+        bookshare = get_object_or_404(BookShareList, pk=share_id)
+        bookshare.delete()
+        return HttpResponseRedirect(reverse("sharelist:share_index_own", kwargs={ 'user_id': request.user.id }))

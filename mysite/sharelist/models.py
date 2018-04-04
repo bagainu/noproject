@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
+from django.template.defaultfilters import linebreaks
 from django.urls import reverse
 from django.utils.html import format_html
 
@@ -41,4 +42,4 @@ class BookShareList(models.Model):
         return reverse('sharelist:share_detail', kwargs={ 'share_id': self.id, })
 
     def get_intro_content_html(self):
-        return format_html(self.share_intro)
+        return format_html(linebreaks(self.share_intro))
