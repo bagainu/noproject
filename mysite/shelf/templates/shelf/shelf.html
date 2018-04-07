@@ -25,7 +25,7 @@
 					</form>
 				</div>
 				<div class="col-md-4 col-sm-auto col-auto my-2">
-					<button type="button" class= "btn btn-success float-right">New Archive</button>
+					<a href="{% url 'book:book_index' %}" class="btn btn-success float-right">Add Book</a>
 				</div>
 			</div>
 		</div>
@@ -36,19 +36,18 @@
 
 	<div class="row">
 		<div class="col">
-	
 			<!-- shelf books -->
 			{% if booklog_list %}
 			<div class="row">
 				{% for booklog in booklog_list %}
 				<div class="col-lg-2 col-md-3 col-sm-4 col-6">
 					<a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
-					<div class="card box-shadow text-center center-block" style="height:200px; width:150px;">
+					<div class="card box-shadow text-center center-block" style="height:180px; width:130px;">
 						{% if booklog.booklog_book.book_cover %}
 						<img class="card-img img-fluid img-thumbnail" 
 						data-src="holder.js/150x200?theme=thumb" 
 						alt="Book cover" 
-						style="object-fit:cover; display:block; max-width:150px; height:200px; margin:auto; padding:auto;"
+						style="object-fit:cover; display:block; max-width:130px; height:180px; margin:auto; padding:auto;"
 						src="{{ booklog.booklog_book.book_cover.url }}" 
 						data-holder-rendered="true"> 
 						{% else %}

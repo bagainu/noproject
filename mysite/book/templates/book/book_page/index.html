@@ -21,36 +21,54 @@
 		<div class="col-md-8">
 			{% if book_list %}
 			{% for book in book_list %}
-			<div class="card box-shadow">
+			<div class="card box-shadow mb-4 book-card">
 				<div class="row justify-content-between">
 					<div class="col-md-8 col-sm-8 pr-0">
 						<div class="card-body align-items-start">
 							<a href="{% url 'book:book_detail' book_id=book.id %}">
 								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ book.book_title }}</strong></h3>
 							</a>
-							<div class="row mb-4">
-								<div class="col-sm-auto d-inline-block mb-2 text-primary">Authors: {{ book.authors }}</div>
+							<div class="row mb-2">
+								<div class="col-sm-auto d-inline-block mb-1 text-primary">Authors: {{ book.authors }}</div>
 								<div class="col-sm-auto text-muted">Press: {{ book.presses }}</div>
 							</div>
 							<div class="card-text my-auto">
-								<p>{{ book.get_book_intro_html | truncatechars_html:200 }}</p>
+								<p>{{ book.get_book_intro_html | truncatechars_html:150 }}</p>
 							</div>
 							<!-- <a href="{% url 'book:book_detail' book_id=book.id %}">Continue reading</a> -->
 						</div>
 					</div>
 					<div class="col-md-4 col-sm-4 px-0">
-						<!-- {% if book.book_cover %} -->
-						<img class="card-img my-4 img-fluid img-thumbnail"
-						data-src="holder.js/150x200?theme=thumb" 
-						alt="Thumbnail [150x200]" 
-						style="display:block; max-width:150px; height:auto; margin:auto;" 
-						src="{{ book.book_cover.url }}" 
-						data-holder-rendered="true">
-						<!-- {% endif %} -->
+						{% if book.book_cover %}
+						<div class="row justify-content-center">
+							<div class="col center-block" style="height:180px; width:130px;">
+                        		<img class="card-img img-fluid img-thumbnail" 
+                        		data-src="holder.js/150x200?theme=thumb" alt="Book cover" 
+                        		style="object-fit:cover; display:block; max-width:130px; height:180px; margin:auto; padding:auto;"
+								src="{{ book.book_cover.url }}" 
+								data-holder-rendered="true"> 
+							</div>
+						</div>
+						{% else %}
+						<!-- need default cover picture -->
+						{% endif %}
 					</div>
 				</div>
+				{% if request.user.is_authenticated %}
+				<div class="card-footer pt-0 pb-2">
+					<div class="row justify-content-start">
+						<div class="col-auto shelf-change-ajax ">
+							<a class="add-to-shelf" href="{% url 'shelf:ajax_add_to_shelf' book.id %}" type="hidden"></a>
+							<a class="remove-from-shelf" href="{% url 'shelf:ajax_remove_from_shelf' book.id %}" type="hidden"></a>
+							<button class="btn btn-primary btn-round btn-sm {% if book in user_book_list %}active{% endif %}" 
+							data-toggle="modal" data-target="#shelf-confirm-modal">
+								{% if book in user_book_list %}Remove from my shelf{% else %}Add to my shelf{% endif %}
+							</button>
+						</div>
+					</div>
+				</div>
+				{% endif %}
 			</div>
-			<br />
 			{% endfor %}
 
 			<!-- pagination -->
@@ -58,13 +76,30 @@
 				{% include 'common/paginator.html' with item_list=book_list %}
 			</div>
 
+			<div class="modal fade" id="shelf-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			    <div class="modal-dialog" role="document">
+			        <div class="modal-content">
+			            <div class="modal-header">
+			                <h5 class="modal-title text-center" id="exampleModalLabel">Confirmation</h5>
+			            </div>
+			            <div class="modal-body">
+			            </div>
+			            <div class="modal-footer">
+			                <div class="left-side">
+			                    <button type="button" class="btn btn-danger btn-link btn-confirm">Confirm</button>
+			                </div>
+			                <div class="divider"></div>
+			                <div class="right-side">
+			                    <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Cancel</button>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
 			{% else %} 
 			<!-- if no books -->
 			<p class="text-center">No books.</p>
 			{% endif %}
-
-			<br />
-			<br />
 		</div>
 
 		<!-- widgets colume -->
@@ -101,4 +136,54 @@
 </div>
 {% endblock %}
 
+{% block custom_script %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: "{{ csrf_token }}",
+		},
+	});
+	var button = $(".shelf-change-ajax").children("button")
+	$(document).on("click", ".shelf-change-ajax button", function(){
+		var modal_dialog = $("#shelf-confirm-modal");
+		modal_dialog.find(".modal-body").text("jquery content");
+	});
+
+	/*
+	var button = $(".shelf-change-ajax").children("button")
+	button.click(function(){
+		var clicked_button = $(this);
+		if (clicked_button.hasClass("active")){
+			// remove from shelf
+			$.ajax({
+				url: clicked_button.parent().children(".remove-from-shelf").attr("href"),
+				type: "POST",
+				success: function(data){
+					console.info(data);
+					if (data["return_id"] != -1) {
+						clicked_button.removeClass("active");
+						clicked_button.text("Add to my shelf")
+					}
+				}
+			});
+		} else {
+			// add to shelf
+			$.ajax({
+				url: clicked_button.parent().children(".add-to-shelf").attr("href"),
+				type: "POST",
+				success: function(data){
+					console.info(data);
+					if (data["return_id"] != -1) {
+						clicked_button.addClass("active");
+						clicked_button.text("Remove from my shelf");
+					}
+				}
+			});
+		}
+	});
+	*/
+});
+</script>
+{% endblock %}
 </body>

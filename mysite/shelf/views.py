@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -158,3 +158,25 @@ class BookLogDeleteView(View):
         booklog = get_object_or_404(BookLog, pk=booklog_id)
         booklog.delete()
         return HttpResponseRedirect(reverse("shelf:bookshelf_view", kwargs={ 'user_id': request.user.id }))
+
+
+def ajax_add_to_shelf(request, book_id):
+    if request.method == 'POST' and request.is_ajax():
+        book = get_object_or_404(Book, pk=book_id)
+        book_shelf, shelf_created = BookShelf.objects.get_or_create(shelf_owner=request.user)
+        booklog, booklog_created = BookLog.objects.get_or_create(booklog_book=book, booklog_owner=request.user)
+        book_shelf.shelf_books.add(booklog)
+        return JsonResponse({'booklog_id': booklog.id });
+    return JsonResponse({'return_id': -1 });
+
+
+def ajax_remove_from_shelf(request, book_id):
+    if request.method == 'POST' and request.is_ajax():
+        book = get_object_or_404(Book, pk=book_id)
+        book_shelf, shelf_created = BookShelf.objects.get_or_create(shelf_owner=request.user)
+        booklog = get_object_or_404(BookLog, booklog_book=book, booklog_owner=request.user)
+        book_shelf.shelf_books.remove(booklog)
+        booklog.delete()
+        return JsonResponse({'booklog_id': booklog.id });
+    return JsonResponse({'return_id': -1 });
+

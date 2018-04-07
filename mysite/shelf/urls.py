@@ -5,7 +5,10 @@ from .views import (
     BookLogPostCreateView,
     BookLogDetailView,
     BookLogUpdateView,
-    BookLogDeleteView
+    BookLogDeleteView,
+
+    ajax_add_to_shelf,
+    ajax_remove_from_shelf,
 )
 
 app_name = 'shelf'
@@ -17,5 +20,7 @@ urlpatterns = [
     path('blg<int:booklog_id>/createpost/', BookLogPostCreateView.as_view(), name='booklog_createpost'),
     path('blg<int:booklog_id>/update/', BookLogUpdateView.as_view(), name='booklog_update'),
     path('blg<int:booklog_id>/delete/', BookLogDeleteView.as_view(), name='booklog_delete'),
+    path('ajax-add-to-shelf/bk<int:book_id>/', ajax_add_to_shelf, name='ajax_add_to_shelf'),
+    path('ajax-remove-from-shelf/bk<int:book_id>/', ajax_remove_from_shelf, name='ajax_remove_from_shelf'),
 ]
 

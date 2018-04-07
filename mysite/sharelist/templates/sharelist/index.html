@@ -50,7 +50,8 @@
                                     <img class="card-img img-fluid img-thumbnail" 
                                         data-src="holder.js/150x200?theme=thumb" alt="Book cover" 
                                         style="object-fit:cover; display:block; max-width:80px; height:100px; margin:auto; padding:auto;"
-                                        src="{{ booklog.booklog_book.book_cover.url }}" data-holder-rendered="true"> {% else %}
+										src="{{ booklog.booklog_book.book_cover.url }}" data-holder-rendered="true"> 
+									{% else %}
                                     <div class="card-body">
                                         <h4 class="card-title text-primary">{{ booklog.booklog_book.book_title }}</h4>
                                         <h5 class="card-subtitle text-muted">{{ booklog.booklog_book.sub_title }}</h5>

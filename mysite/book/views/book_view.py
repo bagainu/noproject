@@ -14,6 +14,7 @@ from book.models import Author, Press, Book, BookTag
 from comments.forms import CommentForm
 from comments.models import Comment
 from shelf.models import BookLog
+from shelf.models import BookShelf
 
 from utils.paginator import page_list
 
@@ -35,11 +36,17 @@ class BookIndexView(View):
                 Q(book_tag__name__icontains=qs)
             ).distinct()
 
+        user_book_list = None
+        if request.user.is_authenticated:
+            user_shelf = get_object_or_404(BookShelf, shelf_owner=request.user)
+            user_book_list = [ booklog.booklog_book for booklog in user_shelf.shelf_books.select_related('booklog_book') ]
+
         tag_list = BookTag.objects.all()
 
         context = {
-            'book_list': page_list(request, book_list, 5), #post_list
+            'book_list': page_list(request, book_list, 10), #book_list
             'tag_list': tag_list,
+            'user_book_list': user_book_list,
         }
         return render(request, 'book/book_page/index.html', context)
 
