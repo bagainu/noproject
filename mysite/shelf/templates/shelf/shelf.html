@@ -13,7 +13,7 @@
 		</div>
 		<div class="col-md-auto col-sm-12">
 			<div class="row justify-content-end">
-				<div class="col-md-8 col-sm-6 my-2">
+				<div class="col-md-auto col-sm-6 col-12 my-2">
 					<!-- search widgets -->
 					<form method="GET" action="">
 					<div class="input-group">
@@ -24,8 +24,11 @@
 					</div>
 					</form>
 				</div>
-				<div class="col-md-4 col-sm-auto col-auto my-2">
+				<div class="col-md-auto col-sm-3 col-auto my-2">
 					<a href="{% url 'book:book_index' %}" class="btn btn-success float-right">Add Book</a>
+				</div>
+				<div class="col-md-auto col-sm-3 col-auto my-2">
+					<a href="{% url 'sharelist:share_create' %}" class="btn btn-success float-right">New Share</a>
 				</div>
 			</div>
 		</div>

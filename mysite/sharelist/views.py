@@ -36,7 +36,7 @@ class ShareListIndexView(View):
         tag_list = ShareTag.objects.all()
 
         context = {
-            'title': 'Share Lists',
+            'title': 'Shares',
             'book_sharelist': page_book_sharelist,
             'tag_list': tag_list,
         }
@@ -88,6 +88,7 @@ class ShareListCreateView(View):
         share_form = BookShareListForm(request.POST or None, request.FILES or None)
         if share_form.is_valid():
             instance = share_form.save(commit=False)
+            instance.share_user = request.user
             instance.save()
             share_form.save_m2m()
             return HttpResponseRedirect(instance.get_absolute_url())
