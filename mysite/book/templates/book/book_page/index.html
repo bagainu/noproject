@@ -86,7 +86,7 @@
 			            </div>
 			            <div class="modal-footer">
 			                <div class="left-side">
-			                    <button type="button" class="btn btn-danger btn-link btn-confirm">Confirm</button>
+			                    <button type="button" class="btn btn-danger btn-link btn-confirm" data-dismiss="modal">Confirm</button>
 			                </div>
 			                <div class="divider"></div>
 			                <div class="right-side">
@@ -144,45 +144,46 @@ $(document).ready(function(){
 			csrfmiddlewaretoken: "{{ csrf_token }}",
 		},
 	});
+
+	var ajax_url = null;
+	var callback_success = null;
 	var button = $(".shelf-change-ajax").children("button")
 	$(document).on("click", ".shelf-change-ajax button", function(){
 		var modal_dialog = $("#shelf-confirm-modal");
-		modal_dialog.find(".modal-body").text("jquery content");
-	});
-
-	/*
-	var button = $(".shelf-change-ajax").children("button")
-	button.click(function(){
 		var clicked_button = $(this);
 		if (clicked_button.hasClass("active")){
 			// remove from shelf
-			$.ajax({
-				url: clicked_button.parent().children(".remove-from-shelf").attr("href"),
-				type: "POST",
-				success: function(data){
-					console.info(data);
-					if (data["return_id"] != -1) {
-						clicked_button.removeClass("active");
-						clicked_button.text("Add to my shelf")
-					}
+			modal_dialog.find(".modal-body").text("Do you want to remove this book from your shelf?");
+			ajax_url = clicked_button.parent().children(".remove-from-shelf").attr("href");
+			callback_success = function(data){
+				console.info(data);
+				if (data["return_id"] != -1) {
+					clicked_button.removeClass("active");
+					clicked_button.text("Add to my shelf");
 				}
-			});
+			}
 		} else {
 			// add to shelf
-			$.ajax({
-				url: clicked_button.parent().children(".add-to-shelf").attr("href"),
-				type: "POST",
-				success: function(data){
-					console.info(data);
-					if (data["return_id"] != -1) {
-						clicked_button.addClass("active");
-						clicked_button.text("Remove from my shelf");
-					}
+			modal_dialog.find(".modal-body").text("Do you want to add this book to your shelf?");
+			ajax_url = clicked_button.parent().children(".add-to-shelf").attr("href");
+			callback_success = function(data){
+				console.info(data);
+				if (data["return_id"] != -1) {
+					clicked_button.addClass("active");
+					clicked_button.text("Remove from my shelf");
 				}
-			});
+			}
 		}
 	});
-	*/
+
+	var confirm_button = $("#shelf-confirm-modal").find(".btn-confirm");
+	confirm_button.click(function(){
+		$.ajax({
+			url: ajax_url,
+			type: "POST",
+			success: callback_success
+		});
+	});
 });
 </script>
 {% endblock %}
