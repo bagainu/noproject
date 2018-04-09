@@ -1,4 +1,4 @@
 {% load vote %}
 
 {% vote_exists item request.user as voted_up %}
-<a href="{{ ajax_vote_up_url }}" class="btn btn-primary btn-sm btn-round {% if voted_up %}disabled{% endif %}" id="user-votes-up" title="Nice!">+ {{ item.votes.count }}</a>
+<a href="{{ ajax_vote_up_url }}" class="btn btn-warning btn-sm btn-round {% if voted_up %}disabled{% endif %}" id="user-votes-up" title="Nice!">+ {{ item.votes.count }}</a>

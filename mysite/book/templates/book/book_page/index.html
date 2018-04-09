@@ -29,8 +29,8 @@
 								<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ book.book_title }}</strong></h3>
 							</a>
 							<div class="row mb-2">
-								<div class="col-sm-auto d-inline-block mb-1 text-primary">Authors: {{ book.authors }}</div>
-								<div class="col-sm-auto text-muted">Press: {{ book.presses }}</div>
+								<div class="col-sm-auto d-inline-block mb-1 text-primary">Authors: <strong>{{ book.authors }}</strong></div>
+								<div class="col-sm-auto text-muted">Press: <strong>{{ book.presses }}</strong></div>
 							</div>
 							<div class="card-text my-auto">
 								<p>{{ book.get_book_intro_html | truncatechars_html:150 }}</p>
