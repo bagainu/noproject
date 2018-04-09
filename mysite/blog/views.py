@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.forms import modelformset_factory, inlineformset_factory, forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.urls import reverse
@@ -161,5 +161,15 @@ def delete(request, blog_id):
     }
     return render(request, 'blog/delete.html', context)
 
+
+@login_required
+def ajax_vote_up(request, blog_id):
+    if not request.is_ajax():
+        raise Http404('Not an ajax call')
+    post = get_object_or_404(Post, pk=blog_id)
+    if request.method == 'POST' and not post.votes.exists(request.user.id):
+        post.votes.up(request.user.id)
+        return JsonResponse({'count': post.votes.count(0) })
+    return JsonResponse({'count': -1 })
 
 

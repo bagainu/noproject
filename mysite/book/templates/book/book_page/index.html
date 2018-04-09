@@ -139,12 +139,6 @@
 {% block custom_script %}
 <script type="text/javascript">
 $(document).ready(function(){
-	$.ajaxSetup({
-		data: {
-			csrfmiddlewaretoken: "{{ csrf_token }}",
-		},
-	});
-
 	var ajax_url = null;
 	var callback_success = null;
 	var button = $(".shelf-change-ajax").children("button")
@@ -156,7 +150,6 @@ $(document).ready(function(){
 			modal_dialog.find(".modal-body").text("Do you want to remove this book from your shelf?");
 			ajax_url = clicked_button.parent().children(".remove-from-shelf").attr("href");
 			callback_success = function(data){
-				console.info(data);
 				if (data["return_id"] != -1) {
 					clicked_button.removeClass("active");
 					clicked_button.text("Add to my shelf");
@@ -167,7 +160,6 @@ $(document).ready(function(){
 			modal_dialog.find(".modal-body").text("Do you want to add this book to your shelf?");
 			ajax_url = clicked_button.parent().children(".add-to-shelf").attr("href");
 			callback_success = function(data){
-				console.info(data);
 				if (data["return_id"] != -1) {
 					clicked_button.addClass("active");
 					clicked_button.text("Remove from my shelf");

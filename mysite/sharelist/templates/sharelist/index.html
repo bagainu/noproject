@@ -24,9 +24,15 @@
             <div class="card mb-4 box-shadow">
             	<div class="card-body align-items-start">
                     <div class="row">
-            		    <a class="col-md-12" href="{% url 'sharelist:share_detail' share_id=bookshare.id %}">
-            		    	<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ bookshare.share_title }}</strong></h3>
-            		    </a>
+						<div class="col">
+          		  		    <a href="{% url 'sharelist:share_detail' share_id=bookshare.id %}">
+          		  		    	<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ bookshare.share_title }}</strong></h3>
+							</a>
+						</div>
+						<div class="col-auto">
+							{% url 'sharelist:ajax_vote_up' share_id=bookshare.id as vote_up_url %}
+							{% include "common/user_votes.html" with ajax_vote_up_url=vote_up_url item=bookshare %}
+						</div>
                     </div>
             		<div class="row">
             			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 

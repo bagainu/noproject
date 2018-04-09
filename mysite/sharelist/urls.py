@@ -6,6 +6,7 @@ from .views import (
     ShareListIndexView,
     ShareListIndexOwnView,
     ShareListUpdateView,
+    ajax_vote_up,
 )
 
 
@@ -17,4 +18,5 @@ urlpatterns = [
     path('bsl<int:share_id>/', ShareListDetailView.as_view(), name='share_detail'),
     path('bsl<int:share_id>/update/', ShareListUpdateView.as_view(), name='share_update'),
     path('bsl<int:share_id>/delete/', ShareListDeleteView.as_view(), name='share_delete'),
+    path('ajax-vote-up/bsl<int:share_id>/', ajax_vote_up, name='ajax_vote_up'),
 ]

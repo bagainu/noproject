@@ -7,11 +7,12 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from markdown_deux import markdown
+from vote.models import VoteModel
 # from blog.models import Post
 # Create your models here.
 
 
-class Comment(models.Model):
+class Comment(VoteModel, models.Model):
     comment_user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

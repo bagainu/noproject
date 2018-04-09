@@ -7,6 +7,7 @@ from django.utils.html import format_html
 
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from vote.models import VoteModel
 
 from shelf.models import BookLog
 from comments.models import Comment
@@ -22,7 +23,7 @@ class ShareTag(TaggedItemBase):
         return self.tag.name
 
 
-class BookShareList(models.Model):
+class BookShareList(VoteModel, models.Model):
     share_user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     share_title = models.CharField(max_length=200)
     share_intro = models.TextField(max_length=1024, blank=True)

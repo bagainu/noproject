@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -46,3 +46,14 @@ def delete(request, comment_id):
         'comment': comment,
     }
     return render(request, 'comments/delete.html', context)
+
+
+@login_required
+def ajax_vote_up(request, comment_id):
+    if not request.is_ajax():
+        raise Http404('Not an ajax call')
+    comment = get_object_or_404(Comment, pk=comment_id)
+    if request.method == 'POST' and not comment.votes.exists(request.user.id):
+        comment.votes.up(request.user.id)
+        return JsonResponse({'count': comment.votes.count(0) })
+    return JsonResponse({'count': -1 })

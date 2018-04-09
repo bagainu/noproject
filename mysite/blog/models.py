@@ -14,6 +14,7 @@ from django.urls import reverse
 from markdown_deux import markdown
 from taggit.managers import TaggableManager
 from taggit.models import TaggedItemBase
+from vote.models import VoteModel
 
 from utils.image_utils import image_upload_to
 from comments.models import Comment
@@ -30,7 +31,7 @@ class PostTag(TaggedItemBase):
         return self.tag.name
 
 # Models
-class Post(models.Model):
+class Post(VoteModel, models.Model):
     blog_title = models.CharField(max_length=200)
     slug_title = models.SlugField(unique=True) # used for ease of url visiting
     create_date_time = models.DateTimeField(auto_now=False, auto_now_add=True, help_text='data published')

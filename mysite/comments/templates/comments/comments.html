@@ -15,7 +15,15 @@ $(document).ready(function(){
 {% for comment in comment_list %}
 <div class="col-md-10 offset-md-1 col-sm-10 offset-sm-1">
 <div class="blockquote">
-	<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
+	<div class="row">
+		<div class="col">
+			<p class="lead"><strong>{{ comment.comment_user }}:</strong></p>
+		</div>
+		<div class="col-auto">
+			{% url 'comments:ajax_vote_up' comment_id=comment.id as vote_up_url %}
+			{% include "common/user_votes.html" with ajax_vote_up_url=vote_up_url item=comment %}
+		</div>
+	</div>
 	<div class="row">
 		<div class="col-sm-11 offset-sm-1">
 			<div class="text-justify">{{ comment.get_comment_content_html }}</div>

@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, Http404
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -166,3 +166,14 @@ class ShareListDeleteView(View):
         bookshare = get_object_or_404(BookShareList, pk=share_id)
         bookshare.delete()
         return HttpResponseRedirect(reverse("sharelist:share_index_own", kwargs={ 'user_id': request.user.id }))
+
+
+@login_required
+def ajax_vote_up(request, share_id):
+    if not request.is_ajax():
+        raise Http404('Not an ajax call')
+    bookshare = get_object_or_404(BookShareList, pk=share_id)
+    if request.method == 'POST' and not bookshare.votes.exists(request.user.id):
+        bookshare.votes.up(request.user.id)
+        return JsonResponse({'count': bookshare.votes.count(0) })
+    return JsonResponse({'count': -1 })

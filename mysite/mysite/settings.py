@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'book.apps.BookConfig',
     'blog.apps.BlogConfig',
     'comments.apps.CommentsConfig',
+    'vote.apps.VoteAppConfig', # https://github.com/shanbay/django-vote
     # thirdparty apps
     'pagedown', # https://github.com/timmyomahony/django-pagedown
     'markdown_deux', # https://github.com/trentm/django-markdown-deux

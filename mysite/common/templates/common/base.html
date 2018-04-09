@@ -94,8 +94,17 @@
 <script type="text/javascript" src="{% static 'common/star-ratings-custom/star-ratings-custom.js' %}"></script>
 
 <!-- custom js -->
+<script type="text/javascript" src="{% static 'common/common.js' %}"></script>
+
+<!-- custom js -->
 <script type="text/javascript">
 $(document).ready(function(){
+	$.ajaxSetup({
+		data: {
+			csrfmiddlewaretoken: "{{ csrf_token }}",
+		},
+	});
+
 	$(".new-comment-btn").click(function(event){
 		event.preventDefault();
 		$(".new-comment").fadeToggle();

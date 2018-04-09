@@ -7,9 +7,17 @@
 {% endif %}
 <div class="card mb-4 box-shadow">
 	<div class="card-body align-items-start">
-		<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
-			<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
-		</a>
+		<div class="row">
+			<div class="col">
+				<a href="{% url 'blog:blog_detail' blog_id=post.id %}">
+					<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ post.blog_title }}</strong></h3>
+				</a>
+			</div>
+			<div class="col-auto">
+				{% url 'blog:ajax_vote_up' blog_id=post.id as vote_up_url %}
+				{% include "common/user_votes.html" with ajax_vote_up_url=vote_up_url item=post %}
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 
 				<a href="{% url 'blog:blog_index_own' user_id=post.blog_author.id %}"><strong>{{ post.blog_author }}</strong></a>
