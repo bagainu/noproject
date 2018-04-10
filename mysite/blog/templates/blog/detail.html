@@ -14,80 +14,79 @@
 <div class="container">
     {% if booklog %}
 	{% include 'book/book_profile.html' with book=booklog.booklog_book user_rate=False view_book=True booklog=booklog view_booklog=True %}
-	<hr />
+	<div class="mb-3"></div>
 	{% endif %}
 
-			<div class="row">
-				<div class="col-sm-12">
-					<h2>{{ post.blog_title }}</h2>
-				</div>
-				<div class="col-sm-auto text-center">
-					<i>By <strong>{{ post.blog_author }}</strong></i>
-				</div>
-				<div class="col-sm-8">
-					<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}</small>
-				</div>
-				<div class="col-sm-12">
-					{% for tag in post.blog_tag.all %}
-					<a href="{% url 'blog:blog_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
-					{% endfor %}
-				</div>
-			</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h2>{{ post.blog_title }}</h2>
+		</div>
+		<div class="col-sm-auto">
+			<i>By <a href="{% url 'account:user_profile' user_id=post.blog_author.id %}"><strong>{{ post.blog_author }}</strong></a></i>
+		</div>
+		<div class="col-sm-8">
+			<small>Last modified: {{ post.update_date_time}} | Created: {{ post.update_date_time}}</small>
+		</div>
+		<div class="col-sm-12">
+			{% for tag in post.blog_tag.all %}
+			<a href="{% url 'blog:blog_index' %}?qs={{ tag }}" class="btn btn-success btn-round btn-sm mt-2">{{ tag }}</a>
+			{% endfor %}
+		</div>
+	</div>
 	
-			<div class="row my-5">
-				<div class="col-sm-10 offset-sm-1">
-					<p class="content-markdown">{{ post.get_blog_content_html }}</p>
-				</div>
-			</div>
+	<div class="row my-5 html-content">
+		<div class="col-sm-10 offset-sm-1">
+			<p>{{ post.get_blog_content_html }}</p>
+		</div>
+	</div>
 	
-			<div class="row my-5">
-				<div class="col-md-12">
-					<div class="row justify-content-between align-items-end">
-						<div class="col-auto">
-							<p class="lead"><strong>Comments</strong></p>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-10 offset-sm-1 my-3">
-					{% if request.user.is_authenticated %}
-					<form method="POST" action="" enctype="multipart/form-data">
-						{% csrf_token %}
-						{{ comment_form | crispy }}
-						<!-- {{ comment_form }} -->
-						<div class="row justify-content-end">
-							<div class="col-auto col-offset-2">
-								<button class="btn btn-default" type="submit">Submit</button>
-							</div>
-						</div>
-					</form>
-					{% endif %}
-				</div>
-				<div class="col-md-12">
-					{% if post_comments %}
-					{% include "comments/comments.html" with comment_list=post_comments %}
-					<!-- pagination of book_comments -->
-					<div class="row justify-content-center mt-5">
-						<div class="col-auto" aria-label="Page navigation">
-						{% include 'common/paginator.html' with item_list=post_comments %}
-						</div>
-					</div>
-					{% endif %}
+	<div class="row my-5">
+		<div class="col-md-12">
+			<div class="row justify-content-between align-items-end">
+				<div class="col-auto">
+					<p class="lead"><strong>Comments</strong></p>
 				</div>
 			</div>
 		</div>
-		<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
+		<div class="col-sm-10 offset-sm-1 my-3">
+			{% if request.user.is_authenticated %}
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+				{{ comment_form | crispy }}
+				<!-- {{ comment_form }} -->
+				<div class="row justify-content-end">
+					<div class="col-auto col-offset-2">
+						<button class="btn btn-default" type="submit">Submit</button>
+					</div>
+				</div>
+			</form>
+			{% endif %}
+		</div>
+		<div class="col-md-12">
+			{% if post_comments %}
+			{% include "comments/comments.html" with comment_list=post_comments %}
+			<!-- pagination of book_comments -->
+			<div class="row justify-content-center mt-5">
+				<div class="col-auto" aria-label="Page navigation">
+				{% include 'common/paginator.html' with item_list=post_comments %}
+				</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+	<!-- <wb:comments url="{{ request.build_absolute_uri }}" width="auto" skin="silver" ></wb:comments> -->
 
-		{% if request.user.is_authenticated and request.user == post.blog_author %}
-		<hr />
-		<div class="row justify-content-center">
-			<div class="col-auto col-offset-2">
-				<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
-			</div>
-			<div class="col-auto col-offset-2">
-				<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
-			</div>
+	{% if request.user.is_authenticated and request.user == post.blog_author %}
+	<hr />
+	<div class="row justify-content-center">
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'blog:blog_update' blog_id=post.id %}" class="btn btn-default">Edit</a>
 		</div>
-		{% endif %}
+		<div class="col-auto col-offset-2">
+			<a href="{% url 'blog:blog_delete' blog_id=post.id %}" class="btn btn-danger">Delete</a>
+		</div>
+	</div>
+	{% endif %}
 </div>
 {% endblock %}
 </body>

@@ -160,6 +160,7 @@ class BookLogDeleteView(View):
         return HttpResponseRedirect(reverse("shelf:bookshelf_view", kwargs={ 'user_id': request.user.id }))
 
 
+@login_required
 def ajax_add_to_shelf(request, book_id):
     if not request.is_ajax():
         raise Http404('Not an ajax call')
@@ -168,10 +169,11 @@ def ajax_add_to_shelf(request, book_id):
         book_shelf, shelf_created = BookShelf.objects.get_or_create(shelf_owner=request.user)
         booklog, booklog_created = BookLog.objects.get_or_create(booklog_book=book, booklog_owner=request.user)
         book_shelf.shelf_books.add(booklog)
-        return JsonResponse({'booklog_id': booklog.id });
-    return JsonResponse({'return_id': -1 });
+        return JsonResponse({ 'booklog_id': booklog.id });
+    return JsonResponse({ 'return_id': -1 });
 
 
+@login_required
 def ajax_remove_from_shelf(request, book_id):
     if not request.is_ajax():
         raise Http404('Not an ajax call')
@@ -181,6 +183,6 @@ def ajax_remove_from_shelf(request, book_id):
         booklog = get_object_or_404(BookLog, booklog_book=book, booklog_owner=request.user)
         book_shelf.shelf_books.remove(booklog)
         booklog.delete()
-        return JsonResponse({'booklog_id': booklog.id });
-    return JsonResponse({'return_id': -1 });
+        return JsonResponse({ 'booklog_id': booklog.id });
+    return JsonResponse({ 'return_id': -1 });
 

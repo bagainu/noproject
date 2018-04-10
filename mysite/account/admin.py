@@ -27,16 +27,16 @@ class CustomUserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {'fields': ('email', 'password', 'register_time', )}),
-        ('Personal info', {'fields': ('username', 'avatar')}),
+        ('Personal info', {'fields': ('username', 'avatar', 'gender', 'intro', 'following', 'followed')}),
         ('Permissions', {'fields': ('is_admin', 'is_active', )}),
     )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'username', 'password', 'password_confirm')}
+            'fields': ('email', 'username', 'password', 'password_confirm', 'gender', 'intro')}
         ),
     )
-    list_display = ('email', 'username', 'is_admin', 'is_active')
+    list_display = ('email', 'username', 'gender', 'is_admin', 'is_active')
     list_filter = ('is_admin', 'is_active')
     search_fields = ('email', 'username', 'is_admin', 'is_active')
     ordering = ('email',)

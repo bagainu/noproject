@@ -10,7 +10,18 @@ p {
 body {
     /* background: white url("images/bg.jpg") no-repeat left top; */
     word-wrap: break-word;
-    background-color: rgb(236, 236, 236);
+    background-color: rgb(240, 240, 240);
+}
+
+.html-content {
+    background-color: white;
+    padding: 2% 2%;
+    border-radius: 10px;
+}
+
+.book-profile {
+    background-color: rgb(255, 255, 255);
+    border-radius: 25px;
 }
 
 .btn-warning.disabled, .btn-warning:disabled {
@@ -178,4 +189,8 @@ body {
 .dropdown .dropdown-menu .dropdown-item:focus {
     background-color: rgb(122, 122, 122) !important;
     opacity: 1;
+}
+
+.nav-tabs-navigation {
+    margin-bottom: 10px !important;
 }

@@ -11,39 +11,166 @@
 <body>
 {% block body_content %}
 <div class="container">
-    {% if not request.user.is_authenticated %}
-    <div class="row">
-        <div class="col-sm-6 offset-sm-3">
-            <p class="lead text-center">Please login first</p>
+    <div class="wrapper">
+        <div class="page-header page-header-xs" data-parallax="true" style="background-image: url('https://www.beautyglitch.com/wp-content/uploads/2016/11/18-Great-Benefits-Of-Reading-Books-To-Bring-Out-The-Bookworm-In-You_5.jpg');">
+            <div class="filter"></div>
         </div>
+        <div class="section profile-content">
+            <div class="container">
+                <div class="owner">
+                    <div class="avatar" style="max-width:200px;">
+                        <img src="{% if custom_user.avatar %}{{ custom_user.avatar.url }}{% else %}https://yt3.ggpht.com/a-/AJLlDp3NZPcgMmg-qzA7uHYZjm-WXP0v6CcUa1hTLg=s900-mo-c-c0xffffffff-rj-k-no{% endif %}"
+                        alt="Avatar" 
+				        style="display:block; object-fit:cover; width:180px; height:180px; margin:auto;" 
+                        class="img-circle img-no-padding img-responsive">
+                    </div>
+                    <div class="name">
+                        <h4 class="title">{{ custom_user.username }} 
+                            {% if custom_user.gender == 0 %}<i class="fa fa-mars" style="color:deepskyblue;" title="Male"></i>
+                            {% elif custom_user.gender == 1%}<i class="fa fa-venus" style="color:crimson;" title="Female"></i>
+                            {% else %}<i class="fa fa-neuter" style="color:gold;" title="Other"></i>{% endif %}
+                        </h4>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 ml-auto mr-auto text-center">
+                        <p>{% if custom_user.intro %}{{ custom_user.intro }}{% else %}No intro{% endif %}</p>
+                    </div>
+                </div>
+                <div class="row mb-4">
+                    <div class="col-md-6 ml-auto mr-auto text-center">
+                        <div class="row">
+                            <div class="col-12 col-md-4 col-sm-4 ml-auto my-1 text-center">
+                                <a href="{% url 'shelf:bookshelf_view' user_id=custom_user.id %}" class="btn btn-sm btn-outline-info btn-round btn-block"><i class="fa fa-book"></i> Shelf</a>
+                            </div>
+                            <div class="col-12 col-md-4 col-sm-4 my-1 text-center">
+                                <a href="{% url 'blog:blog_index_own' user_id=custom_user.id %}" class="btn btn-sm btn-outline-danger btn-round btn-block"><i class="fa fa-pencil"></i> Posts</a>
+                            </div>
+                            <div class="col-12 col-md-4 col-sm-4 mr-auto my-1 text-center">
+                                <a href="{% url 'sharelist:share_index_own' user_id=custom_user.id %}" class="btn btn-sm btn-outline-success btn-round btn-block"><i class="fa fa-file"></i> Shares</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="row mt-5 mb-3">
+                    <div class="col-md-6 ml-auto mr-auto text-center">
+                        {% if custom_user == request.user %}
+                        <btn class="btn btn-outline-default btn-round" id="edit-profile"><i class="fa fa-cog"></i> Edit Profile</btn>
+                        {% else %}
+                        <a href="{% url 'account:ajax_follow' request.user.id %}?user={{ custom_user.id }}" id="ajax-follow-url" type="hidden"></a>
+                        <a href="{% url 'account:ajax_unfollow' request.user.id %}?user={{ custom_user.id }}" id="ajax-unfollow-url" type="hidden"></a>
+                        <btn class="btn btn-outline-success btn-round{% if custom_user in request.user.following.all %} active{% endif %}" id="follow-toggle" 
+                        {% if custom_user in request.user.following.all %}data-toggle="modal" data-target="#unfollow-confirm-modal"{% endif %}>
+                            {% if custom_user in request.user.following.all %}<i class="fa fa-times"></i> Unfollow 
+                            {% else %}<i class="fa fa-check"></i> Follow{% endif %}
+                        </btn>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Profile edit form -->
+                {% if custom_user == request.user %}
+                <div class="row mb-5" style="display:none;" id="edit-profile-panel">
+                    <div class="col-md-6 ml-auto mr-auto">
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ user_form | crispy }}
+                            <br />
+                            <input class="btn btn-default w-100" type="submit" value="Confirm" />
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                <!-- Follow and unfollow -->
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#follows" role="tab">Follows</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#following" role="tab">Following</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Tab panes -->
+                <div class="tab-content following">
+                    <div class="tab-pane active text-center" id="follows" role="tabpanel">
+                        {% if custom_user.following.all %}
+                        <div class="row">
+                            <div class="col-md-6 ml-auto mr-auto">
+                                <ul class="list-unstyled follows">
+                                {% for item in custom_user.following.all %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-2 col-3">
+                                                <img src="{% if item.avatar %}{{ item.avatar.url }}{% else %}https://yt3.ggpht.com/a-/AJLlDp3NZPcgMmg-qzA7uHYZjm-WXP0v6CcUa1hTLg=s900-mo-c-c0xffffffff-rj-k-no{% endif %}" 
+                                                alt="Circle Image" class="img-circle img-no-padding img-responsive my-0" style="width:50px; height:50px; object-fit:cover;">
+                                            </div>
+                                            <div class="col-md-auto col-sm-4 col-4 mr-auto">
+                                                <a href="{{ item.get_absolute_url }}"><h6 class="text-left">{{ item.username }}</h6></a>
+                                            </div>
+                                            {% if request.user.is_authenticated and custom_user == request.user %}
+                                            <div class="col-md-3 col-sm-4 col-5 align-self-center">
+                                                <a href="{% url 'account:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
+                                                class="btn btn-success btn-sm btn-round my-auto float-right" id="unfollow-btn" 
+                                                data-toggle="modal" data-target="#unfollow-confirm-modal">Unfollow</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <hr style="margin:10px 0 !important;"/>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% else %}
+                        <p class="text-muted">Not following anyone yet :(</p>
+                        {% endif %}
+                    </div>
+                    <div class="tab-pane text-center" id="following" role="tabpanel">
+                        <p class="text-muted">Not followed by anyone yet :(</p>
+                        <!-- <button class="btn btn-warning btn-round">Find artists</button> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="unfollow-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title text-center" id="exampleModalLabel">Confirmation</h5>
+	                </div>
+	                <div class="modal-body text-center">
+                        Do you want to unfollow this guy?
+	                </div>
+	                <div class="modal-footer">
+	                    <div class="left-side">
+	                        <button type="button" class="btn btn-danger btn-link btn-confirm" data-dismiss="modal">Confirm</button>
+	                    </div>
+	                    <div class="divider"></div>
+	                    <div class="right-side">
+	                        <button type="button" class="btn btn-default btn-link" data-dismiss="modal">Cancel</button>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
     </div>
-    {% else %}
-    <div class="row">
-        <div class="col-sm-6 offset-sm-3">
-            <p class="lead text-center">Profile</p>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        {% if request.user.avatar %}
-        <div class="col-sm-6 offset-sm-3 text-center">
-            <img src="{{ request.user.avatar.url }}" 
-                class="img-circle img-fluid img-thumbnail"
-			    alt="Thumbnail [250x250]" 
-				style="display:block; width:250px; height:250px; margin:auto;" 
-                alt="{{ request.user.username }}" />
-        </div>
-        {% endif %}
-        <div class="col-sm-6 offset-sm-3">
-            <form method="POST" action="" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ user_form | crispy }}
-            <br />
-            <input class="btn btn-default w-100" type="submit" value="Confirm" />
-            </form>
-        </div>
-    </div>
-    {% endif %}
 </div>
+{% endblock %}
+
+{% block custom_script %}
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#edit-profile").click(function(event){
+        event.preventDefault();
+        $(this).toggleClass("active");
+        $("#edit-profile-panel").fadeToggle();
+    });
+});
+</script>
 {% endblock %}
 </body>

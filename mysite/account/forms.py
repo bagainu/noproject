@@ -45,6 +45,10 @@ class CustomUserUpdateForm(forms.ModelForm):
             'email',
             'username',
             'password',
+            'gender',
+            'intro',
+            'following',
+            'followed',
             'is_admin',
             'is_active',
         ]
@@ -102,4 +106,8 @@ class CustomUserProfileForm(forms.ModelForm):
             'email',
             'username',
             'avatar',
+            'gender',
+            'intro',
+            'following',
+            'followed',
         ]

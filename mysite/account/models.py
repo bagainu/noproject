@@ -1,4 +1,4 @@
-from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser, 
     BaseUserManager,
@@ -6,6 +6,10 @@ from django.contrib.auth.models import (
     # link: https://docs.djangoproject.com/en/2.0/topics/auth/customizing/#custom-users-and-permissions
     # PermissionsMixin, 
 )
+from django.db import models
+from django.template.defaultfilters import linebreaks
+from django.urls import reverse
+from django.utils.html import format_html
 
 from utils.image_utils import image_upload_to
 # Create your models here.
@@ -38,10 +42,23 @@ class CustomUserManager(BaseUserManager):
     
 
 class CustomUser(AbstractBaseUser):
+    MALE = 0
+    FEMALE = 1
+    OTHER = 2
+    GENDER_CHOICES =(
+        (MALE, 'Male'),
+        (FEMALE, 'Female'),
+        (OTHER, 'Other'),
+    )
+
     email = models.EmailField(unique=True)
     username = models.CharField(unique=True, max_length=200)
     register_time = models.DateTimeField(auto_now=False, auto_now_add=True)
+    gender = models.IntegerField(choices=GENDER_CHOICES, default=OTHER)
     avatar = models.ImageField(null=True, blank=True, upload_to=image_upload_to)
+    intro = models.TextField(blank=True)
+    following = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='user_following')
+    followed = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='user_followed')
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -73,4 +90,16 @@ class CustomUser(AbstractBaseUser):
         """Is the user a member of staff?"""
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def get_intro_html(self):
+        return format_html(linebreaks(self.intro))
+
+    @property
+    def gender_name(self):
+        return self.GENDER_CHOICES[self.gender][1]
+
+    def get_absolute_url(self):
+        return reverse('account:user_profile', kwargs={ 'user_id': self.id })
+
+
 
