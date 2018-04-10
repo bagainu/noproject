@@ -2470,10 +2470,10 @@ textarea.form-control {
 }
 .card:not(.card-plain):hover {
   box-shadow: 0px 12px 19px -7px rgba(0, 0, 0, 0.3);
-  transform: translateY(-10px);
-  -webkit-transform: translateY(-10px);
-  -ms-transform: translateY(-10px);
-  -moz-transform: translateY(-10px);
+  transform: translateY(-5px);
+  -webkit-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -moz-transform: translateY(-5px);
 }
 .card.card-plain {
   background-color: transparent;
@@ -3103,7 +3103,8 @@ textarea.form-control {
   text-align: center;
 }
 .dropdown .dropdown-menu .dropdown-item {
-  color: #66615b !important;
+  /* color: #66615b !important; */
+  color: #66615b;
   font-size: 14px;
   padding: 10px 45px 10px 15px;
   clear: both;
@@ -3163,7 +3164,8 @@ textarea.form-control {
   background-color: #f7765f;
 }
 .dropdown .dropdown-divider {
-  margin: 0 !important;
+  /* margin: 0 !important; */
+  margin: 0;
 }
 .dropdown.show .dropdown-menu {
   opacity: 1;
@@ -4819,7 +4821,8 @@ textarea.form-control {
     padding: 15px 0;
   }
   .navbar-collapse .navbar-nav > .nav-item > .nav-link:hover, .navbar-collapse .navbar-nav > .nav-item > .nav-link:active {
-    color: #403D39 !important;
+    /* color: #403D39 !important; */
+    color: #403D39;
   }
   .navbar-collapse::after {
     top: 0;
@@ -5813,10 +5816,6 @@ textarea.form-control {
 .profile-tabs {
   margin: 50px 0;
   min-height: 300px;
-}
-
-#following h3 {
-  margin: 20px 0 40px 0;
 }
 
 #follows .follows .unfollow .checkbox {
