@@ -109,7 +109,7 @@
                                                 <img src="{% if item.avatar %}{{ item.avatar.url }}{% else %}https://yt3.ggpht.com/a-/AJLlDp3NZPcgMmg-qzA7uHYZjm-WXP0v6CcUa1hTLg=s900-mo-c-c0xffffffff-rj-k-no{% endif %}" 
                                                 alt="Circle Image" class="img-circle img-no-padding img-responsive my-0" style="width:50px; height:50px; object-fit:cover;">
                                             </div>
-                                            <div class="col-md-auto col-sm-4 col-4 mr-auto">
+                                            <div class="col-md-auto col-sm-4 col-4 mr-auto align-self-center">
                                                 <a href="{{ item.get_absolute_url }}"><h6 class="text-left">{{ item.username }}</h6></a>
                                             </div>
                                             {% if request.user.is_authenticated and custom_user == request.user %}
@@ -131,8 +131,37 @@
                         {% endif %}
                     </div>
                     <div class="tab-pane text-center" id="following" role="tabpanel">
+                        {% if custom_user.followed.all %}
+                        <div class="row">
+                            <div class="col-md-6 ml-auto mr-auto">
+                                <ul class="list-unstyled follows">
+                                {% for item in custom_user.followed.all %}
+                                    <li>
+                                        <div class="row">
+                                            <div class="col-md-2 col-sm-2 col-3">
+                                                <img src="{% if item.avatar %}{{ item.avatar.url }}{% else %}https://yt3.ggpht.com/a-/AJLlDp3NZPcgMmg-qzA7uHYZjm-WXP0v6CcUa1hTLg=s900-mo-c-c0xffffffff-rj-k-no{% endif %}" 
+                                                alt="Circle Image" class="img-circle img-no-padding img-responsive my-0" style="width:50px; height:50px; object-fit:cover;">
+                                            </div>
+                                            <div class="col-md-auto col-sm-4 col-4 mr-auto align-self-center">
+                                                <a href="{{ item.get_absolute_url }}"><h6 class="text-left">{{ item.username }}</h6></a>
+                                            </div>
+                                            {% if request.user.is_authenticated and custom_user == request.user %}
+                                            <div class="col-md-3 col-sm-4 col-5 align-self-center">
+                                                <a href="{% url 'account:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
+                                                class="btn btn-success btn-sm btn-round my-auto float-right" id="unfollow-btn" 
+                                                data-toggle="modal" data-target="#unfollow-confirm-modal">Unfollow</a>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <hr style="margin:10px 0 !important;"/>
+                                    </li>
+                                {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        {% else %}
                         <p class="text-muted">Not followed by anyone yet :(</p>
-                        <!-- <button class="btn btn-warning btn-round">Find artists</button> -->
+                        {% endif %}
                     </div>
                 </div>
             </div>
