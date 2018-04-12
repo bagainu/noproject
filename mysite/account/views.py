@@ -35,7 +35,7 @@ def register(request):
         auth_login(request, user)
         if next_url is not None:
             return HttpResponseRedirect(next_url)
-        return HttpResponseRedirect(reverse("blog:blog_index"))
+        return HttpResponseRedirect(reverse("account:user_profile", kwargs={ 'user_id': user.id }))
     context = {
         'user_form': register_form,
     }

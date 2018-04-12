@@ -7,9 +7,13 @@ from django.contrib.auth.models import (
     # PermissionsMixin, 
 )
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.template.defaultfilters import linebreaks
 from django.urls import reverse
 from django.utils.html import format_html
+
+from shelf.models import BookShelf
 
 from utils.image_utils import image_upload_to
 # Create your models here.
@@ -102,4 +106,7 @@ class CustomUser(AbstractBaseUser):
         return reverse('account:user_profile', kwargs={ 'user_id': self.id })
 
 
-
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def user_post_save_callback(sender, instance, created, *args, **kwargs):
+    if created:
+        BookShelf.objects.get_or_create(shelf_owner=instance)
