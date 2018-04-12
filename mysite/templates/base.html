@@ -1,0 +1,55 @@
+{% extends "common/base.html" %}
+
+<body>
+{% block body_content %} 
+
+{% block body %} 
+<div class="wrapper">
+    <div class="page-header" style="background-image: url('https://assets.entrepreneur.com/content/3x2/1300/20151006165136-introvert-reading-books-.jpeg');">
+        <!-- <div class="filter"></div> -->
+        <div class="container">
+            {% if messages %}
+            <div class="row">
+                <strong>Messages:</strong>
+                <ul>
+                    {% for message in messages %}
+                    <li>{{message}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <!-- <div class="row">
+                <strong>Menu:</strong>
+                <ul>
+                    {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'account_email' %}">Change E-mail</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'account_logout' %}">Sign Out</a>
+                    </li>
+                    {% else %}
+                    <li>
+                        <a href="{% url 'account_login' %}">Sign In</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'account_signup' %}">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div> -->
+            {% block content %} {% endblock %} 
+            <div class="footer register-footer text-center">
+                <h6>&copy; <script>document.write(new Date().getFullYear())</script>, Bagainu </h6>
+                <h6>Thanks for the support from <i class="fa fa-heart heart"></i> Creative Tim</h6>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %} 
+
+{% block extra_body %} {% endblock %}
+
+{% endblock %}
+</body>

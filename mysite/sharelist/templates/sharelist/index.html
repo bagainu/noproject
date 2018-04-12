@@ -36,7 +36,7 @@
                     </div>
             		<div class="row">
             			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 
-            				<a href="{% url 'account:user_profile' user_id=bookshare.share_user.id %}"><strong>{{ bookshare.share_user }}</strong></a>
+            				<a href="{% url 'myuser:user_profile' user_id=bookshare.share_user.id %}"><strong>{{ bookshare.share_user }}</strong></a>
             			</div>
             			<div class="col-sm-auto text-muted">Last modified: {{ bookshare.share_update_date_time | date:"Y-M-d H:i:s" }}</div>
                     </div>

@@ -35,11 +35,11 @@ def register(request):
         auth_login(request, user)
         if next_url is not None:
             return HttpResponseRedirect(next_url)
-        return HttpResponseRedirect(reverse("account:user_profile", kwargs={ 'user_id': user.id }))
+        return HttpResponseRedirect(reverse("myuser:user_profile", kwargs={ 'user_id': user.id }))
     context = {
         'user_form': register_form,
     }
-    return render(request, 'account/register.html', context) 
+    return render(request, 'myuser/register.html', context) 
 
 
 def login(request):
@@ -53,7 +53,7 @@ def login(request):
     context = {
         'user_form': login_form,
     }
-    return render(request, 'account/login.html', context)
+    return render(request, 'myuser/login.html', context)
 
 
 def logout(request):
@@ -74,7 +74,7 @@ def profile(request, user_id):
         'custom_user': custom_user,
         'user_form': profile_form,
     }
-    return render(request, 'account/profile.html', context)
+    return render(request, 'myuser/profile.html', context)
 
 
 @login_required

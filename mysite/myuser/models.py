@@ -103,10 +103,13 @@ class CustomUser(AbstractBaseUser):
         return self.GENDER_CHOICES[self.gender][1]
 
     def get_absolute_url(self):
-        return reverse('account:user_profile', kwargs={ 'user_id': self.id })
+        return reverse('myuser:user_profile', kwargs={ 'user_id': self.id })
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def user_post_save_callback(sender, instance, created, *args, **kwargs):
     if created:
-        BookShelf.objects.get_or_create(shelf_owner=instance)
+        try:
+            BookShelf.objects.get_or_create(shelf_owner=instance)
+        except:
+            pass

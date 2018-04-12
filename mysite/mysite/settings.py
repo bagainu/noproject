@@ -12,8 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 
-AUTH_USER_MODEL = 'account.CustomUser'
-LOGIN_URL = '/account/login/'
+AUTH_USER_MODEL = 'myuser.CustomUser'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +39,7 @@ INSTALLED_APPS = [
     'shelf.apps.ShelfConfig',
     'sharelist.apps.SharelistConfig',
     'common.apps.CommonConfig',
-    'account.apps.AccountConfig',
+    'myuser.apps.MyUserConfig',
     'book.apps.BookConfig',
     'blog.apps.BlogConfig',
     'comments.apps.CommentsConfig',
@@ -54,6 +53,9 @@ INSTALLED_APPS = [
     'taggit', # https://github.com/alex/django-taggit
     'mathfilters', # https://pypi.python.org/pypi/django-mathfilters
     'star_ratings', # https://github.com/wildfish/django-star-ratings
+    'allauth', # https://github.com/pennersr/django-allauth
+    'allauth.account',
+    'allauth.socialaccount',
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -79,7 +81,10 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            # django allauth custom templates
+            os.path.join(BASE_DIR, 'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -171,3 +176,17 @@ CKEDITOR_CONFIGS = {
 
 # taggit config value
 TAGGIT_CASE_INSENSITIVE = False 
+
+
+# django allauth config value
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# LOGIN_URL = '/myuser/login/'
+LOGIN_REDIRECT_URL = '/blog/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/blog/'
+ACCOUNT_EMAIL_REQUIRED = True

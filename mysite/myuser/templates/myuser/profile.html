@@ -58,8 +58,8 @@
                         {% if custom_user == request.user %}
                         <btn class="btn btn-outline-default btn-round" id="edit-profile"><i class="fa fa-cog"></i> Edit Profile</btn>
                         {% else %}
-                        <a href="{% url 'account:ajax_follow' request.user.id %}?user={{ custom_user.id }}" id="ajax-follow-url" type="hidden"></a>
-                        <a href="{% url 'account:ajax_unfollow' request.user.id %}?user={{ custom_user.id }}" id="ajax-unfollow-url" type="hidden"></a>
+                        <a href="{% url 'myuser:ajax_follow' request.user.id %}?user={{ custom_user.id }}" id="ajax-follow-url" type="hidden"></a>
+                        <a href="{% url 'myuser:ajax_unfollow' request.user.id %}?user={{ custom_user.id }}" id="ajax-unfollow-url" type="hidden"></a>
                         <btn class="btn btn-outline-success btn-round{% if custom_user in request.user.following.all %} active{% endif %}" id="follow-toggle" 
                         {% if custom_user in request.user.following.all %}data-toggle="modal" data-target="#unfollow-confirm-modal"{% endif %}>
                             {% if custom_user in request.user.following.all %}<i class="fa fa-times"></i> Unfollow 
@@ -114,7 +114,7 @@
                                             </div>
                                             {% if request.user.is_authenticated and custom_user == request.user %}
                                             <div class="col-md-3 col-sm-4 col-5 align-self-center">
-                                                <a href="{% url 'account:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
+                                                <a href="{% url 'myuser:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
                                                 class="btn btn-success btn-sm btn-round my-auto float-right" id="unfollow-btn" 
                                                 data-toggle="modal" data-target="#unfollow-confirm-modal">Unfollow</a>
                                             </div>
@@ -147,7 +147,7 @@
                                             </div>
                                             {% if request.user.is_authenticated and custom_user == request.user %}
                                             <div class="col-md-3 col-sm-4 col-5 align-self-center">
-                                                <a href="{% url 'account:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
+                                                <a href="{% url 'myuser:ajax_unfollow' custom_user.id %}?user={{ item.id }}" 
                                                 class="btn btn-success btn-sm btn-round my-auto float-right" id="unfollow-btn" 
                                                 data-toggle="modal" data-target="#unfollow-confirm-modal">Unfollow</a>
                                             </div>
