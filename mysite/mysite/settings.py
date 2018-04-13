@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth', # https://github.com/pennersr/django-allauth
     'allauth.account',
     'allauth.socialaccount',
+    'rest_framework', # http://www.django-rest-framework.org/
     # django lib apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -190,3 +191,13 @@ AUTHENTICATION_BACKENDS = (
 LOGIN_REDIRECT_URL = '/blog/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/blog/'
 ACCOUNT_EMAIL_REQUIRED = True
+
+
+# django rest framework config
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
