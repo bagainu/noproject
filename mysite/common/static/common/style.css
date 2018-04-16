@@ -198,12 +198,9 @@ body {
 .card-register {
     background-color: rgba(33, 33, 33, 0.618) !important;
     margin: 10% auto !important;
+    min-height: unset !important;
 }
 
 .card-register .title {
     color: white !important;
-}
-
-.btn-danger.btn-link {
-    color: rgb(253, 255, 111) !important;
 }

@@ -20,7 +20,7 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 
-				<a href="{% url myuser:user_profile' user_id=post.blog_author.id %}"><strong>{{ post.blog_author }}</strong></a>
+				<a href="{% url 'myuser:user_profile' user_id=post.blog_author.id %}"><strong>{{ post.blog_author }}</strong></a>
 			</div>
 			<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 		</div>
