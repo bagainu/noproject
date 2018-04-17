@@ -187,10 +187,17 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+# make verification email to display on consol. Turn off with debug mode
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # LOGIN_URL = '/myuser/login/'
 LOGIN_REDIRECT_URL = '/blog/'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/blog/'
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180 # seconds
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 
 # django rest framework config
