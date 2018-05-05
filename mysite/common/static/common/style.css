@@ -13,6 +13,14 @@ body {
     background-color: rgb(240, 240, 240);
 }
 
+.jumbotron-index {
+    /* background-color: rgba(54, 162, 212, 0.618); */
+    /* background-color: rgba(212, 54, 54, 0.618); */
+    /* background-color: rgba(201, 212, 54, 0.618); */
+    background-color: rgba(86, 212, 54, 0.618);
+    color: #FFFFFF;
+}
+
 .html-content {
     background-color: white;
     padding: 2% 2%;
@@ -141,7 +149,6 @@ body {
     margin-bottom: 10px;
 }
 
-
 @media screen and (max-width: 991px) {
     .dropdown.show .dropdown-menu,
     .dropdown .dropdown-menu {
@@ -203,4 +210,12 @@ body {
 
 .card-register .title {
     color: white !important;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 6px 6px 5px -1px rgba(0, 0, 0, 0.15) !important;
+    /* background-color: rgba(230, 230, 230, 0.3) !important; */
+    color: #333333;
+    border: 0.2px solid !important;
 }

@@ -20,6 +20,7 @@ from django.conf import settings
 
 
 urlpatterns = [
+    path('', include('common.urls')),
     path('sharelist/', include('sharelist.urls')),
     path('shelf/', include('shelf.urls')),
     path('book/', include('book.urls')),

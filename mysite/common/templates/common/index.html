@@ -1,0 +1,42 @@
+{% extends "common/base.html" %}
+{% load staticfiles %}
+
+<title>
+{% block head_title %}{{ title }}{% endblock %}
+</title>
+
+<body>
+{% block body_content %}
+<div class="container">
+
+    <div class="jumbotron jumbotron-index">
+        <div class="container text-center">
+            <p><img class="img-fluid" src="{% static 'common/assets/img/logo_white.ico' %}"></p>
+            <h4><strong>Share the beauty of your life.</strong></h4>
+        </div>
+    </div>
+
+    <!-- navigation is better -->
+    <div class="row btn-group" role="group" aria-label="Basic example">
+        <button class="btn btn-secondary">Left</button>
+        <button class="btn btn-secondary">Middle</button>
+        <button class="btn btn-secondary">Right</button>
+    </div>
+
+	<div class="row">
+		<!-- <div class="col-lg-4 col-md-4 col">
+            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        </div>
+
+		<div class="col-lg-4 col-md-4 col">
+            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        </div>
+
+		<div class="col-lg-4 col-md-4 col">
+            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
+        </div> -->
+	</div>
+</div>
+{% endblock %}
+
+</body>

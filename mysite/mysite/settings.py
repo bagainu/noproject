@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'allauth', # https://github.com/pennersr/django-allauth
     'allauth.account',
     'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.weixin',
     'rest_framework', # http://www.django-rest-framework.org/
     # django lib apps
     'django.contrib.admin',
@@ -199,6 +200,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180 # seconds
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
+SOCIALACCOUNT_PROVIDERS = {
+    'weixin': {
+        'AUTHORIZE_URL': 'https://open.weixin.qq.com/connect/oauth2/authorize',  # for media platform
+        'SCOPE': ['snsapi_base'],
+    }
+}
 
 # django rest framework config
 REST_FRAMEWORK = {
