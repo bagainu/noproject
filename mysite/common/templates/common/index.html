@@ -2,41 +2,58 @@
 {% load staticfiles %}
 
 <title>
-{% block head_title %}{{ title }}{% endblock %}
+{% block head_title %}SHELF{% endblock %}
 </title>
 
 <body>
 {% block body_content %}
-<div class="container">
-
-    <div class="jumbotron jumbotron-index">
-        <div class="container text-center">
-            <p><img class="img-fluid" src="{% static 'common/assets/img/logo_white.ico' %}"></p>
-            <h4><strong>Share the beauty of your life.</strong></h4>
-        </div>
+<div class="jumbotron jumbotron-index">
+    <div class="container text-center">
+        <p><img class="img-fluid" src="{% static 'common/assets/img/logo_white.ico' %}"></p>
+        <h4><strong>Share the beauty of your life.</strong></h4>
     </div>
-
-    <!-- navigation is better -->
-    <div class="row btn-group" role="group" aria-label="Basic example">
-        <button class="btn btn-secondary">Left</button>
-        <button class="btn btn-secondary">Middle</button>
-        <button class="btn btn-secondary">Right</button>
-    </div>
-
-	<div class="row">
-		<!-- <div class="col-lg-4 col-md-4 col">
-            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        </div>
-
-		<div class="col-lg-4 col-md-4 col">
-            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        </div>
-
-		<div class="col-lg-4 col-md-4 col">
-            <p>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p>
-        </div> -->
-	</div>
 </div>
+<div class="container">
+    <div class="nav-tabs-navigation">
+        <div class="nav-tabs-wrapper">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#recent-posts" role="tab"><strong>Recent Posts</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#recent-notes" role="tab"><strong>Recent Notes</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#recent-shares" role="tab"><strong>Recent Shares</strong></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="recent-posts" role="tabpanel">
+	        {% include 'blog/posts.html' with post_list=book_posts %}
+        </div>
+        <div class="tab-pane" id="recent-notes" role="tabpanel">
+			{% include "comments/comments.html" with comment_list=book_comments %}
+        </div>
+        <div class="tab-pane" id="recent-shares" role="tabpanel">
+			{% include "sharelist/sharelist.html" with book_sharelist=book_sharelist slice_range=":7" %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_script %}
+<script type="text/javascript">
+$(document).ready(function(){
+    // to randomly change background color of jumbotron-index
+    //            blue         red          yellow       green
+    var colors = ["#35a2d43E", "#d436363E", "#d1d4363E", "#56d4363E"];
+    var random_color = colors[Math.floor(Math.random() * colors.length)];
+    $(".jumbotron-index").css('background-color', random_color);
+});
+</script>
 {% endblock %}
 
 </body>

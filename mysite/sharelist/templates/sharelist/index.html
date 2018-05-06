@@ -17,62 +17,9 @@
 	<br />
 
 	<div class="row">
-		<!-- blog posts -->
 		<div class="col-md-8">
-            {% if book_sharelist %}
-            {% for bookshare in book_sharelist %}
-            <div class="card mb-4 box-shadow">
-            	<div class="card-body align-items-start">
-                    <div class="row">
-						<div class="col">
-          		  		    <a href="{% url 'sharelist:share_detail' share_id=bookshare.id %}">
-          		  		    	<h3 class="card-title" style="word-wrap:break-word;"><strong>{{ bookshare.share_title }}</strong></h3>
-							</a>
-						</div>
-						<div class="col-auto">
-							{% url 'sharelist:ajax_vote_up' share_id=bookshare.id as vote_up_url %}
-							{% include "common/user_votes.html" with ajax_vote_up_url=vote_up_url item=bookshare %}
-						</div>
-                    </div>
-            		<div class="row">
-            			<div class="col-sm-auto d-inline-block mb-2 text-primary">By 
-            				<a href="{% url 'myuser:user_profile' user_id=bookshare.share_user.id %}"><strong>{{ bookshare.share_user }}</strong></a>
-            			</div>
-            			<div class="col-sm-auto text-muted">Last modified: {{ bookshare.share_update_date_time | date:"Y-M-d H:i:s" }}</div>
-                    </div>
-                    <div class="row">
-            		    <div class="col-md-12 card-text my-auto">
-            		    	<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
-            		    </div>
-                    </div>
-
-                    {% if bookshare.share_books %}
-                    <div class="row">
-                        {% for booklog in bookshare.share_books.all|slice:":5" %}
-						<div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <a class="row justify-content-center" href="{% url 'shelf:booklog_detail' booklog_id=booklog.id %}">
-                                <div class="card box-shadow text-center center-block" style="height:100px; width:80px;">
-                                    {% if booklog.booklog_book.book_cover %}
-                                    <img class="card-img img-fluid img-thumbnail" 
-                                        data-src="holder.js/150x200?theme=thumb" alt="Book cover" 
-                                        style="object-fit:cover; display:block; max-width:80px; height:100px; margin:auto; padding:auto;"
-										src="{{ booklog.booklog_book.book_cover.url }}" data-holder-rendered="true"> 
-									{% else %}
-                                    <div class="card-body">
-                                        <h4 class="card-title text-primary">{{ booklog.booklog_book.book_title }}</h4>
-                                        <h5 class="card-subtitle text-muted">{{ booklog.booklog_book.sub_title }}</h5>
-                                        <p class="card-text">{{ booklog.get_booklog_intro_html|truncatechars_html:80 }}</p>
-                                    </div>
-                                    {% endif %}
-                                </div>
-                            </a>
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
+			{% if book_sharelist %}
+			{% include "sharelist/sharelist.html" with book_sharelist=book_sharelist slice_range=":5" broad=True %}
 			<!-- pagination -->
 			<div class="row justify-content-center">
 				<div class="col-auto" aria-label="Page navigation">

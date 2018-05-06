@@ -193,8 +193,8 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # LOGIN_URL = '/myuser/login/'
-LOGIN_REDIRECT_URL = '/blog/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/blog/'
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_CONFIRMATION_COOLDOWN = 180 # seconds

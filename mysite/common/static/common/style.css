@@ -16,8 +16,8 @@ body {
 .jumbotron-index {
     /* background-color: rgba(54, 162, 212, 0.618); */
     /* background-color: rgba(212, 54, 54, 0.618); */
-    /* background-color: rgba(201, 212, 54, 0.618); */
-    background-color: rgba(86, 212, 54, 0.618);
+    /* background-color: rgba(209, 212, 54, 0.618); */
+    /* background-color: rgba(86, 212, 54, 0.618); */
     color: #FFFFFF;
 }
 
@@ -218,4 +218,8 @@ body {
     /* background-color: rgba(230, 230, 230, 0.3) !important; */
     color: #333333;
     border: 0.2px solid !important;
+}
+
+.nav-tabs-navigation {
+    border-bottom: 1px solid rgba(148, 148, 148, 0.618) !important;
 }
