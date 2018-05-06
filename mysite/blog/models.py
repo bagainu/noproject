@@ -65,6 +65,13 @@ class Post(VoteModel, models.Model):
     def get_blog_content_html(self):
         return format_html(self.blog_content)
 
+    @property
+    def book_object(self):
+        booklog_type = ContentType.objects.get(app_label='shelf', model='booklog')
+        if booklog_type:
+            return booklog_type.get_object_for_this_type(booklog_post=self).booklog_book
+        return None
+
 
 # Signal handlers
 # Related links: https://docs.djangoproject.com/en/2.0/ref/signals/
