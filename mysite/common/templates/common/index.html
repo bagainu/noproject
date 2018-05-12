@@ -18,13 +18,13 @@
         <div class="nav-tabs-wrapper">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#recent-posts" role="tab"><strong>Recent Posts</strong></a>
+                    <a class="nav-link active" data-toggle="tab" href="#recent-posts" role="tab"><strong>Posts</strong></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#recent-notes" role="tab"><strong>Recent Notes</strong></a>
+                    <a class="nav-link" data-toggle="tab" href="#recent-notes" role="tab"><strong>Notes</strong></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#recent-shares" role="tab"><strong>Recent Shares</strong></a>
+                    <a class="nav-link" data-toggle="tab" href="#recent-shares" role="tab"><strong>Shares</strong></a>
                 </li>
             </ul>
         </div>
@@ -35,7 +35,7 @@
 	        {% include 'blog/posts.html' with post_list=book_posts %}
         </div>
         <div class="tab-pane" id="recent-notes" role="tabpanel">
-			{% include "comments/comments.html" with comment_list=book_comments %}
+			{% include "comments/comments.html" with comment_list=book_comments card_mode=True disable_delete=True disable_reply=False %}
         </div>
         <div class="tab-pane" id="recent-shares" role="tabpanel">
 			{% include "sharelist/sharelist.html" with book_sharelist=book_sharelist slice_range=":7" %}

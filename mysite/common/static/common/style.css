@@ -10,7 +10,7 @@ p {
 body {
     /* background: white url("images/bg.jpg") no-repeat left top; */
     word-wrap: break-word;
-    background-color: rgb(240, 240, 240);
+    /* background-color: rgb(240, 240, 240); */
 }
 
 .jumbotron-index {

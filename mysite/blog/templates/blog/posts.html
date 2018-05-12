@@ -6,19 +6,48 @@
 <div class="col-md-10 col-offset-md-1 col-sm-10 col-offset-sm-1 my-1">
 {% endif %}
 <div class="card mb-4 box-shadow">
-	<div class="card-body align-items-start">
+	{% if post.book_object and not disable_profile %}
+	<div class="card-header">
 		<div class="row">
-			{% if post.book_object %}
 			<div class="col-lg-1 col-md-2 col-2" style="margin-top:0; padding-left:auto; padding-right:0;">
-				<a href="{% url 'blog:blog_detail' blog_id=post.id %}" title="{{ post.book_object.book_title }}">
-					<img class="card-img img-fluid img-thumbnail" 
+				<a href="{% url 'book:book_detail' book_id=post.book_object.id %}" title="{{ post.book_object.book_title }}">
+					<img class="card-img img-fluid img-rounded" 
 					alt="{{ post.book_object.book_title }}" 
 					style="object-fit:cover; max-width:100px; height:auto; margin:auto; padding:auto;"
 					src="{{ post.book_object.book_cover.url }}" 
 					data-holder-rendered="true">
 				</a>
 			</div>
-			{% endif %}
+			<div class="col-lg-11 col-md-10 col-10">
+				<div class="row">
+					<div class="col">
+						<a href="{% url 'book:book_detail' book_id=post.book_object.id %}">
+							<h5 class="lead"><strong>{{ post.book_object.book_title }}</strong></h5>
+						</a>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col">
+						<h6 class="text-default">{{ post.book_object.authors }}</h6>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	<div class="card-body align-items-start">
+		<div class="row">
+			<div class="col-lg-1 col-md-2 col-2" style="margin-top:0; padding-left:auto; padding-right:0;">
+				{% if post.blog_author.avatar %}
+				<a href="{% url 'myuser:user_profile' user_id=post.blog_author.id %}" title="{{ post.blog_author.username }}">
+					<img class="img-fluid img-circle" 
+					alt="{{ post.blog_author.username }}" 
+					style="object-fit:cover; width:100px; height:100; margin:auto; padding:auto;"
+					src="{{ post.blog_author.avatar.url }}" 
+					data-holder-rendered="true">
+				</a>
+				{% endif %}
+			</div>
 			<div class="col-lg-11 col-md-10 col-10">
 				<div class="row">
 					<div class="col">
@@ -38,7 +67,7 @@
 					<div class="col-sm-auto text-muted">Last modified: {{ post.update_date_time | date:"Y-M-d H:i:s" }}</div>
 				</div>
 				<div class="card-text my-auto">
-					<p>{{ post.get_blog_content_html | truncatechars_html:500 }}</p>
+					<p>{{ post.get_blog_content_html | truncatechars_html:300 }}</p>
 				</div>
 			</div>
 		</div>

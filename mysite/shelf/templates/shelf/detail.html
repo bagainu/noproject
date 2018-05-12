@@ -41,7 +41,7 @@
 		</div>
 		<div class="col-md-12">
 			{% if booklog_comments %}
-			{% include "comments/comments.html" with comment_list=booklog_comments %}
+			{% include "comments/comments.html" with comment_list=booklog_comments card_mode=True %}
 			{% else %}
 			<div class="row">
 				<div class="col-md-10 offset-md-1">

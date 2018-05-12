@@ -1,7 +1,7 @@
 from django import forms
 
 
-MAX_IMAGE_UPLOAD_SIZE = 51200
+MAX_IMAGE_UPLOAD_SIZE = 102400
 
 # Helping functions for ImageField
 def image_upload_to(instance, file_name):
@@ -27,8 +27,8 @@ class CustomImageField(forms.ImageField):
 
     def validate(self, value):
         super().validate(value)
-        file_type = value.content_type.split('/')[0]
-        if file_type != 'image':
-            raise forms.ValidationError('Please upload an image.')
-        if value._size > MAX_IMAGE_UPLOAD_SIZE:
-            raise forms.ValidationError('Image should not over {0}. Current is {1}.'.format(MAX_IMAGE_UPLOAD_SIZE, value._size))
+        # file_type = value.content_type.split('/')[0]
+        # if file_type != 'image':
+        #     raise forms.ValidationError('Please upload an image.')
+        # if value._size > MAX_IMAGE_UPLOAD_SIZE:
+        #     raise forms.ValidationError('Image should not over {0}. Current is {1}.'.format(MAX_IMAGE_UPLOAD_SIZE, value._size))

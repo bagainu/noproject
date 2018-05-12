@@ -100,7 +100,6 @@ class BookDetailView(View):
         }
         return render(request, 'book/book_page/detail.html', context)
 
-    @login_required
     def post(self, request, book_id):
         book = get_object_or_404(Book, pk=book_id)
         if request.user.is_authenticated:
