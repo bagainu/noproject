@@ -18,13 +18,13 @@
         <div class="nav-tabs-wrapper">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#recent-posts" role="tab"><strong>Posts</strong></a>
+                    <a class="nav-link active" data-toggle="tab" href="#recent-posts" role="tab" id="recent-posts-btn"><strong>Posts</strong></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#recent-notes" role="tab"><strong>Notes</strong></a>
+                    <a class="nav-link" data-toggle="tab" href="#recent-notes" role="tab" id="recent-notes-btn"><strong>Notes</strong></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#recent-shares" role="tab"><strong>Shares</strong></a>
+                    <a class="nav-link" data-toggle="tab" href="#recent-shares" role="tab" id="recent-shares-btn"><strong>Shares</strong></a>
                 </li>
             </ul>
         </div>
@@ -32,13 +32,16 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="recent-posts" role="tabpanel">
-	        {% include 'blog/posts.html' with post_list=book_posts %}
+            <!-- {% include 'blog/posts.html' with post_list=book_posts %} -->
+            {{ book_posts_html }}
         </div>
         <div class="tab-pane" id="recent-notes" role="tabpanel">
-			{% include "comments/comments.html" with comment_list=book_comments card_mode=True disable_delete=True disable_reply=False %}
+            <!-- {% include "comments/comments.html" with comment_list=book_comments card_mode=True disable_delete=True disable_reply=False %} -->
+            {{ book_comments_html }}
         </div>
         <div class="tab-pane" id="recent-shares" role="tabpanel">
-			{% include "sharelist/sharelist.html" with book_sharelist=book_sharelist slice_range=":7" %}
+            <!-- {% include "sharelist/sharelist.html" with book_sharelist=book_sharelist slice_range=":7" %} -->
+            {{ book_sharelist_html }}
         </div>
     </div>
 </div>

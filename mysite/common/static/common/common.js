@@ -14,7 +14,7 @@ $(document).ready(function(){
             }
         });
     });
-    // end user votes
+    // end of user votes
 
     // user follow and unfollow in profile page 
     var unfollow_url = null;
@@ -69,4 +69,11 @@ $(document).ready(function(){
 		});
 	});
     // end of user follow and unfollow in profile page 
+
+    // tab list retrieve in index view
+    $(document).on("click", "#recent-posts-btn", function(event){
+        event.preventDefault();
+
+    });
+    // end of tab list retrieve in index view
 });
